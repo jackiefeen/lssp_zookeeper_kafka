@@ -6,7 +6,7 @@ ZOOKEEPER
 ./bin/zkServer.sh start
 
 #connect with a client to the ZooKeeperServer
-./bin/zkCli.sh - server Iocalhost:2181, IPaddess:port, ... [more optional connections]
+./bin/zkCli.sh - server localhost:2181, IPaddess:port, ... [more optional connections]
 
 #default port of ZooKeeper:
 2181
@@ -18,16 +18,16 @@ help
 ls /
 
 #create node in ZooKeeper
-create /masterdsc <value>
+create /<nodename> <value>
 
 #get the info of a node and its data
-get /masterdsc
+get /<nodename>
 
 #set a new value on an existing node (you can pass only a ByteArray; every time you run set the data version counts up)
-set /masterdsc <new value>
+set /<nodename> <new value>
 
 #remove a node recursively with all its children
-rmr /masterdsc
+rmr /<nodename>
 
 
 ##### JAVA ########
