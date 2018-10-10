@@ -1,0 +1,39 @@
+ZOOKEEPER
+
+###### COMMAND LINE ##########
+
+#start the server
+./bin/zkServer.sh start
+
+#connect with a client to the ZooKeeperServer
+./bin/zkCli.sh - server Iocalhost:2181, IPaddess:port, ... [more optional connections]
+
+#default port of ZooKeeper:
+2181
+
+#help:
+help
+
+#list everything on ZooKeeper (always / first!)
+ls /
+
+#create node in ZooKeeper
+create /masterdsc <value>
+
+#get the info of a node and its data
+get /masterdsc
+
+#set a new value on an existing node (you can pass only a ByteArray; every time you run set the data version counts up)
+set /masterdsc <new value>
+
+#remove a node recursively with all its children
+rmr /masterdsc
+
+
+##### JAVA ########
+
+#create a new maven project
+mvn archetype:generate -DgroupId=master.eit -DartifactId=zkexamples -DarchetypeArtifactId=maven-archetype-quickstart
+--> zkexamples is the folder where the code is stored
+
+
