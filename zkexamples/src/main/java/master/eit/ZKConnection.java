@@ -18,6 +18,10 @@ public class ZKConnection {
     public ZKConnection() {
     }
 
+    /*
+    Create connection to ZooKeeper server
+     */
+
     public ZooKeeper connect(String host) throws IOException, InterruptedException {
 
         //TODO check if ZooKeeper is running and return readable exception if not
@@ -30,10 +34,12 @@ public class ZKConnection {
         });
 
         connectionLatch.await(10, TimeUnit.SECONDS);
-
         return zoo;
     }
 
+    /*
+    Close connection to ZooKeeper server
+     */
     public void close() throws InterruptedException {
         zoo.close();
     }

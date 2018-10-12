@@ -14,10 +14,14 @@ public class Manager {
     private static ZKConnection zkConnection;
     private static final String[] TreeStructure = {"/request", "/request/enroll", "/request/quit", "/registry", "/online"};
 
+    //constructor of the Manager
     public Manager() throws IOException, InterruptedException {
         initialize();
     }
 
+    /*
+    Functions to initialize, set up the manager and close the connection
+     */
     private void initialize() throws IOException, InterruptedException {
         zkConnection = new ZKConnection();
         zkeeper = zkConnection.connect("localhost");
@@ -26,6 +30,10 @@ public class Manager {
     public void closeConnection() throws InterruptedException {
         zkeeper.close();
     }
+
+    /*
+    Functions for creating nodes
+     */
 
     public void create(String path, byte[] data) throws InterruptedException, KeeperException {
 
@@ -61,7 +69,9 @@ public class Manager {
         }
     }
 
-
+    /*
+    Functions for getting and setting the data on the nodes
+     */
     public byte[] getData(String path, Watcher watcher, Stat stat) throws InterruptedException, KeeperException {
 
         byte[] b = null;
