@@ -11,14 +11,16 @@ public class Main {
 
     public static void main(String[] args) throws IOException, InterruptedException, KeeperException {
         //first, create the manager and establish the connection to ZooKeeper
-        Manager manager = new Manager();
+        Manager manager = new Manager("localhost:2181");
+        manager.run();
+
 
         //TODO: Only create the tree structure in a new environment. How could be implement this? Right now, the errors of existing nodes are handled but it slows down the applciation
-        manager.createZkTreeStructure();
+        //manager.createZkTreeStructure();
 
 
-        manager.closeConnection();
-        logger.info("Connection Closed");
+        //manager.closeConnection();
+        //logger.info("Connection Closed");
         System.exit(0);
 
     }

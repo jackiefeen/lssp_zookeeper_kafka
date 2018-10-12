@@ -3,42 +3,77 @@ package master.eit;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.apache.zookeeper.*;
+import org.apache.zookeeper.data.ACL;
 import org.apache.zookeeper.data.Stat;
 
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
+import java.util.List;
 
-public class Manager {
+public class Manager implements Runnable {
     private static final Logger logger = LogManager.getLogger("Manager Class");
     private static ZooKeeper zkeeper;
-    private static ZKConnection zkConnection;
+    private static Watcher childrenWatcher;
+    private static String enrollpath = "/request/enroll";
     private static final String[] TreeStructure = {"/request", "/request/enroll", "/request/quit", "/registry", "/online"};
+    public boolean alive = true;
 
     //constructor of the Manager
-    public Manager() throws IOException, InterruptedException {
-        initialize();
+    public Manager(String hostport) throws IOException, InterruptedException {
+
+        //setup connection with zookeeper
+        zkeeper = new ZKConnection().connect(hostport);
+        logger.info("State: " + zkeeper.getState());
+        if(zkeeper != null){
+
+        /*
+        create a watcher for ENROLLMENT
+         */
+        childrenWatcher = new Watcher(){
+            public void process(WatchedEvent watchedEvent) {
+                logger.info("Event received" + watchedEvent.toString());
+                if (watchedEvent.getType()== Event.EventType.NodeChildrenChanged){
+                    try {
+                        List<String> children = zkeeper.getChildren(enrollpath, this);
+                        logger.info("There is a new client!");
+                        logger.info("The current clients are: " + children);
+                    } catch (KeeperException e) {
+                        e.printStackTrace();
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        };
+        //ensure that the enrollpath actually exists before monitoring it, if not, create the tree structure
+        try {
+            if(zkeeper.exists(enrollpath, false)==null){
+                createZkTreeStructure();
+            }
+        } catch (KeeperException e) {
+            e.printStackTrace();
+        }
+        //set the watcher on the enrollpath
+        try {
+            List<String> children = zkeeper.getChildren(enrollpath,childrenWatcher);
+            logger.info("Currently connected: " + children);
+        } catch (KeeperException e) {
+            e.printStackTrace();
+        }
+    }
     }
 
-    /*
-    Functions to initialize, set up the manager and close the connection
-     */
-    private void initialize() throws IOException, InterruptedException {
-        zkConnection = new ZKConnection();
-        zkeeper = zkConnection.connect("localhost");
-    }
 
-    public void closeConnection() throws InterruptedException {
+    private void closeConnection() throws InterruptedException {
         zkeeper.close();
     }
 
     /*
     Functions for creating nodes
      */
-
-    public void create(String path, byte[] data) throws InterruptedException, KeeperException {
+    private void createNode(String path, byte[] data, List<ACL> acl, CreateMode createMode) throws InterruptedException, KeeperException {
 
         // check if the node exists already and create a new self-made watcher on it
-        Stat exists = null;
+        Stat exists;
         try {
             exists = zkeeper.exists(path, new SimpleWatcher());
             if (exists == null) {
@@ -53,19 +88,19 @@ public class Manager {
         Thread.sleep(2000);
     }
 
-    public void createZkTreeStructure() {
+    private void createZkTreeStructure() {
         try {
             //iterate over the TreeStructure and create the nodes
             for (String node : TreeStructure) {
-                create(node, null);
+                createNode(node, null, null, null);
             }
-        } catch (InterruptedException ex) {
-            logger.warn(ex);
-            Thread.currentThread().interrupt();
-            throw new RuntimeException(ex);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+            logger.error(e);
 
-        } catch (KeeperException ex) {
-            logger.error(ex.code());
+        } catch (KeeperException e) {
+            e.printStackTrace();
+            logger.error(e.code());
         }
     }
 
@@ -74,12 +109,33 @@ public class Manager {
      */
     public byte[] getData(String path, Watcher watcher, Stat stat) throws InterruptedException, KeeperException {
 
-        byte[] b = null;
+        byte[] b;
         b = zkeeper.getData(path, null, null);
         return b;
     }
 
     public void setData(String path, byte[] data, int version) throws InterruptedException, KeeperException {
         zkeeper.setData(path, data, zkeeper.exists(path, true).getVersion());
+    }
+
+    //create a manager Thread
+    public void run() {
+        synchronized (this){
+            while (alive){
+                try {
+                    wait();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                    Thread.currentThread().interrupt();
+                    } finally{
+                    try {
+                        this.closeConnection();
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }
+
     }
 }
