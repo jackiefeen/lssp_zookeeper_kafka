@@ -24,7 +24,6 @@ public class ZKConnection {
 
     public ZooKeeper connect(String hostport) throws IOException, InterruptedException {
 
-        //TODO check if ZooKeeper is running and return readable exception if not
         ZooKeeper zoo = new ZooKeeper(hostport, 2000, new Watcher() {
             public void process(WatchedEvent watchedEvent) {
                 if (watchedEvent.getState() == Event.KeeperState.SyncConnected) {
@@ -32,13 +31,12 @@ public class ZKConnection {
                 }
             }
         });
+
         connectionLatch.await(10, TimeUnit.SECONDS);
         ZooKeeper.States state = zoo.getState();
         if (state == ZooKeeper.States.CONNECTED){
-            //logger.info("Connected to ZooKeeper.");
             return zoo;
-        }
-        else{
+        } else {
             logger.error("There is a problem with connecting to ZooKeeper.");
             Thread.currentThread().interrupt();
             return null;
