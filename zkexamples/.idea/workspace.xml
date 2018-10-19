@@ -7,36 +7,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="6b9df702-a5a8-499e-9097-60c092b33df5" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__io_netty_netty_3_10_5_Final.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__jline_jline_0_9_94.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__junit_junit_3_8_1.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__log4j_log4j_1_2_16.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_apache_logging_log4j_log4j_api_2_11_1.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_apache_logging_log4j_log4j_core_2_11_1.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_apache_zookeeper_zookeeper_3_4_10.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_slf4j_slf4j_api_1_6_1.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_slf4j_slf4j_log4j12_1_6_1.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/uiDesigner.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/master/eit/client/EnrollWatcher.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/master/eit/Client.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/master/eit/Main.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/master/eit/Manager.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/master/eit/SimpleWatcher.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/master/eit/iClient.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/master/eit/iManager.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/master/eit/App$1.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/master/eit/App.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/master/eit/Client.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/master/eit/Main.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/master/eit/Manager$1.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/master/eit/Manager.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/master/eit/SimpleWatcher.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/master/eit/ZKConnection$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/master/eit/ZKConnection$1.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/master/eit/ZKConnection.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/master/eit/ZKConnection.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/master/eit/iClient.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/master/eit/iManager.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/master/eit/client/Client.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/master/eit/client/Client.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/master/eit/manager/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/master/eit/manager/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/master/eit/manager/Manager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/master/eit/manager/Manager.java" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/target/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -82,14 +58,43 @@
         </counts>
       </usages-collector>
     </session>
+    <session id="-1742999062">
+      <usages-collector id="statistics.lifecycle.project">
+        <counts>
+          <entry key="project.open.time.13" value="1" />
+          <entry key="project.opened" value="1" />
+        </counts>
+      </usages-collector>
+      <usages-collector id="statistics.file.extensions.edit">
+        <counts>
+          <entry key="java" value="2340" />
+        </counts>
+      </usages-collector>
+      <usages-collector id="statistics.file.types.edit">
+        <counts>
+          <entry key="JAVA" value="2340" />
+        </counts>
+      </usages-collector>
+      <usages-collector id="statistics.file.extensions.open">
+        <counts>
+          <entry key="java" value="4" />
+        </counts>
+      </usages-collector>
+      <usages-collector id="statistics.file.types.open">
+        <counts>
+          <entry key="JAVA" value="4" />
+        </counts>
+      </usages-collector>
+      <usages-collector id="statistics.vcs.git.usages" />
+    </session>
   </component>
   <component name="FileEditorManager">
-    <leaf>
+    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/master/eit/manager/Main.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="165">
-              <caret line="16" column="8" selection-start-line="16" selection-start-column="8" selection-end-line="16" selection-end-column="8" />
+            <state relative-caret-position="135">
+              <caret line="14" column="53" lean-forward="true" selection-start-line="14" selection-start-column="39" selection-end-line="14" selection-end-column="53" />
             </state>
           </provider>
         </entry>
@@ -97,44 +102,55 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/master/eit/manager/Manager.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="319">
-              <caret line="143" column="50" lean-forward="true" selection-start-line="143" selection-start-column="50" selection-end-line="143" selection-end-column="50" />
+            <state relative-caret-position="165">
+              <caret line="11" column="27" lean-forward="true" selection-start-line="11" selection-start-column="27" selection-end-line="11" selection-end-column="27" />
               <folding>
-                <element signature="e#1227#1716#0" expanded="true" />
-                <element signature="e#1715#1716#0" expanded="true" />
+                <element signature="e#1391#1801#0" expanded="true" />
+                <element signature="e#1800#1801#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/.gitignore">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="60">
-              <caret line="4" lean-forward="true" selection-start-line="4" selection-end-line="4" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/master/eit/client/Client.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="224">
-              <caret line="91" column="35" selection-start-line="91" selection-start-column="35" selection-end-line="91" selection-end-column="35" />
+            <state relative-caret-position="1035">
+              <caret line="69" column="64" lean-forward="true" selection-start-line="69" selection-start-column="64" selection-end-line="69" selection-end-column="64" />
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/master/eit/manager/iManager.java">
+        <entry file="file://$PROJECT_DIR$/src/main/java/master/eit/client/EnrollWatcher.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="60">
-              <caret line="4" column="17" selection-start-line="4" selection-start-column="17" selection-end-line="4" selection-end-column="17" />
+            <state relative-caret-position="180">
+              <caret line="12" selection-start-line="12" selection-end-line="12" />
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
       </file>
     </leaf>
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
+  <component name="FindInProjectRecents">
+    <findStrings>
+      <find>enrolldata</find>
+      <find>semaphore</find>
+      <find>enrollpath</find>
+    </findStrings>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
@@ -142,11 +158,13 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/src/main/java/master/eit/client/Client.java" />
         <option value="$PROJECT_DIR$/src/main/java/master/eit/Main.java" />
-        <option value="$PROJECT_DIR$/src/main/java/master/eit/manager/Main.java" />
-        <option value="$PROJECT_DIR$/src/main/java/master/eit/manager/Manager.java" />
         <option value="$PROJECT_DIR$/.gitignore" />
+        <option value="$PROJECT_DIR$/src/main/java/master/eit/manager/Main.java" />
+        <option value="$PROJECT_DIR$/src/main/java/master/eit/manager/EnrollWatcher.java" />
+        <option value="$PROJECT_DIR$/src/main/java/master/eit/client/Client.java" />
+        <option value="$PROJECT_DIR$/src/main/java/master/eit/manager/NewEnrollmentWatcher.java" />
+        <option value="$PROJECT_DIR$/src/main/java/master/eit/manager/Manager.java" />
       </list>
     </option>
   </component>
@@ -175,6 +193,7 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scope" />
       <pane id="PackagesPane" />
       <pane id="ProjectPane">
         <subPane>
@@ -183,17 +202,60 @@
               <item name="zkexamples" type="b2602c69:ProjectViewProjectNode" />
               <item name="zkexamples" type="462c0819:PsiDirectoryNode" />
             </path>
+            <path>
+              <item name="zkexamples" type="b2602c69:ProjectViewProjectNode" />
+              <item name="zkexamples" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="zkexamples" type="b2602c69:ProjectViewProjectNode" />
+              <item name="zkexamples" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="zkexamples" type="b2602c69:ProjectViewProjectNode" />
+              <item name="zkexamples" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="zkexamples" type="b2602c69:ProjectViewProjectNode" />
+              <item name="zkexamples" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="eit" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="zkexamples" type="b2602c69:ProjectViewProjectNode" />
+              <item name="zkexamples" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="eit" type="462c0819:PsiDirectoryNode" />
+              <item name="client" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="zkexamples" type="b2602c69:ProjectViewProjectNode" />
+              <item name="zkexamples" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="eit" type="462c0819:PsiDirectoryNode" />
+              <item name="manager" type="462c0819:PsiDirectoryNode" />
+            </path>
           </expand>
           <select />
         </subPane>
       </pane>
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1539701285801" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1539947140302" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/out/artifacts/Manager.jar" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
@@ -203,6 +265,9 @@
     <property name="settings.editor.selected.configurable" value="preferences.lookFeel" />
   </component>
   <component name="RecentsManager">
+    <key name="MoveClassesOrPackagesDialog.RECENTS_KEY">
+      <recent name="master.eit.client" />
+    </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/out/artifacts/Client_jar" />
       <recent name="$PROJECT_DIR$/out/artifacts" />
@@ -239,7 +304,7 @@
       <module name="zkexamples" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="master.eit.manager.*" />
+          <option name="PATTERN" value="master.eit.client.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
@@ -247,37 +312,9 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="ZooKeeper_IMS" type="CompoundRunConfigurationType" factoryName="Compound Run Configuration">
-      <toRun type="Application" name="Client" />
-      <toRun type="Application" name="Main" />
-      <method v="2" />
-    </configuration>
-    <configuration name="Client" type="JarApplication" factoryName="JAR Application">
-      <option name="JAR_PATH" value="$PROJECT_DIR$/out/artifacts/Client.jar" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
-      <option name="ALTERNATIVE_JRE_PATH" />
-      <method v="2">
-        <option name="BuildArtifacts" enabled="true">
-          <artifact name="Client:jar" />
-        </option>
-      </method>
-    </configuration>
-    <configuration name="Manager" type="JarApplication" factoryName="JAR Application">
-      <option name="JAR_PATH" value="$PROJECT_DIR$/out/artifacts/Manager.jar" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
-      <option name="ALTERNATIVE_JRE_PATH" />
-      <method v="2">
-        <option name="BuildArtifacts" enabled="true">
-          <artifact name="Manager:jar" />
-        </option>
-      </method>
-    </configuration>
     <list>
       <item itemvalue="Application.Main" />
       <item itemvalue="Application.Client" />
-      <item itemvalue="Compound.ZooKeeper_IMS" />
-      <item itemvalue="JAR Application.Client" />
-      <item itemvalue="JAR Application.Manager" />
     </list>
   </component>
   <component name="SvnConfiguration">
@@ -301,9 +338,8 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="67" y="25" width="1373" height="875" extended-state="6" />
-    <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.2569706" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.26073852" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Image Layers" order="2" />
       <window_info id="Designer" order="3" />
@@ -321,7 +357,7 @@
       <window_info anchor="bottom" id="Terminal" order="8" weight="0.32885906" />
       <window_info anchor="bottom" id="Event Log" order="9" side_tool="true" />
       <window_info anchor="bottom" id="Messages" order="10" weight="0.32885906" />
-      <window_info anchor="bottom" x="67" y="644" width="1607" height="295" id="Run" order="11" weight="0.3261745" />
+      <window_info active="true" anchor="bottom" x="67" y="644" width="1607" height="295" id="Run" order="11" visible="true" weight="0.39731544" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
@@ -353,6 +389,7 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/.gitignore" />
     <entry file="file://$PROJECT_DIR$/src/main/java/master/eit/manager/iManager.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="60">
@@ -360,10 +397,13 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/master/eit/client/Client.java">
+    <entry file="jar:///usr/lib/jvm/java-8-oracle/src.zip!/java/lang/String.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="224">
-          <caret line="91" column="35" selection-start-line="91" selection-start-column="35" selection-end-line="91" selection-end-column="35" />
+        <state relative-caret-position="140">
+          <caret line="565" selection-start-line="565" selection-end-line="565" />
+          <folding>
+            <element signature="e#20771#20772#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -374,28 +414,51 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/master/eit/manager/Main.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/master/eit/manager/NewEnrollmentWatcher.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="165">
-          <caret line="16" column="8" selection-start-line="16" selection-start-column="8" selection-end-line="16" selection-end-column="8" />
+        <state relative-caret-position="225">
+          <caret line="15" column="9" selection-start-line="15" selection-start-column="9" selection-end-line="15" selection-end-column="9" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/master/eit/client/EnrollWatcher.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="180">
+          <caret line="12" selection-start-line="12" selection-end-line="12" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/master/eit/manager/Manager.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="319">
-          <caret line="143" column="50" lean-forward="true" selection-start-line="143" selection-start-column="50" selection-end-line="143" selection-end-column="50" />
+        <state relative-caret-position="165">
+          <caret line="11" column="27" lean-forward="true" selection-start-line="11" selection-start-column="27" selection-end-line="11" selection-end-column="27" />
           <folding>
-            <element signature="e#1227#1716#0" expanded="true" />
-            <element signature="e#1715#1716#0" expanded="true" />
+            <element signature="e#1391#1801#0" expanded="true" />
+            <element signature="e#1800#1801#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/.gitignore">
+    <entry file="file://$PROJECT_DIR$/src/main/java/master/eit/manager/Main.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="60">
-          <caret line="4" lean-forward="true" selection-start-line="4" selection-end-line="4" />
+        <state relative-caret-position="135">
+          <caret line="14" column="53" lean-forward="true" selection-start-line="14" selection-start-column="39" selection-end-line="14" selection-end-column="53" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/master/eit/client/Client.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1035">
+          <caret line="69" column="64" lean-forward="true" selection-start-line="69" selection-start-column="64" selection-end-line="69" selection-end-column="64" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>

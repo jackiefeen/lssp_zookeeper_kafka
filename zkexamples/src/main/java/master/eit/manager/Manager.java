@@ -1,3 +1,4 @@
+
 package master.eit.manager;
 
 import master.eit.ZKConnection;
@@ -30,16 +31,16 @@ public class Manager implements Runnable {
         zkeeper = new ZKConnection().connect(hostport);
         logger.info("State: " + zkeeper.getState());
 
-        if(zkeeper != null){
+        if (zkeeper != null) {
             /*
             create a watcher for ENROLLMENT
             */
-            childrenWatcher = new Watcher(){
+            childrenWatcher = new Watcher() {
                 public void process(WatchedEvent watchedEvent) {
 
                     logger.info("Event received" + watchedEvent.toString());
 
-                    if (watchedEvent.getType()== Event.EventType.NodeChildrenChanged){
+                    if (watchedEvent.getType() == Event.EventType.NodeChildrenChanged) {
                         logger.info("There is a new client!");
 
                         semaphore.release(1);
@@ -50,7 +51,7 @@ public class Manager implements Runnable {
 
             //ensure that the enrollpath actually exists before monitoring it, if not, create the tree structure
             try {
-                if(zkeeper.exists(enrollpath, false)==null){
+                if (zkeeper.exists(enrollpath, false) == null) {
                     createZkTreeStructure();
                 }
             } catch (KeeperException e) {
@@ -59,7 +60,7 @@ public class Manager implements Runnable {
 
             //set the watcher on the enrollpath
             try {
-                List<String> children = zkeeper.getChildren(enrollpath,childrenWatcher);
+                List<String> children = zkeeper.getChildren(enrollpath, childrenWatcher);
                 logger.info("Currently connected: " + children);
             } catch (KeeperException e) {
                 e.printStackTrace();
@@ -125,16 +126,16 @@ public class Manager implements Runnable {
                 try {
                     semaphore.acquire();
 
-                    for (String child:zkeeper.getChildren(enrollpath, null, null)) {
+                    for (String child : zkeeper.getChildren(enrollpath, null, null)) {
                         byte data[] = zkeeper.getData(enrollpath + "/" + child, false, null);
                         String state = new String(data);
                         System.out.println(child + state);
 
                         if (toInt(state) == -1) {
                             try {
-                                createNode("/registry/"+child, null, ZooDefs.Ids.OPEN_ACL_UNSAFE, CreateMode.PERSISTENT);
+                                createNode("/registry/" + child, null, ZooDefs.Ids.OPEN_ACL_UNSAFE, CreateMode.PERSISTENT);
                                 String value = "1";
-                                setData(enrollpath+"/"+child, value.getBytes(), -1);
+                                setData(enrollpath + "/" + child, value.getBytes(), -1);
                             } catch (KeeperException e) {
                                 e.printStackTrace();
                             }
