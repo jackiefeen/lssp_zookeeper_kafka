@@ -9,8 +9,5 @@
         <module name="zkexamples" />
       </profile>
     </annotationProcessing>
-    <bytecodeTargetLevel>
-      <module name="zkexamples" target="1.5" />
-    </bytecodeTargetLevel>
   </component>
 </project>
