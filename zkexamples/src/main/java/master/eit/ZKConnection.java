@@ -16,15 +16,15 @@ public class ZKConnection {
     CountDownLatch connectionLatch = new CountDownLatch(1);
 
     public ZKConnection() {
+
     }
 
     /*
-    Create connections to ZooKeeper server
+    Create connection to ZooKeeper server
      */
-
     public ZooKeeper connect(String hostport) throws IOException, InterruptedException {
 
-        ZooKeeper zoo = new ZooKeeper(hostport, 2000, new Watcher() {
+            zoo = new ZooKeeper(hostport, 2000, new Watcher() {
             public void process(WatchedEvent watchedEvent) {
                 if (watchedEvent.getState() == Event.KeeperState.SyncConnected) {
                     connectionLatch.countDown();

@@ -1,6 +1,5 @@
 package master.eit.client;
 
-import master.eit.manager.SimpleWatcher;
 import master.eit.ZKConnection;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
@@ -12,116 +11,117 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Scanner;
 
-public class Client implements Runnable {
+public class Client {
     private static ZooKeeper zkeeper;
-    private static String enrollpath = "/request/enroll";
     private static String username;
-    public boolean alive = true;
-    private static final Logger logger = LogManager.getLogger("Client Class" + username);
-    //static Semaphore semaphore = new Semaphore(0);
+    private static boolean alive = true;
+    private static final Logger logger = LogManager.getLogger("Client Class");
+    private Watcher nodeDataWatcher;
 
 
     // constructor that connects to ZooKeeper and tries to enroll/register
-    public Client(String hostPort, String username) throws IOException, InterruptedException, KeeperException {
+    private Client(String hostPort, String username) throws IOException, InterruptedException{
         this.username = username;
-        zkeeper = new ZKConnection().connect(hostPort);
-        logger.info("State: " + zkeeper.getState());
+        this.alive = true;
 
-        if (zkeeper != null) {
-            createEphemeralNode(enrollpath + "/" + username, "-1".getBytes(), ZooDefs.Ids.OPEN_ACL_UNSAFE, CreateMode.EPHEMERAL);
-            handleenrollrequest();
-        }
+        //connect to ZooKeeper
+        zkeeper = new ZKConnection().connect(hostPort);
+        logger.info("State of the connection: " + zkeeper.getState());
+
+        //initialize the NodeDataWatcher
+        NodeDataWatcher nodeDataWatcher = new NodeDataWatcher(this);
+        Thread nodeDataWatcherThread = new Thread(nodeDataWatcher);
+        nodeDataWatcherThread.start();
+        this.nodeDataWatcher = nodeDataWatcher;
     }
 
     /* Functions for creating nodes */
-    private void createEphemeralNode(String path, byte[] data, List<ACL> acl, CreateMode createMode) throws InterruptedException, KeeperException {
-        // check if the node exists already and create a new self-made watcher on it
+    private void createEphemeralNode(String path, byte[] data, List<ACL> acl, CreateMode createMode) {
         Stat exists;
         try {
-            exists = zkeeper.exists(path, new SimpleWatcher());
+            exists = zkeeper.exists(path, true);
             if (exists == null) {
                 zkeeper.create(path, data, ZooDefs.Ids.OPEN_ACL_UNSAFE, CreateMode.EPHEMERAL);
                 logger.info("Created an ephemeral node for the enrollment request");
             } else {
                 logger.warn("You have already created an enrollment request. Please wait until it is approved.");
             }
-
         } catch (KeeperException e) {
             logger.error(e.code());
-        }
-        Thread.sleep(2000);
+        } catch (InterruptedException e) {
+        e.printStackTrace();
+        logger.error(e);
     }
-
-    public void handleenrollrequest() throws KeeperException, InterruptedException {
-        byte[] edata;
-        edata = zkeeper.getData(enrollpath + "/" + username, new EnrollWatcher(), null);
-        String enrolldata = new String(edata);
-        logger.info(enrollpath + "/" + username);
-        logger.info(enrolldata);
-
-        if (enrolldata.equals("1")) {
-            logger.info(username + ":the registration was successful.");
-
-        } else if (enrolldata.equals("2")) {
-            logger.info(username + ":the client was already registered.");
-
-        } else {
-            logger.info(enrolldata.getClass());
-            logger.info(username + ":the registration failed.");
-
-        }
-        int version = zkeeper.exists(enrollpath + "/" + username, true).getVersion();
-        zkeeper.delete(enrollpath + "/" + username, version);
-        logger.info(enrollpath + "/" + username + " deleted.");
     }
 
 
-    public void closeConnection() throws InterruptedException {
+
+    public void register() throws KeeperException, InterruptedException {
+        String enrollpath = "/request/enroll";
+        if (zkeeper != null) {
+            createEphemeralNode(enrollpath + "/" + username, "-1".getBytes(), ZooDefs.Ids.OPEN_ACL_UNSAFE, CreateMode.EPHEMERAL);
+            byte[] edata = zkeeper.getData(enrollpath + "/" + username, nodeDataWatcher, null );
+            if (edata != null) {
+                String enrolldata = new String(edata);
+
+                if (enrolldata.equals("1")) {
+                    logger.info(username + ":the registration was successful.");
+
+                } else if (enrolldata.equals("2")) {
+                    logger.info(username + ":the client was already registered.");
+
+                } else {
+                    logger.info(enrolldata.getClass());
+                    logger.info(username + ":the registration failed.");
+                }
+                int version = zkeeper.exists(enrollpath + "/" + username, true).getVersion();
+                zkeeper.delete(enrollpath + "/" + username, version);
+            }
+        }
+    }
+
+
+
+    private void closeConnection() throws InterruptedException {
         zkeeper.close();
     }
 
-    //run the client as a Thread
-    public void run() {
-        synchronized (this) {
-            while (alive) {
-                try {
-                    wait();
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                    Thread.currentThread().interrupt();
-                } finally {
-                    try {
-                        this.closeConnection();
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                    ;
-                }
-            }
-        }
-    }
 
+    public static void main(String[] args) throws InterruptedException, IOException, KeeperException {
 
-    public static void main(String[] args) throws InterruptedException, KeeperException {
-
-        Boolean flag = true;
         Scanner read = new Scanner(System.in);
 
-        while (flag) {
-            System.out.println("Insert the IMS IP in this format: Host:Port");
-            String hostPort = read.nextLine();
-            System.out.println("What is your nickname?");
-            String username = read.nextLine();
+        System.out.println("Insert the IMS IP in this format: Host:Port");
+        String hostPort = read.nextLine();
+        System.out.println("What is your nickname?");
+        String username = read.nextLine();
+        Client client = new Client(hostPort,username);
 
-            try {
-                new Client(hostPort, username).run();
-            } catch (IOException e) {
-                System.out.println("For some reason the connection has been closed, " +
-                        "maybe the server is offline or you made some mistake");
-                flag = true;
+        while(alive){
+            System.out.println("What would you like to do?");
+            String todo = read.nextLine();
+
+            if(todo.equals("register")){
+                client.register();
+                Thread.sleep(8000);
             }
+            else if(todo.equals("goonline")){
+            }
+            else if(todo.equals( "close")){
+                client.closeConnection();
+                if(zkeeper.getState() == ZooKeeper.States.CLOSED){
+                    alive=false;
+                }
+            }
+            else{
+                System.out.println("Please chose to either register, goonline or close");
+            }
+
+        }
+
         }
     }
-}
+
+
 
 

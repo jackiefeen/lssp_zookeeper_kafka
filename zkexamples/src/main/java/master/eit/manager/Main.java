@@ -10,19 +10,24 @@ import java.io.IOException;
 public class Main {
     private static final Logger logger = LogManager.getLogger("Main Class");
 
-    public static void main(String[] args) throws IOException, InterruptedException, KeeperException {
-        //first, create the manager and establish the connection to ZooKeeper
-        Manager manager = new Manager("localhost:2181");
-        manager.run();
+    public static void main(String[] args) {
 
-        // TODO: Only create the tree structure in a new environment. How could be implement this?
-        // TODO: Right now, the errors of existing nodes are handled but it slows down the application
-        // manager.createZkTreeStructure();
+        Manager manager = null;
+        try {
+            manager = new Manager("localhost:2181");
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (KeeperException e) {
+            e.printStackTrace();
+        }
+        Thread thread = new Thread(manager);
+        thread.start();
+        logger.info("The Manager has started.");
 
-
-        //manager.closeConnection();
-        //logger.info("Connection Closed");
-        System.exit(0);
+        while (true){
+        }
 
     }
 }
