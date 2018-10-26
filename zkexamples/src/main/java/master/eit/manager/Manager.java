@@ -15,6 +15,9 @@ public class Manager implements Runnable {
     private static final Logger logger = LogManager.getLogger("Manager Class");
     private static ZooKeeper zkeeper;
     private static String enrollpath = "/request/enroll";
+    private static String quitpath = "/request/quit";
+    private static String onlinepath = "/online";
+    private static String registrypath = "/registry";
     private static final String[] TreeStructure = {"/request", "/request/enroll", "/request/quit", "/registry", "/online"};
     public boolean alive = true;
     private Watcher branchWatcher;
@@ -30,7 +33,10 @@ public class Manager implements Runnable {
         if (zkeeper != null) {
             //ensure that the enrollpath actually exists before monitoring it, if not, create the tree structure
             try {
-                if (zkeeper.exists(enrollpath, false) == null) {
+                if ((zkeeper.exists(enrollpath, false) == null) ||
+                        (zkeeper.exists(quitpath, false) == null) ||
+                        (zkeeper.exists(onlinepath, false) == null) ||
+                        (zkeeper.exists(registrypath, false) == null)) {
                     createZkTreeStructure();
                 } else {
                     logger.info("The Tree Structure exists already.");
@@ -51,8 +57,8 @@ public class Manager implements Runnable {
         List<String> children = zkeeper.getChildren(enrollpath, branchWatcher);
         if (!children.isEmpty()) {
             logger.info("Current enroll requests: " + children);
+            registerUser();
         }
-
     }
 
 
@@ -71,11 +77,11 @@ public class Manager implements Runnable {
                 } catch (KeeperException e) {
                     logger.error(e.code());
                 }
-
                 if (exists == null) {
                     zkeeper.create(node, null, ZooDefs.Ids.OPEN_ACL_UNSAFE, CreateMode.PERSISTENT);
+                    logger.info("created " + node);
                 } else {
-                    logger.warn("the node you try to create already exists...");
+                    logger.warn( node + " already exists.");
                 }
             }
         } catch (InterruptedException e) {

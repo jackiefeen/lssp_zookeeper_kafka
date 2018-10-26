@@ -24,7 +24,7 @@ public class Main {
         }
         Thread thread = new Thread(manager);
         thread.start();
-        logger.info("The Manager has started.");
+        logger.info("The Manager has finished start-up.");
 
         while (true){
         }

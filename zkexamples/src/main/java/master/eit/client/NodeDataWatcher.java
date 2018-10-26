@@ -10,25 +10,32 @@ public class NodeDataWatcher implements Runnable, Watcher {
     private static final Logger logger = LogManager.getLogger("NodeDataWatcher");
     private Client currentclient;
 
-    public NodeDataWatcher(Client client){
+    public NodeDataWatcher(Client client) {
         this.currentclient = client;
-
     }
 
     public void process(WatchedEvent watchedEvent) {
-        if(watchedEvent.getType() == Watcher.Event.EventType.NodeDataChanged){
+        if (watchedEvent.getType() == Event.EventType.NodeDataChanged) {
             logger.info("The data on node " + watchedEvent.getPath() + " changed");
             try {
-                currentclient.register();
+                currentclient.handleregistration();
             } catch (KeeperException e) {
                 e.printStackTrace();
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
+        } else if (watchedEvent.getType() == Event.EventType.NodeDeleted) {
+            logger.info(watchedEvent.getPath() + " deleted");
+        } else if (watchedEvent.getType() == Event.EventType.NodeCreated) {
+            logger.info(watchedEvent.getPath() + " changed");
+        } else if (watchedEvent.getType() == Event.EventType.NodeChildrenChanged) {
+            logger.info(watchedEvent.getPath() + " children created or deleted.");
+        }
+
+    }
+
+
+        public void run () {
+
         }
     }
-
-
-    public void run(){
-    }
-}

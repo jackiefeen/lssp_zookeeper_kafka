@@ -7,19 +7,14 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="6b9df702-a5a8-499e-9097-60c092b33df5" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/master/eit/client/NodeDataWatcher.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/master/eit/ZKConnection.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/master/eit/ZKConnection.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/master/eit/client/Client.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/master/eit/client/Client.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/master/eit/client/NodeDataWatcher.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/master/eit/client/NodeDataWatcher.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/master/eit/manager/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/master/eit/manager/Main.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/master/eit/manager/Manager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/master/eit/manager/Manager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/master/eit/manager/SimpleWatcher.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/master/eit/manager/BranchWatcher.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/master/eit/ZKConnection.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/master/eit/ZKConnection.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/master/eit/client/Client.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/master/eit/client/Client.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/master/eit/client/EnrollWatcher.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/master/eit/manager/Main.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/master/eit/manager/Main.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/master/eit/manager/Manager$1.class" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/master/eit/manager/Manager.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/master/eit/manager/Manager.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/master/eit/manager/SimpleWatcher.class" beforeDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/target/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -68,7 +63,7 @@
     <session id="-1742999062">
       <usages-collector id="statistics.lifecycle.project">
         <counts>
-          <entry key="project.closed" value="11" />
+          <entry key="project.closed" value="12" />
           <entry key="project.open.time.13" value="4" />
           <entry key="project.open.time.15" value="1" />
           <entry key="project.open.time.16" value="4" />
@@ -79,23 +74,25 @@
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
-          <entry key="java" value="7277" />
+          <entry key="java" value="8534" />
+          <entry key="txt" value="52" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
-          <entry key="JAVA" value="7277" />
+          <entry key="JAVA" value="8534" />
+          <entry key="PLAIN_TEXT" value="52" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.open">
         <counts>
-          <entry key="class" value="2" />
+          <entry key="class" value="3" />
           <entry key="java" value="9" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.open">
         <counts>
-          <entry key="CLASS" value="2" />
+          <entry key="CLASS" value="3" />
           <entry key="JAVA" value="9" />
         </counts>
       </usages-collector>
@@ -107,8 +104,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/master/eit/manager/Main.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="135">
-              <caret line="14" column="30" selection-start-line="14" selection-start-column="30" selection-end-line="14" selection-end-column="30" />
+            <state relative-caret-position="345">
+              <caret line="26" column="54" selection-start-line="26" selection-start-column="54" selection-end-line="26" selection-end-column="54" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -119,8 +116,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/master/eit/manager/Manager.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="509">
-              <caret line="83" lean-forward="true" selection-start-line="80" selection-start-column="8" selection-end-line="83" />
+            <state relative-caret-position="310">
+              <caret line="83" column="57" selection-start-line="83" selection-start-column="57" selection-end-line="83" selection-end-column="57" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -131,17 +128,17 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/master/eit/ZKConnection.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="210">
+            <state relative-caret-position="75">
               <caret line="22" column="21" selection-start-line="22" selection-start-column="21" selection-end-line="22" selection-end-column="21" />
             </state>
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main/java/master/eit/client/Client.java">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="278">
-              <caret line="49" column="35" lean-forward="true" selection-start-line="49" selection-start-column="35" selection-end-line="49" selection-end-column="35" />
+              <caret line="89" column="13" selection-start-line="89" selection-start-column="13" selection-end-line="89" selection-end-column="13" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -149,13 +146,15 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/master/eit/client/NodeDataWatcher.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="212">
-              <caret line="19" column="44" selection-start-line="19" selection-start-column="44" selection-end-line="19" selection-end-column="44" />
+            <state relative-caret-position="127">
+              <caret line="16" column="52" selection-start-line="16" selection-start-column="52" selection-end-line="16" selection-end-column="52" />
               <folding>
                 <element signature="imports" expanded="true" />
+                <element signature="e#440#441#0" expanded="true" />
+                <element signature="e#483#484#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -164,8 +163,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/master/eit/manager/BranchWatcher.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="227">
-              <caret line="34" column="13" selection-start-line="34" selection-start-column="13" selection-end-line="34" selection-end-column="13" />
+            <state relative-caret-position="212">
+              <caret line="27" column="75" lean-forward="true" selection-start-line="22" selection-start-column="8" selection-end-line="27" selection-end-column="75" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -192,6 +191,8 @@
       <find>simple</find>
       <find>SimpleWatcher</find>
       <find>current</find>
+      <find>Watcher</find>
+      <find>registration</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -206,12 +207,12 @@
         <option value="$PROJECT_DIR$/src/main/java/master/eit/manager/NewEnrollmentWatcher.java" />
         <option value="$PROJECT_DIR$/src/main/java/master/eit/client/EnrollWatcher.java" />
         <option value="$PROJECT_DIR$/src/main/java/master/eit/manager/SimpleWatcher.java" />
-        <option value="$PROJECT_DIR$/src/main/java/master/eit/manager/Main.java" />
         <option value="$PROJECT_DIR$/src/main/java/master/eit/manager/BranchWatcher.java" />
-        <option value="$PROJECT_DIR$/src/main/java/master/eit/manager/Manager.java" />
         <option value="$PROJECT_DIR$/src/main/java/master/eit/ZKConnection.java" />
-        <option value="$PROJECT_DIR$/src/main/java/master/eit/client/Client.java" />
         <option value="$PROJECT_DIR$/src/main/java/master/eit/client/NodeDataWatcher.java" />
+        <option value="$PROJECT_DIR$/src/main/java/master/eit/manager/Manager.java" />
+        <option value="$PROJECT_DIR$/src/main/java/master/eit/manager/Main.java" />
+        <option value="$PROJECT_DIR$/src/main/java/master/eit/client/Client.java" />
       </list>
     </option>
   </component>
@@ -313,7 +314,7 @@
   <component name="PropertiesComponent">
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1540510536461" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1540517772443" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
@@ -389,6 +390,14 @@
       <workItem from="1539450497118" duration="12194000" />
       <workItem from="1539692321991" duration="8678000" />
     </task>
+    <task id="LOCAL-00001" summary="changed architecture of Enrollment">
+      <created>1540511046959</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1540511046959</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
@@ -416,7 +425,7 @@
       <window_info anchor="bottom" id="Terminal" order="8" weight="0.32885906" />
       <window_info anchor="bottom" id="Event Log" order="9" side_tool="true" />
       <window_info anchor="bottom" id="Messages" order="10" weight="0.40268457" />
-      <window_info active="true" anchor="bottom" x="67" y="644" width="1607" height="295" id="Run" order="11" visible="true" weight="0.3395973" />
+      <window_info anchor="bottom" x="67" y="644" width="1607" height="295" id="Run" order="11" weight="0.37315437" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
@@ -433,6 +442,10 @@
   </component>
   <component name="VcsContentAnnotationSettings">
     <option name="myLimit" value="2678400000" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="changed architecture of Enrollment" />
+    <option name="LAST_COMMIT_MESSAGE" value="changed architecture of Enrollment" />
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/src/main/java/master/eit/manager/META-INF/MANIFEST.MF">
@@ -470,13 +483,6 @@
         <state relative-caret-position="-77" />
       </provider>
     </entry>
-    <entry file="jar://$MAVEN_REPOSITORY$/org/apache/zookeeper/zookeeper/3.4.10/zookeeper-3.4.10.jar!/org/apache/zookeeper/KeeperException.class">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="403">
-          <caret line="64" selection-start-line="64" selection-end-line="64" />
-        </state>
-      </provider>
-    </entry>
     <entry file="jar://$MAVEN_REPOSITORY$/org/apache/zookeeper/zookeeper/3.4.10/zookeeper-3.4.10.jar!/org/apache/zookeeper/ZooKeeper.class">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-8">
@@ -484,10 +490,37 @@
         </state>
       </provider>
     </entry>
+    <entry file="jar://$MAVEN_REPOSITORY$/org/apache/zookeeper/zookeeper/3.4.10/zookeeper-3.4.10.jar!/org/apache/zookeeper/KeeperException.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="125">
+          <caret line="60" selection-start-line="60" selection-end-line="60" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/master/eit/manager/BranchWatcher.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="212">
+          <caret line="27" column="75" lean-forward="true" selection-start-line="22" selection-start-column="8" selection-end-line="27" selection-end-column="75" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/master/eit/manager/Main.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="135">
-          <caret line="14" column="30" selection-start-line="14" selection-start-column="30" selection-end-line="14" selection-end-column="30" />
+        <state relative-caret-position="345">
+          <caret line="26" column="54" selection-start-line="26" selection-start-column="54" selection-end-line="26" selection-end-column="54" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/master/eit/manager/Manager.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="310">
+          <caret line="83" column="57" selection-start-line="83" selection-start-column="57" selection-end-line="83" selection-end-column="57" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
@@ -496,27 +529,19 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/master/eit/ZKConnection.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="210">
+        <state relative-caret-position="75">
           <caret line="22" column="21" selection-start-line="22" selection-start-column="21" selection-end-line="22" selection-end-column="21" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/master/eit/manager/Manager.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/master/eit/client/NodeDataWatcher.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="509">
-          <caret line="83" lean-forward="true" selection-start-line="80" selection-start-column="8" selection-end-line="83" />
+        <state relative-caret-position="127">
+          <caret line="16" column="52" selection-start-line="16" selection-start-column="52" selection-end-line="16" selection-end-column="52" />
           <folding>
             <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/master/eit/manager/BranchWatcher.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="227">
-          <caret line="34" column="13" selection-start-line="34" selection-start-column="13" selection-end-line="34" selection-end-column="13" />
-          <folding>
-            <element signature="imports" expanded="true" />
+            <element signature="e#440#441#0" expanded="true" />
+            <element signature="e#483#484#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -524,17 +549,7 @@
     <entry file="file://$PROJECT_DIR$/src/main/java/master/eit/client/Client.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="278">
-          <caret line="49" column="35" lean-forward="true" selection-start-line="49" selection-start-column="35" selection-end-line="49" selection-end-column="35" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/master/eit/client/NodeDataWatcher.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="212">
-          <caret line="19" column="44" selection-start-line="19" selection-start-column="44" selection-end-line="19" selection-end-column="44" />
+          <caret line="89" column="13" selection-start-line="89" selection-start-column="13" selection-end-line="89" selection-end-column="13" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
