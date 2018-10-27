@@ -15,19 +15,16 @@ public class Main {
         Manager manager = null;
         try {
             manager = new Manager("localhost:2181");
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (KeeperException e) {
+        } catch (IOException | InterruptedException | KeeperException e) {
             e.printStackTrace();
         }
         Thread thread = new Thread(manager);
         thread.start();
-        logger.info("The Manager has finished start-up.");
+        logger.info("The Manager has caught up with requests and started up.");
 
         while (true){
-        }
+            //TODO: Exit this while with a condition and not only with an exception.
 
+        }
     }
 }

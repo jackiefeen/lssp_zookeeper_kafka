@@ -17,13 +17,23 @@ public class NodeDataWatcher implements Runnable, Watcher {
     public void process(WatchedEvent watchedEvent) {
         if (watchedEvent.getType() == Event.EventType.NodeDataChanged) {
             logger.info("The data on node " + watchedEvent.getPath() + " changed");
+
+            //check where the event was triggered and call a Client method accordingly
             try {
-                currentclient.handleregistration();
+                if (watchedEvent.getPath().contains("/request/enroll")) {
+                    currentclient.handleregistration();
+                } else if (watchedEvent.getPath().contains("/request/quit")) {
+                    currentclient.handlequitting();
+                } else {
+                    logger.warn("No action defined for this path: " + watchedEvent.getPath());
+                }
+
             } catch (KeeperException e) {
                 e.printStackTrace();
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
+
         } else if (watchedEvent.getType() == Event.EventType.NodeDeleted) {
             logger.info(watchedEvent.getPath() + " deleted");
         } else if (watchedEvent.getType() == Event.EventType.NodeCreated) {
@@ -35,7 +45,9 @@ public class NodeDataWatcher implements Runnable, Watcher {
     }
 
 
-        public void run () {
+    public void run() {
+        synchronized (this) {
 
         }
     }
+}

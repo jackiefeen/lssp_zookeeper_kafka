@@ -20,7 +20,8 @@ public class Manager implements Runnable {
     private static String registrypath = "/registry";
     private static final String[] TreeStructure = {"/request", "/request/enroll", "/request/quit", "/registry", "/online"};
     public boolean alive = true;
-    private Watcher branchWatcher;
+    private Watcher enrollbranchWatcher;
+    private Watcher quitbranchWatcher;
 
 
     //constructor of the Manager
@@ -49,16 +50,32 @@ public class Manager implements Runnable {
             logger.warn("There is an issue with the ZooKeeper connection");
         }
 
-        //initialize the BranchWatcher
-        BranchWatcher branchWatcher = new BranchWatcher(this);
-        Thread branchWatcherthread = new Thread();
-        branchWatcherthread.start();
-        this.branchWatcher = branchWatcher;
-        List<String> children = zkeeper.getChildren(enrollpath, branchWatcher);
-        if (!children.isEmpty()) {
-            logger.info("Current enroll requests: " + children);
+        //initialize the BranchWatcher for enroll
+        BranchWatcher enrollbranchWatcher = new BranchWatcher(this);
+        Thread enrollbranchWatcherthread = new Thread();
+        enrollbranchWatcherthread.start();
+        this.enrollbranchWatcher = enrollbranchWatcher;
+        List<String> enrollchildren = zkeeper.getChildren(enrollpath, this.enrollbranchWatcher, null);
+
+        //if requests arrive before the manager starts up
+        if (!enrollchildren.isEmpty()) {
+            logger.info("Current enroll requests: " + enrollchildren);
             registerUser();
         }
+
+
+        //initialize the BranchWatcher for quit
+        BranchWatcher quitbranchWatcher = new BranchWatcher(this);
+        Thread quitbranchWatcherthread = new Thread();
+        quitbranchWatcherthread.start();
+        this.quitbranchWatcher = quitbranchWatcher;
+        List<String> quitchildren = zkeeper.getChildren(quitpath, this.quitbranchWatcher, null);
+
+        if (!quitchildren.isEmpty()) {
+            logger.info("Current quit requests: " + quitchildren);
+            removeUser();
+        }
+
     }
 
 
@@ -81,7 +98,7 @@ public class Manager implements Runnable {
                     zkeeper.create(node, null, ZooDefs.Ids.OPEN_ACL_UNSAFE, CreateMode.PERSISTENT);
                     logger.info("created " + node);
                 } else {
-                    logger.warn( node + " already exists.");
+                    logger.warn(node + " already exists.");
                 }
             }
         } catch (InterruptedException e) {
@@ -94,76 +111,131 @@ public class Manager implements Runnable {
         }
     }
 
-
-    public void registerUser() throws KeeperException, InterruptedException {
-        List<String> children = null;
-        Stat stat = new Stat();
+    /*
+    The method is synchronized, because the manager and the branchwatcher can call it.
+    The synchronized ensures that the mentioned threads does not interleave.
+    Like this, only one thread at a time can register the same new user.
+     */
+    public synchronized void registerUser() {
+        List<String> children;
         try {
-            children = zkeeper.getChildren(enrollpath, branchWatcher, stat);
-
+            children = zkeeper.getChildren(enrollpath, enrollbranchWatcher, null);
             if (!children.isEmpty()) {
                 logger.info("Current enroll requests: " + children);
+
                 //process the enrollrequests
                 for (String child : children) {
-                    byte data[] = zkeeper.getData(enrollpath + "/" + child, true, null);
+                    byte data[] = zkeeper.getData(enrollpath + "/" + child, null, null);
                     String nodedata = new String(data);
 
                     if (nodedata.equals("-1")) {
-                        Stat exists = null;
                         //check if there is already a node in the registry for the new user
-                        exists = zkeeper.exists("/registry/" + child, true);
-
+                        Stat exists = zkeeper.exists(registrypath + "/" + child, null);
                         if (exists == null) {
                             //create a new node in the registry
                             try {
-                                zkeeper.create("/registry/" + child, null, ZooDefs.Ids.OPEN_ACL_UNSAFE, CreateMode.PERSISTENT);
+                                zkeeper.create(registrypath + "/" + child, null, ZooDefs.Ids.OPEN_ACL_UNSAFE, CreateMode.PERSISTENT);
 
                                 //if there is a problem creating the node
-                            } catch (KeeperException e) {
+                            } catch (KeeperException | InterruptedException e) {
                                 e.printStackTrace();
-                                logger.warn("An error occurred. The user" + child + "could not be registered");
+                                logger.warn("An error occurred. The user " + child + " could not be registered");
                                 //set the enrollment request to 0 --> create failed
-                                int version = zkeeper.exists(enrollpath + "/" + child, true).getVersion();
-                                zkeeper.setData(enrollpath + "/" + child, "0".getBytes(), version);
-                            } catch (InterruptedException e) {
-                                e.printStackTrace();
-                                logger.warn("An error occurred. The user" + child + "could not be registered");
-                                //set the enrollment request to 0 --> create failed
-                                int version = zkeeper.exists(enrollpath + "/" + child, true).getVersion();
+                                int version = zkeeper.exists(enrollpath + "/" + child, null).getVersion();
                                 zkeeper.setData(enrollpath + "/" + child, "0".getBytes(), version);
                             }
 
                             //set the enrollment request to 1 --> success
-                            int version = zkeeper.exists(enrollpath + "/" + child, true).getVersion();
+                            int version = zkeeper.exists(enrollpath + "/" + child, null).getVersion();
                             zkeeper.setData(enrollpath + "/" + child, "1".getBytes(), version);
                             logger.info("The new user " + child + " is successfully registered");
 
+
                         } else {
-                            logger.warn("The user " + child + " is already registered...");
+                            logger.warn("The user " + child + " is already registered.");
                             //set the enrollment request to 2 --> user already registered
-                            int version = zkeeper.exists(enrollpath + "/" + child, true).getVersion();
+                            int version = zkeeper.exists(enrollpath + "/" + child, null).getVersion();
                             zkeeper.setData(enrollpath + "/" + child, "2".getBytes(), version);
                         }
                     }
                 }
             }
 
-        } catch (KeeperException e) {
-            e.printStackTrace();
-        } catch (InterruptedException e) {
+        } catch (KeeperException | InterruptedException e) {
             e.printStackTrace();
         }
+    }
 
+
+    /*
+    The method is synchronized, because the manager and the branchwatcher can call it.
+    The synchronized ensures that the mentioned threads does not interleave.
+    Like this, only one thread at a time can remove the same user.
+     */
+    public synchronized void removeUser() {
+        List<String> children;
+        try {
+            children = zkeeper.getChildren(quitpath, quitbranchWatcher, null);
+            if (!children.isEmpty()) {
+                logger.info("Current quit requests: " + children);
+                //process the quitrequests
+                for (String child : children) {
+                    byte data[] = zkeeper.getData(quitpath + "/" + child, null, null);
+                    String nodedata = new String(data);
+
+                    if (nodedata.equals("-1")) {
+                        Stat exists;
+                        //check if there is a node in the registry for the user who wants to quit
+                        exists = zkeeper.exists(registrypath + "/" + child, null);
+
+                        if (exists != null) {
+                            try {
+                                //get the version and delete the user from the registry
+                                int version = zkeeper.exists(registrypath + "/" + child, null).getVersion();
+                                zkeeper.delete(registrypath + "/" + child, version);
+
+                                //if there is a problem deleting the node
+                            } catch (KeeperException | InterruptedException e) {
+                                e.printStackTrace();
+                                logger.warn("An error occurred. The user " + child + " could not be deleted.");
+                                //set the enrollment request to 0 --> delete failed
+                                int version = zkeeper.exists(quitpath + "/" + child, null).getVersion();
+                                zkeeper.setData(quitpath + "/" + child, "0".getBytes(), version);
+                            }
+
+                            //get the version and set the quit request to 1 --> success
+                            int version = zkeeper.exists(quitpath + "/" + child, null).getVersion();
+                            zkeeper.setData(quitpath + "/" + child, "1".getBytes(), version);
+                            logger.info("The user " + child + " is removed.");
+
+
+                            //TODO: delete Kafka topic associated with the user
+
+
+                        } else {
+                            logger.warn("The user " + child + " is not registered.");
+                            //set the quit request to 2 --> user not registered
+                            int version = zkeeper.exists(quitpath + "/" + child, null).getVersion();
+                            zkeeper.setData(quitpath + "/" + child, "2".getBytes(), version);
+                        }
+                    }
+
+                }
+            }
+        } catch (KeeperException | InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
 
     public void run() {
         try {
-            synchronized (this) {
+            synchronized (this){
                 while (alive) {
                     wait();
                 }
             }
+
         } catch (InterruptedException e) {
             e.printStackTrace();
             Thread.currentThread().interrupt();
