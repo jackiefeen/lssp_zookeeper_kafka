@@ -50,8 +50,8 @@ public class Manager implements Runnable {
             logger.warn("There is an issue with the ZooKeeper connection");
         }
 
-        //initialize the BranchWatcher for enroll
-        BranchWatcher enrollbranchWatcher = new BranchWatcher(this);
+        //initialize the ChildWatcher for enroll
+        ChildWatcher enrollbranchWatcher = new ChildWatcher(this);
         Thread enrollbranchWatcherthread = new Thread();
         enrollbranchWatcherthread.start();
         this.enrollbranchWatcher = enrollbranchWatcher;
@@ -64,8 +64,8 @@ public class Manager implements Runnable {
         }
 
 
-        //initialize the BranchWatcher for quit
-        BranchWatcher quitbranchWatcher = new BranchWatcher(this);
+        //initialize the ChildWatcher for quit
+        ChildWatcher quitbranchWatcher = new ChildWatcher(this);
         Thread quitbranchWatcherthread = new Thread();
         quitbranchWatcherthread.start();
         this.quitbranchWatcher = quitbranchWatcher;

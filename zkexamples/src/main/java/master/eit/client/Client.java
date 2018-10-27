@@ -35,13 +35,13 @@ public class Client {
             Stat exists = zkeeper.exists(path, false);
             if (exists == null) {
 
-                //instantiate the NodeDataWatcher for the new node
-                NodeDataWatcher nodeDataWatcher = new NodeDataWatcher(this);
-                Thread nodeDataWatcherThread = new Thread(nodeDataWatcher);
+                //instantiate the DataWatcher for the new node
+                DataWatcher dataWatcher = new DataWatcher(this);
+                Thread nodeDataWatcherThread = new Thread(dataWatcher);
                 nodeDataWatcherThread.start();
 
                 zkeeper.create(path, data, ZooDefs.Ids.OPEN_ACL_UNSAFE, CreateMode.EPHEMERAL);
-                zkeeper.exists(path, nodeDataWatcher);
+                zkeeper.exists(path, dataWatcher);
                 logger.info("Created an ephemeral node on " + path + " for the enrollment request");
             } else {
                 logger.warn("You have already created an enrollment request. Please wait until it is approved.");

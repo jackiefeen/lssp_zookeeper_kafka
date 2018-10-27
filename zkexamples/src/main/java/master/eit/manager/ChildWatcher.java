@@ -7,17 +7,19 @@ import org.apache.zookeeper.WatchedEvent;
 import org.apache.zookeeper.Watcher;
 
 
-public class BranchWatcher implements Runnable, Watcher {
-    private static final Logger logger = LogManager.getLogger("BranchWatcher");
+public class ChildWatcher implements Runnable, Watcher {
+    private static final Logger logger = LogManager.getLogger("ChildWatcher");
     private Manager currentmanager;
     private boolean alive = true;
 
-    public BranchWatcher(Manager manager) {
+    public ChildWatcher(Manager manager) {
         this.currentmanager = manager;
     }
 
 
     public void process(WatchedEvent event) {
+
+        //Todo: remove the events that are not needed
 
         if (event.getType() == Watcher.Event.EventType.NodeCreated) {
             logger.info(event.getPath() + " created");

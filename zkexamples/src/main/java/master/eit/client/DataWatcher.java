@@ -6,15 +6,17 @@ import org.apache.zookeeper.KeeperException;
 import org.apache.zookeeper.WatchedEvent;
 import org.apache.zookeeper.Watcher;
 
-public class NodeDataWatcher implements Runnable, Watcher {
-    private static final Logger logger = LogManager.getLogger("NodeDataWatcher");
+public class DataWatcher implements Runnable, Watcher {
+    private static final Logger logger = LogManager.getLogger("DataWatcher");
     private Client currentclient;
 
-    public NodeDataWatcher(Client client) {
+    public DataWatcher(Client client) {
         this.currentclient = client;
     }
 
     public void process(WatchedEvent watchedEvent) {
+        //Todo: remove the events that are not needed
+
         if (watchedEvent.getType() == Event.EventType.NodeDataChanged) {
             logger.info("The data on node " + watchedEvent.getPath() + " changed");
 
