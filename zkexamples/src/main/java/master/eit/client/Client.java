@@ -12,27 +12,28 @@ import java.util.List;
 import java.util.Scanner;
 
 public class Client {
-    private static ZooKeeper zkeeper;
-    private String enrollpath = "/request/enroll";
-    private static String quitpath = "/request/quit";
-    private String username;
-    private static boolean alive = true;
     private final Logger logger = LogManager.getLogger("Client Class");
+    private static ZooKeeper zkeeper;
+    private String username;
+    private String enrollpath = "/request/enroll";
+    private String quitpath = "/request/quit";
+    private String onlinepath = "/online";
+    private String registrypath = "/registry";
+    private static boolean alive = true;
 
 
-    // constructor that connects to ZooKeeper and tries to enroll/register
+    //client constructor
     private Client(String hostPort, String username) throws IOException, InterruptedException {
         this.username = username;
 
         //connect to ZooKeeper
         this.zkeeper = new ZKConnection().connect(hostPort);
         logger.info("State of the connection: " + zkeeper.getState());
-
     }
 
-    private void createEphemeralNode(String path, byte[] data, List<ACL> acl, CreateMode createMode) {
+    private void createRequestNode(String path, byte[] data, List<ACL> acl, CreateMode createMode) {
         try {
-            Stat exists = zkeeper.exists(path, false);
+            Stat exists = zkeeper.exists(path, null);
             if (exists == null) {
 
                 //instantiate the DataWatcher for the new node
@@ -42,7 +43,7 @@ public class Client {
 
                 zkeeper.create(path, data, ZooDefs.Ids.OPEN_ACL_UNSAFE, CreateMode.EPHEMERAL);
                 zkeeper.exists(path, dataWatcher);
-                logger.info("Created an ephemeral node on " + path + " for the enrollment request");
+                logger.info("Created an ephemeral node on " + path + " for the request");
             } else {
                 logger.warn("You have already created an enrollment request. Please wait until it is approved.");
             }
@@ -55,16 +56,16 @@ public class Client {
     }
 
 
-    public void register(){
+    private void register() {
         if (zkeeper != null) {
-            createEphemeralNode(enrollpath + "/" + username, "-1".getBytes(),
+            createRequestNode(enrollpath + "/" + username, "-1".getBytes(),
                     ZooDefs.Ids.OPEN_ACL_UNSAFE, CreateMode.EPHEMERAL);
         } else {
             logger.warn("There is an issue with the ZooKeeper connection.");
         }
     }
 
-    public void handleregistration() throws KeeperException, InterruptedException {
+    void handleRegistration() throws KeeperException, InterruptedException {
         byte[] edata = zkeeper.getData(enrollpath + "/" + username, true, null);
         if (edata != null) {
             String enrolldata = new String(edata);
@@ -78,25 +79,24 @@ public class Client {
             } else {
                 logger.info(username + ": the registration failed.");
             }
-
-            Stat exist = zkeeper.exists(enrollpath + "/" + username, false);
+            Stat exist = zkeeper.exists(enrollpath + "/" + username, null);
             if (exist != null) {
-                int version = zkeeper.exists(enrollpath + "/" + username, false).getVersion();
+                int version = zkeeper.exists(enrollpath + "/" + username, null).getVersion();
                 zkeeper.delete(enrollpath + "/" + username, version);
             }
         }
     }
 
-    public void quit(){
+    private void quit() {
         if (zkeeper != null) {
-            createEphemeralNode(quitpath + "/" + username, "-1".getBytes(),
+            createRequestNode(quitpath + "/" + username, "-1".getBytes(),
                     ZooDefs.Ids.OPEN_ACL_UNSAFE, CreateMode.EPHEMERAL);
         } else {
             logger.warn("There is an issue with the ZooKeeper connection.");
         }
     }
 
-    public void handlequitting() throws KeeperException, InterruptedException {
+    void handleQuitting() throws KeeperException, InterruptedException {
         byte[] edata = zkeeper.getData(quitpath + "/" + username, true, null);
         if (edata != null) {
             String enrolldata = new String(edata);
@@ -111,20 +111,64 @@ public class Client {
                 logger.info(username + ": the quit failed.");
             }
 
-            Stat exist = zkeeper.exists(quitpath + "/" + username, false);
+            Stat exist = zkeeper.exists(quitpath + "/" + username, null);
             if (exist != null) {
-                int version = zkeeper.exists(quitpath + "/" + username, false).getVersion();
+                int version = zkeeper.exists(quitpath + "/" + username, null).getVersion();
                 zkeeper.delete(quitpath + "/" + username, version);
             }
         }
+    }
 
+    private void goOnline() {
+        if (zkeeper != null) {
+            try {
+                Stat registered = zkeeper.exists(registrypath + "/" + username, null);
+                if (registered != null) {
+
+                    Stat exists = zkeeper.exists(onlinepath + "/" + username, null);
+                    if (exists == null) {
+                        zkeeper.create(onlinepath + "/" + username, null, ZooDefs.Ids.OPEN_ACL_UNSAFE, CreateMode.EPHEMERAL);
+                        logger.info("You are online now.");
+                    } else {
+                        logger.warn("You are already online - no need to go online again.");
+                    }
+                }
+                else{
+                    logger.warn("You are not registered yet. Please register before you go online");
+                }
+            } catch (KeeperException | InterruptedException e) {
+                e.printStackTrace();
+            }
+        } else {
+            logger.warn("There is an issue with the ZooKeeper connection.");
+        }
     }
 
 
-    private void closeConnection() throws InterruptedException {
+    private List<String> getOnlineusers(){
+        List<String> onlineusers = null;
+        try {
+            onlineusers = zkeeper.getChildren(onlinepath, null, null);
+
+        } catch (KeeperException | InterruptedException e) {
+            e.printStackTrace();
+        }
+        logger.info("Online users: " + onlineusers);
+        return onlineusers;
+    }
+
+    void sendMessage(){
+        //Todo: Implement sendMessage
+    }
+
+    void readMessages(){
+        //Todo: Implement readMessages
+    }
+
+
+    private void goOffline() throws InterruptedException {
         zkeeper.close();
     }
-
 
     public static void main(String[] args) throws InterruptedException, IOException {
 
@@ -140,7 +184,7 @@ public class Client {
             System.out.println("What would you like to do?");
             String todo = read.nextLine();
 
-            switch (todo){
+            switch (todo) {
                 case "register":
                     client.register();
                     break;
@@ -148,16 +192,22 @@ public class Client {
                     client.quit();
                     break;
                 case "goonline":
+                    client.goOnline();
                     break;
-                case "close":
-                    client.closeConnection();
-                default: System.out.println("Please chose to either register, quit, goonline or close");
+                case "getonlineusers":
+                    client.getOnlineusers();
+                    break;
+                case "gooffline":
+                    client.goOffline();
+                    break;
+                default:
+                    System.out.println("Please choose to either register, quit, goonline, getonlineusers or gooffline");
                     break;
             }
-                if (zkeeper.getState() == ZooKeeper.States.CLOSED) {
-                    alive = false;
-                }
-                Thread.sleep(3000);
+            if (zkeeper.getState() == ZooKeeper.States.CLOSED) {
+                alive = false;
+            }
+            Thread.sleep(5000);
         }
     }
 

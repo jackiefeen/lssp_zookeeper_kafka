@@ -36,7 +36,7 @@ public class ChildWatcher implements Runnable, Watcher {
             } else if (event.getPath().contains("/request/quit")) {
                 currentmanager.removeUser();
             } else {
-                logger.warn("No action defined for this path: " + event.getPath());
+                logger.info("No action defined for this path: " + event.getPath());
             }
 
         }

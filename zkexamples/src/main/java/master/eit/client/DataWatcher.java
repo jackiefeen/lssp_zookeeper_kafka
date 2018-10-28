@@ -23,16 +23,14 @@ public class DataWatcher implements Runnable, Watcher {
             //check where the event was triggered and call a Client method accordingly
             try {
                 if (watchedEvent.getPath().contains("/request/enroll")) {
-                    currentclient.handleregistration();
+                    currentclient.handleRegistration();
                 } else if (watchedEvent.getPath().contains("/request/quit")) {
-                    currentclient.handlequitting();
+                    currentclient.handleQuitting();
                 } else {
                     logger.warn("No action defined for this path: " + watchedEvent.getPath());
                 }
 
-            } catch (KeeperException e) {
-                e.printStackTrace();
-            } catch (InterruptedException e) {
+            } catch (KeeperException | InterruptedException e) {
                 e.printStackTrace();
             }
 

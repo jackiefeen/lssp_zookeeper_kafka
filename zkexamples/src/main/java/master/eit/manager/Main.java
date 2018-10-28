@@ -1,11 +1,11 @@
 package master.eit.manager;
 
-import master.eit.manager.Manager;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.apache.zookeeper.KeeperException;
 
 import java.io.IOException;
+
 
 public class Main {
     private static final Logger logger = LogManager.getLogger("Main Class");
@@ -22,8 +22,12 @@ public class Main {
         thread.start();
         logger.info("The Manager has caught up with requests and started up.");
 
+
+
         while (true){
             //TODO: Exit this while with a condition and not only with an exception.
+
+            //TODO: every 30 seconds (?) create a state of the system and save it in the manager
 
         }
     }
