@@ -289,31 +289,33 @@ public class Manager implements Runnable {
 
                     if (registered != null) {
 
-                        //Todo: implement that the user needs to be online for the first time --> check if topic exists in Kafka for this user
-                        //Todo: create topic/username in Kafka
-                        //TODO: still doesn't work!
-                        //KAFKA
-                        logger.info("Create KAFKA Topic");
+                        Stat knownuser = zkeeper.exists("/brokers/topics/" + user, null);
 
-                        Properties props = new Properties();
-                        props.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG,
-                                "localhost:9092,localhost:9093,localhost:9094");
-                        props.put("acks", "all");
-                        props.put("retries", 0);
-                        props.put("batch.size", 16384);
-                        props.put("buffer.memory", 33554432);
-                        props.put("key.serializer", "org.apache.kafka.common.serialization.StringSerializer");
-                        props.put("value.serializer",
-                                "org.apache.kafka.common.serialization.StringSerializer");
-                        KafkaProducer<String, String> prod = new KafkaProducer<String, String>(props);
-                        String topic = "newTopic";
-                        int partition = 0;
-                        String key = "testKey";
-                        String value = "testValue";
-                        prod.send(new ProducerRecord<String, String>(topic,partition,key, value));
-                        prod.close();
+                        if (knownuser == null) {
+                            //KAFKA
+                            logger.info("Create KAFKA Topic");
 
-                        logger.info("Kafka topic created");
+                            Properties props = new Properties();
+                            props.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG,
+                                    "localhost:9092");
+                            props.put("acks", "all");
+                            props.put("retries", 0);
+                            props.put("batch.size", 16384);
+                            props.put("buffer.memory", 33554432);
+                            props.put("key.serializer", "org.apache.kafka.common.serialization.StringSerializer");
+                            props.put("value.serializer",
+                                    "org.apache.kafka.common.serialization.StringSerializer");
+                            KafkaProducer<String, String> prod = new KafkaProducer<String, String>(props);
+                            String topic = user;
+                            int partition = 0;
+                            //TODO: testkey and testvalue is not elegant
+                            String key = "testKey";
+                            String value = "testValue";
+                            prod.send(new ProducerRecord<String, String>(topic, partition, key, value));
+                            prod.close();
+
+                            logger.info("New Kafka topic for " + user + " created.");
+                        }
 
                     } else {
                         logger.warn("The user " + user + " is not registered yet. Therefore the topic cannot be created");
