@@ -35,7 +35,11 @@ public class ChildWatcher implements Runnable, Watcher {
                 currentmanager.registerUser();
             } else if (event.getPath().contains("/request/quit")) {
                 currentmanager.removeUser();
-            } else {
+            }
+            else if(event.getPath().contains("/online")){
+                currentmanager.createKafkaTopic();
+            }
+            else {
                 logger.info("No action defined for this path: " + event.getPath());
             }
 

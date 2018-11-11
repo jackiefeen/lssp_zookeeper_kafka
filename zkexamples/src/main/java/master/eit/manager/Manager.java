@@ -2,6 +2,9 @@
 package master.eit.manager;
 
 import master.eit.ZKConnection;
+import org.apache.kafka.clients.producer.KafkaProducer;
+import org.apache.kafka.clients.producer.ProducerConfig;
+import org.apache.kafka.clients.producer.ProducerRecord;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.apache.zookeeper.*;
@@ -9,6 +12,7 @@ import org.apache.zookeeper.data.Stat;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Properties;
 
 
 public class Manager implements Runnable {
@@ -88,7 +92,7 @@ public class Manager implements Runnable {
         List<String> onlinechildren = zkeeper.getChildren(onlinepath, this.onlinebranchWatcher, null);
 
         if (!onlinechildren.isEmpty()) {
-            logger.info("Current online users: " + quitchildren);
+            logger.info("Current online users: " + onlinechildren);
             createKafkaTopic();
         }
     }
@@ -268,7 +272,7 @@ public class Manager implements Runnable {
         return registeredusers;
     }
 
-    private void createKafkaTopic() {
+    void createKafkaTopic() {
 
         List<String> onlineusers = null;
         try {
@@ -283,12 +287,35 @@ public class Manager implements Runnable {
                 try {
                     Stat registered = zkeeper.exists(registrypath + "/" + user, null);
 
-                    if(registered!=null){
+                    if (registered != null) {
+
                         //Todo: implement that the user needs to be online for the first time --> check if topic exists in Kafka for this user
                         //Todo: create topic/username in Kafka
-                        System.out.println("Create KAFKA Topic");
-                    }
-                    else {
+                        //TODO: still doesn't work!
+                        //KAFKA
+                        logger.info("Create KAFKA Topic");
+
+                        Properties props = new Properties();
+                        props.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG,
+                                "localhost:9092,localhost:9093,localhost:9094");
+                        props.put("acks", "all");
+                        props.put("retries", 0);
+                        props.put("batch.size", 16384);
+                        props.put("buffer.memory", 33554432);
+                        props.put("key.serializer", "org.apache.kafka.common.serialization.StringSerializer");
+                        props.put("value.serializer",
+                                "org.apache.kafka.common.serialization.StringSerializer");
+                        KafkaProducer<String, String> prod = new KafkaProducer<String, String>(props);
+                        String topic = "newTopic";
+                        int partition = 0;
+                        String key = "testKey";
+                        String value = "testValue";
+                        prod.send(new ProducerRecord<String, String>(topic,partition,key, value));
+                        prod.close();
+
+                        logger.info("Kafka topic created");
+
+                    } else {
                         logger.warn("The user " + user + " is not registered yet. Therefore the topic cannot be created");
                     }
 
@@ -299,7 +326,7 @@ public class Manager implements Runnable {
         }
     }
 
-    public void deleteKafkaTopic(){
+    public void deleteKafkaTopic() {
         //Todo: implement deleteKafkaTopic
     }
 
