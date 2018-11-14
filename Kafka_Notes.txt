@@ -1,0 +1,24 @@
+KAFKA
+
+listeners: localhost:9092
+
+Start-UP:
+- start ZooKeeper! 
+./bin/zkServer.sh start
+
+- start kafka
+./bin/kafka-server-start.sh config/server.properties
+
+- stop kafka
+./bin/kafka-server-stop.sh
+
+
+
+#create a topic
+./bin/kafka-topics.sh --create --zookeeper localhost:2181 --replication-factor 1 --partitions 1 --topic test
+
+# list available topics.
+./bin/kafka-topics.sh --list --zookeeper localhost:2181
+
+#delete a topic
+./bin/kafka-topics.sh --delete --topic newTopic --zookeeper localhost:2181
