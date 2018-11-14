@@ -154,14 +154,14 @@
         <counts>
           <entry key="java" value="12" />
           <entry key="properties" value="2" />
-          <entry key="xml" value="6" />
+          <entry key="xml" value="7" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.open">
         <counts>
           <entry key="JAVA" value="12" />
           <entry key="Properties" value="2" />
-          <entry key="XML" value="6" />
+          <entry key="XML" value="7" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
@@ -179,7 +179,17 @@
     </session>
   </component>
   <component name="FileEditorManager">
-    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300" />
+    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/pom.xml">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="210">
+              <caret line="14" column="13" selection-start-line="14" selection-start-column="13" selection-end-line="14" selection-end-column="13" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+    </leaf>
   </component>
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
@@ -282,11 +292,6 @@
               <item name="zookeeper_project" type="b2602c69:ProjectViewProjectNode" />
               <item name="zookeeper_project" type="462c0819:PsiDirectoryNode" />
             </path>
-            <path>
-              <item name="zookeeper_project" type="b2602c69:ProjectViewProjectNode" />
-              <item name="zookeeper_project" type="462c0819:PsiDirectoryNode" />
-              <item name="manager" type="462c0819:PsiDirectoryNode" />
-            </path>
           </expand>
           <select />
         </subPane>
@@ -296,7 +301,7 @@
   <component name="PropertiesComponent">
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1542222735598" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1542223041204" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/manager" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
@@ -380,7 +385,7 @@
       <workItem from="1539450497118" duration="12194000" />
       <workItem from="1539692321991" duration="8678000" />
       <workItem from="1542220089537" duration="53000" />
-      <workItem from="1542220395003" duration="2640000" />
+      <workItem from="1542220395003" duration="3438000" />
     </task>
     <task id="LOCAL-00001" summary="changed architecture of Enrollment">
       <created>1540511046959</created>
@@ -414,7 +419,7 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="24180000" />
+    <option name="totallyTimeSpent" value="24978000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -509,13 +514,6 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/master/eit/manager/META-INF/MANIFEST.MF">
       <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/pom.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="240">
-          <caret line="16" column="25" selection-start-line="16" selection-start-column="25" selection-end-line="16" selection-end-column="25" />
-        </state>
-      </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/manager/src/main/java/master/eit/Main.java">
       <provider selected="true" editor-type-id="text-editor">
@@ -618,6 +616,13 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="645">
           <caret line="43" column="19" selection-start-line="43" selection-start-column="19" selection-end-line="43" selection-end-column="19" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pom.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="210">
+          <caret line="14" column="13" selection-start-line="14" selection-start-column="13" selection-end-line="14" selection-end-column="13" />
         </state>
       </provider>
     </entry>
