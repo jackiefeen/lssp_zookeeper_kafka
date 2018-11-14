@@ -7,49 +7,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="6b9df702-a5a8-499e-9097-60c092b33df5" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/client/pom.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/client/src/main/java/master/eit/Client.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/client/src/main/java/master/eit/DataWatcher.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/client/src/main/java/master/eit/ZKConnection.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/client/src/main/java/master/eit/iClient.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/client/src/main/resources/log4j.properties" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/manager/pom.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/manager/src/main/java/master/eit/ChildWatcher.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/manager/src/main/java/master/eit/Main.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/manager/src/main/java/master/eit/Manager.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/manager/src/main/java/master/eit/ZKConnection.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/manager/src/main/java/master/eit/iManager.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/manager/src/main/resources/log4j.properties" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../zkexamples/.idea/compiler.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../zkexamples/.idea/misc.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../zkexamples/.idea/uiDesigner.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../zkexamples/.idea/vcs.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../zkexamples/.idea/workspace.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../zkexamples/pom.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../zkexamples/src/main/java/master/eit/ZKConnection.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../zkexamples/src/main/java/master/eit/client/Client.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../zkexamples/src/main/java/master/eit/client/DataWatcher.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../zkexamples/src/main/java/master/eit/client/META-INF/MANIFEST.MF" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../zkexamples/src/main/java/master/eit/client/iClient.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../zkexamples/src/main/java/master/eit/manager/ChildWatcher.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../zkexamples/src/main/java/master/eit/manager/META-INF/MANIFEST.MF" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../zkexamples/src/main/java/master/eit/manager/Main.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../zkexamples/src/main/java/master/eit/manager/Manager.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../zkexamples/src/main/java/master/eit/manager/iManager.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../zkexamples/src/main/resources/log4j.properties" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../zkexamples/src/test/java/master/eit/AppTest.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../zkexamples/target/classes/log4j.properties" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../zkexamples/target/classes/master/eit/ZKConnection$1.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../zkexamples/target/classes/master/eit/ZKConnection.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../zkexamples/target/classes/master/eit/client/Client.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../zkexamples/target/classes/master/eit/client/DataWatcher.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../zkexamples/target/classes/master/eit/client/iClient.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../zkexamples/target/classes/master/eit/manager/ChildWatcher.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../zkexamples/target/classes/master/eit/manager/Main.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../zkexamples/target/classes/master/eit/manager/Manager.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../zkexamples/target/classes/master/eit/manager/iManager.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../zkexamples/target/test-classes/master/eit/AppTest.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/target/" />
     <ignored path="$PROJECT_DIR$/client/target/" />
@@ -146,8 +104,10 @@
     <session id="-234359041">
       <usages-collector id="statistics.lifecycle.project">
         <counts>
+          <entry key="project.closed" value="2" />
+          <entry key="project.open.time.11" value="1" />
           <entry key="project.open.time.9" value="1" />
-          <entry key="project.opened" value="1" />
+          <entry key="project.opened" value="2" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.open">
@@ -179,17 +139,7 @@
     </session>
   </component>
   <component name="FileEditorManager">
-    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/pom.xml">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="210">
-              <caret line="14" column="13" selection-start-line="14" selection-start-column="13" selection-end-line="14" selection-end-column="13" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-    </leaf>
+    <leaf />
   </component>
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
@@ -284,7 +234,6 @@
     </navigator>
     <panes>
       <pane id="Scope" />
-      <pane id="PackagesPane" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -292,16 +241,27 @@
               <item name="zookeeper_project" type="b2602c69:ProjectViewProjectNode" />
               <item name="zookeeper_project" type="462c0819:PsiDirectoryNode" />
             </path>
+            <path>
+              <item name="zookeeper_project" type="b2602c69:ProjectViewProjectNode" />
+              <item name="zookeeper_project" type="462c0819:PsiDirectoryNode" />
+              <item name="client" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="zookeeper_project" type="b2602c69:ProjectViewProjectNode" />
+              <item name="zookeeper_project" type="462c0819:PsiDirectoryNode" />
+              <item name="manager" type="462c0819:PsiDirectoryNode" />
+            </path>
           </expand>
           <select />
         </subPane>
       </pane>
+      <pane id="PackagesPane" />
     </panes>
   </component>
   <component name="PropertiesComponent">
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1542223041204" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1542223839739" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/manager" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
@@ -385,7 +345,8 @@
       <workItem from="1539450497118" duration="12194000" />
       <workItem from="1539692321991" duration="8678000" />
       <workItem from="1542220089537" duration="53000" />
-      <workItem from="1542220395003" duration="3438000" />
+      <workItem from="1542220395003" duration="3697000" />
+      <workItem from="1542224791481" duration="113000" />
     </task>
     <task id="LOCAL-00001" summary="changed architecture of Enrollment">
       <created>1540511046959</created>
@@ -419,7 +380,7 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="24978000" />
+    <option name="totallyTimeSpent" value="25350000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -433,7 +394,7 @@
   <component name="ToolWindowManager">
     <frame x="67" y="25" width="1613" height="1025" extended-state="6" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.32610083" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.33056796" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Image Layers" order="2" />
       <window_info id="Designer" order="3" />
@@ -448,7 +409,7 @@
       <window_info anchor="bottom" id="TODO" order="5" weight="0.32797858" />
       <window_info anchor="bottom" id="Version Control" order="6" show_stripe_button="false" />
       <window_info anchor="bottom" id="Database Changes" order="7" show_stripe_button="false" />
-      <window_info anchor="bottom" id="Terminal" order="8" visible="true" weight="0.32849163" />
+      <window_info active="true" anchor="bottom" id="Terminal" order="8" visible="true" weight="0.32849163" />
       <window_info anchor="bottom" id="Event Log" order="9" side_tool="true" />
       <window_info anchor="bottom" id="Messages" order="10" weight="0.40268457" />
       <window_info anchor="bottom" x="67" y="644" width="1607" height="295" id="Run" order="11" weight="0.41073826" />
@@ -477,9 +438,7 @@
     <option name="LAST_COMMIT_MESSAGE" value="ZooKeeper part done :)" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/main/java/master/eit/client/META-INF/MANIFEST.MF">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/master/eit/client/META-INF/MANIFEST.MF" />
     <entry file="file://$PROJECT_DIR$/.gitignore" />
     <entry file="jar:///usr/lib/jvm/java-8-oracle/src.zip!/java/lang/String.java">
       <provider selected="true" editor-type-id="text-editor">
@@ -512,27 +471,16 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/master/eit/manager/META-INF/MANIFEST.MF">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/master/eit/manager/META-INF/MANIFEST.MF" />
     <entry file="file://$PROJECT_DIR$/manager/src/main/java/master/eit/Main.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="240">
           <caret line="16" column="41" selection-start-line="16" selection-start-column="41" selection-end-line="16" selection-end-column="41" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/manager/src/main/java/master/eit/Manager.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
+      <provider selected="true" editor-type-id="text-editor" />
     </entry>
     <entry file="file://$PROJECT_DIR$/manager/src/main/java/master/eit/ZKConnection.java">
       <provider selected="true" editor-type-id="text-editor">
@@ -552,9 +500,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state>
           <caret column="18" selection-start-column="18" selection-end-column="18" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -562,9 +507,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="30">
           <caret line="2" selection-start-line="2" selection-end-line="2" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -572,9 +514,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="144">
           <caret line="32" column="46" selection-start-line="32" selection-start-column="46" selection-end-line="32" selection-end-column="46" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -589,9 +528,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="180">
           <caret line="12" column="13" selection-start-line="12" selection-start-column="13" selection-end-line="12" selection-end-column="13" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -679,7 +615,7 @@
       </state>
       <state key="ModuleStructureConfigurable.UI">
         <settings>
-          <last-edited>zkexamples</last-edited>
+          <last-edited>client</last-edited>
           <splitter-proportions>
             <option name="proportions">
               <list>
