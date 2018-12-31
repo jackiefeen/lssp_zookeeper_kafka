@@ -6,6 +6,7 @@ import org.apache.zookeeper.*;
 import org.apache.zookeeper.data.ACL;
 import org.apache.zookeeper.data.Stat;
 
+import javax.swing.*;
 import java.io.IOException;
 import java.util.List;
 import java.util.Scanner;
@@ -169,7 +170,17 @@ public class Client {
         zkeeper.close();
     }
 
-    public static void main(String[] args) throws InterruptedException, IOException {
+    public static void main(String[] args) throws InterruptedException, IOException, ClassNotFoundException, UnsupportedLookAndFeelException, InstantiationException, IllegalAccessException {
+
+        UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+
+        SwingUtilities.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                ClientGUI form = new ClientGUI();
+                form.setVisible(true);
+            }
+        });
 
         Scanner read = new Scanner(System.in);
 

@@ -4,7 +4,6 @@ import org.apache.log4j.Logger;
 import org.apache.zookeeper.KeeperException;
 
 import java.io.IOException;
-import java.util.concurrent.Semaphore;
 
 
 public class Main {
@@ -32,7 +31,7 @@ public class Main {
 
             try {
                 System.out.println("Ctrl-C to shutdown the Manager");
-                Thread.sleep(30000);
+                Thread.sleep(60000);
             } catch(InterruptedException e) {
                 System.out.println("I cannot sleep, something woke me up");
             }
