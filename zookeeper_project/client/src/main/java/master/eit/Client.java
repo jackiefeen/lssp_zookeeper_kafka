@@ -14,7 +14,7 @@ import java.util.Scanner;
 public class Client {
     private final Logger logger = LogManager.getLogger("Client Class");
     private static ZooKeeper zkeeper;
-    private String username;
+    public String username;
     private String enrollpath = "/request/enroll";
     private String quitpath = "/request/quit";
     private String onlinepath = "/online";
@@ -23,7 +23,7 @@ public class Client {
 
 
     //client constructor
-    private Client(String hostPort, String username) throws IOException, InterruptedException {
+    public Client(String hostPort, String username) throws IOException, InterruptedException {
         this.username = username;
 
         //connect to ZooKeeper
@@ -55,8 +55,7 @@ public class Client {
         }
     }
 
-
-    private void register() {
+    public void register() {
         if (zkeeper != null) {
             createRequestNode(enrollpath + "/" + username, "-1".getBytes(),
                     ZooDefs.Ids.OPEN_ACL_UNSAFE, CreateMode.EPHEMERAL);
@@ -119,7 +118,7 @@ public class Client {
         }
     }
 
-    private void goOnline() {
+    public void goOnline() {
         if (zkeeper != null) {
             try {
                 Stat registered = zkeeper.exists(registrypath + "/" + username, null);
@@ -145,7 +144,7 @@ public class Client {
     }
 
 
-    private List<String> getOnlineusers(){
+    public List<String> getOnlineusers(){
         List<String> onlineusers = null;
         try {
             onlineusers = zkeeper.getChildren(onlinepath, null, null);
@@ -166,7 +165,7 @@ public class Client {
     }
 
 
-    private void goOffline() throws InterruptedException {
+    public void goOffline() throws InterruptedException {
         zkeeper.close();
     }
 
