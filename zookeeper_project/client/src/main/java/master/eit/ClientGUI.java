@@ -1,6 +1,8 @@
 package master.eit;
 
 import javax.swing.*;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
@@ -105,30 +107,30 @@ public class ClientGUI extends JFrame {
             }
         });
 
-
         loginBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 client.username = loginText.getText();
-                client.goOnline();
-                flagOnline = true;
-                updateOnlineUsers();
-                listOnline.setModel(listModel);
+                if (client.goOnline() == 0) {
+                    flagOnline = true;
+                    updateOnlineUsers();
+                    listOnline.setModel(listModel);
 
-                if (flagOnline) {
-                    onlineLabel.setText("You are now Online!");
+                    if (flagOnline) {
+                        onlineLabel.setText("You are now Online!");
 
-                    refreshButton.setEnabled(true);
-                    logoutButton.setEnabled(true);
-                    onlineUsersLabel.setEnabled(true);
-                    chatUserLabel.setEnabled(true);
-                    listOnline.setEnabled(true);
+                        refreshButton.setEnabled(true);
+                        logoutButton.setEnabled(true);
+                        onlineUsersLabel.setEnabled(true);
+                        chatUserLabel.setEnabled(true);
+                        listOnline.setEnabled(true);
 
-                    signinButton.setEnabled(false);
-                    loginBtn.setEnabled(false);
+                        signinButton.setEnabled(false);
+                        loginBtn.setEnabled(false);
 
-                    registerText.setEnabled(false);
-                    loginText.setEnabled(false);
+                        registerText.setEnabled(false);
+                        loginText.setEnabled(false);
+                    }
                 }
             }
         });
@@ -137,6 +139,7 @@ public class ClientGUI extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 updateOnlineUsers();
+                client.readMessages(chatUserLabel.getText().split(" ")[0]);
             }
         });
 
@@ -162,6 +165,31 @@ public class ClientGUI extends JFrame {
                 textArea1.setEnabled(false);
                 connectionText.setEnabled(true);
                 connectButton.setEnabled(true);
+
+                chatUserLabel.setText("Chat User");
+            }
+        });
+
+        listOnline.addListSelectionListener(new ListSelectionListener() {
+            @Override
+            public void valueChanged(ListSelectionEvent arg0) {
+                if (!arg0.getValueIsAdjusting()) {
+                    textArea1.setEnabled(true);
+                    msgText.setEnabled(true);
+                    sendBtn.setEnabled(true);
+                    try {
+                        chatUserLabel.setText(listOnline.getSelectedValue().toString());
+                    } catch (Exception e) {
+                        System.out.println("No user selected");
+                    }
+                }
+            }
+        });
+
+        sendBtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                client.sendMessage();
             }
         });
     }

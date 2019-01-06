@@ -118,7 +118,7 @@ public class Client {
         }
     }
 
-    public void goOnline() {
+    public int goOnline() {
         if (zkeeper != null) {
             try {
                 Stat registered = zkeeper.exists(registrypath + "/" + username, null);
@@ -131,9 +131,11 @@ public class Client {
                     } else {
                         logger.warn("You are already online - no need to go online again.");
                     }
+                    return 0;
                 }
                 else{
                     logger.warn("You are not registered yet. Please register before you go online");
+                    return -1;
                 }
             } catch (KeeperException | InterruptedException e) {
                 e.printStackTrace();
@@ -141,8 +143,8 @@ public class Client {
         } else {
             logger.warn("There is an issue with the ZooKeeper connection.");
         }
+        return -1;
     }
-
 
     public List<String> getOnlineusers(){
         List<String> onlineusers = null;
@@ -156,12 +158,18 @@ public class Client {
         return onlineusers;
     }
 
-    void sendMessage(){
-        //Todo: Implement sendMessage
+    public void sendMessage(){
+        Producer producer = new Producer();
+        try {
+            producer.sendMessage(1,"Gioele");
+        } catch (Exception e) {
+            System.out.println("EROOOORE"+e);
+        }
     }
 
-    void readMessages(){
-        //Todo: Implement readMessages
+    public void readMessages(String topic){
+        KConsumer KConsumer = new KConsumer(topic);
+        KConsumer.readMessage();
     }
 
 
