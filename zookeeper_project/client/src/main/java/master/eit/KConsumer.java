@@ -1,17 +1,17 @@
 package master.eit;
 
 import org.apache.kafka.clients.consumer.*;
+import org.apache.kafka.common.TopicPartition;
 import org.apache.kafka.common.serialization.LongDeserializer;
 import org.apache.kafka.common.serialization.StringDeserializer;
 
-import java.util.Collections;
-import java.util.Properties;
-import java.util.UUID;
+import java.util.*;
 
 public class KConsumer {
 
     private Consumer<Long, String> consumer;
     private Properties props;
+    private TopicPartition topicPartition;
 
     public KConsumer(String topic) {
         props = new Properties();
@@ -22,16 +22,18 @@ public class KConsumer {
         props.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "latest");
         props.put(ConsumerConfig.ENABLE_AUTO_COMMIT_CONFIG, "false");
 
-
+        this.topicPartition = new TopicPartition(topic, 0);
         this.consumer = new KafkaConsumer<>(props);
-        consumer.subscribe(Collections.singletonList("Gioele"));
     }
 
-    public void readMessage() {
+    public List<String> readMessage() {
         int giveUp = 100;
         int noRecordsCount = 0;
 
-        consumer.seekToBeginning(consumer.assignment());
+        List<TopicPartition> partitions = Arrays.asList(topicPartition);
+        consumer.assign(partitions);
+        consumer.seekToBeginning(partitions);
+        List<String> messages = new ArrayList<>();
         while (true) {
             ConsumerRecords<Long, String> consumerRecords = consumer.poll(0);
 
@@ -42,12 +44,12 @@ public class KConsumer {
             }
 
             for (ConsumerRecord record: consumerRecords) {
-                System.out.println("KConsumer Record:("+record.key()+", "+record.value()+", "+record.partition()+", "+record.offset()+")\n");
-                
+                messages.add(record.value()+", T:"+record.key()+", P:"+record.partition()+", O:"+record.offset()+"\n");
             }
         }
 
         consumer.close();
         System.out.println("Done");
+        return messages;
     }
 }

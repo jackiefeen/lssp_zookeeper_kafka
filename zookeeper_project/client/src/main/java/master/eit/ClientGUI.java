@@ -6,6 +6,7 @@ import javax.swing.event.ListSelectionListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
+import java.util.List;
 
 public class ClientGUI extends JFrame {
 
@@ -61,6 +62,7 @@ public class ClientGUI extends JFrame {
 
         listOnline.setEnabled(false);
         textArea1.setEnabled(false);
+        textArea1.setEditable(false);
 
         registerLabel.setEnabled(false);
         loginLabel.setEnabled(false);
@@ -139,7 +141,9 @@ public class ClientGUI extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 updateOnlineUsers();
-                client.readMessages(chatUserLabel.getText().split(" ")[0]);
+                textArea1.setText("");
+                chatUserLabel.setText("Chat User");
+                textArea1.setEnabled(false);
             }
         });
 
@@ -177,8 +181,15 @@ public class ClientGUI extends JFrame {
                     textArea1.setEnabled(true);
                     msgText.setEnabled(true);
                     sendBtn.setEnabled(true);
+
                     try {
+                        textArea1.setText("");
                         chatUserLabel.setText(listOnline.getSelectedValue().toString());
+                        List<String> messages = client.readMessages(loginText.getText());
+                        for (String msg:messages) {
+                            if (msg.contains(loginText.getText()+"="+listOnline.getSelectedValue().toString().split(" ")[0]))
+                                textArea1.append(msg);
+                        }
                     } catch (Exception e) {
                         System.out.println("No user selected");
                     }
@@ -189,7 +200,11 @@ public class ClientGUI extends JFrame {
         sendBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                client.sendMessage();
+                String msgsent = "";
+                msgsent = client.sendMessage("S", chatUserLabel.getText().split(" ")[0], loginText.getText(), msgText.getText());
+                client.sendMessage("R", loginText.getText(), chatUserLabel.getText().split(" ")[0], msgText.getText());
+                msgText.setText("");
+                textArea1.append(msgsent+"\n");
             }
         });
     }

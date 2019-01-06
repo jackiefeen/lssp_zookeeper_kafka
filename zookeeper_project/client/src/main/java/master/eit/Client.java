@@ -158,18 +158,22 @@ public class Client {
         return onlineusers;
     }
 
-    public void sendMessage(){
-        Producer producer = new Producer();
+    public String sendMessage(String direction, String sender, String topic, String msg){
+        String msgsent = "";
+        KProducer producer = new KProducer();
         try {
-            producer.sendMessage(1,"Gioele");
+            msgsent = producer.sendMessage(1, direction, sender, topic, msg);
         } catch (Exception e) {
-            System.out.println("EROOOORE"+e);
+            System.out.println(e);
+            System.out.println("Something wrong happened in sendMessage()");
         }
+
+        return msgsent;
     }
 
-    public void readMessages(String topic){
+    public List<String> readMessages(String topic){
         KConsumer KConsumer = new KConsumer(topic);
-        KConsumer.readMessage();
+        return KConsumer.readMessage();
     }
 
 

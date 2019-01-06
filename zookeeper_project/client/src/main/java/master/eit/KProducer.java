@@ -10,12 +10,12 @@ import org.apache.kafka.common.serialization.StringSerializer;
 
 import java.util.Properties;
 
-public class Producer {
+public class KProducer {
 
     public KafkaProducer producer;
     public Properties props;
 
-    public Producer () {
+    public KProducer() {
         this.props = new Properties();
         this.props.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:9092");
         this.props.put(ProducerConfig.CLIENT_ID_CONFIG, "KafkaProducer");
@@ -25,23 +25,27 @@ public class Producer {
         this.producer = new KafkaProducer<>(props);
     }
 
-    public void sendMessage(int sendMessageCount, String topic) throws Exception {
+    public String sendMessage(int sendMessageCount, String direction, String sender, String topic, String msg) throws Exception {
+        String message = "";
         Long time = System.currentTimeMillis();
 
         try {
             for (Long index = time; index < time + sendMessageCount; index++) {
-                ProducerRecord<Long, String> record = new ProducerRecord<>(topic, index, "Hello Mom " + index);
+                ProducerRecord<Long, String> record = new ProducerRecord<>(topic, index,   direction +"="+ topic + "=" + sender + " : " + msg);
 
                 RecordMetadata metadata = (RecordMetadata) producer.send(record).get();
 
                 Long elapsedTime = System.currentTimeMillis() - time;
                 System.out.printf("sent record(key=%s value=%s) " +  "meta(partition=%d, offset=%d) time=%d\n",
                                   record.key(), record.value(), metadata.partition(), metadata.offset(), elapsedTime);
+                message = direction +"="+ topic + "=" + sender + " : " + msg;
             }
         } finally {
             producer.flush();
             producer.close();
         }
+
+        return message;
     }
 
 }
