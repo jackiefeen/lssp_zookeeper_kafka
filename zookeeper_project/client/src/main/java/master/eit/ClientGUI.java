@@ -39,6 +39,11 @@ public class ClientGUI extends JFrame {
     private JLabel registerLabel;
     private JLabel loginLabel;
     private JLabel serverLabel;
+    private JButton createChatroomBtn;
+    private JTextField chatroomTextField;
+    private JLabel createChatroomLabel;
+    private JList listChatrooms;
+    private JLabel chatroomsLabel;
 
     public ClientGUI() {
         add(panelMain);
@@ -53,16 +58,23 @@ public class ClientGUI extends JFrame {
         loginBtn.setEnabled(false);
         refreshButton.setEnabled(false);
         logoutButton.setEnabled(false);
+        createChatroomBtn.setEnabled(false);
+        chatroomsLabel.setEnabled(false);
 
         registerText.setEnabled(false);
         loginText.setEnabled(false);
         msgText.setEnabled(false);
         onlineUsersLabel.setEnabled(false);
         chatUserLabel.setEnabled(false);
+        chatroomTextField.setEnabled(false);
+        createChatroomLabel.setEnabled(false);
 
         listOnline.setEnabled(false);
+        listChatrooms.setEnabled(false);
         textArea1.setEnabled(false);
         textArea1.setEditable(false);
+        textArea1.setLineWrap(true);
+        textArea1.setWrapStyleWord(true);
 
         registerLabel.setEnabled(false);
         loginLabel.setEnabled(false);
@@ -119,6 +131,7 @@ public class ClientGUI extends JFrame {
                     listOnline.setModel(listModel);
 
                     if (flagOnline) {
+                        registeredLabel.setText("You are registered!");
                         onlineLabel.setText("You are now Online!");
 
                         refreshButton.setEnabled(true);
@@ -126,6 +139,11 @@ public class ClientGUI extends JFrame {
                         onlineUsersLabel.setEnabled(true);
                         chatUserLabel.setEnabled(true);
                         listOnline.setEnabled(true);
+                        listChatrooms.setEnabled(true);
+                        createChatroomLabel.setEnabled(true);
+                        createChatroomBtn.setEnabled(true);
+                        chatroomTextField.setEnabled(true);
+                        chatroomsLabel.setEnabled(true);
 
                         signinButton.setEnabled(false);
                         loginBtn.setEnabled(false);
@@ -133,6 +151,8 @@ public class ClientGUI extends JFrame {
                         registerText.setEnabled(false);
                         loginText.setEnabled(false);
                     }
+                } else {
+                    onlineLabel.setText("You need to be registered first!");
                 }
             }
         });
@@ -162,11 +182,18 @@ public class ClientGUI extends JFrame {
                 sendBtn.setEnabled(false);
                 refreshButton.setEnabled(false);
                 logoutButton.setEnabled(false);
+                createChatroomBtn.setEnabled(false);
                 msgText.setEnabled(false);
                 onlineUsersLabel.setEnabled(false);
                 chatUserLabel.setEnabled(false);
+                chatroomsLabel.setEnabled(false);
+                chatroomTextField.setText("");
+                chatroomTextField.setEnabled(false);
+                createChatroomLabel.setEnabled(false);
                 listOnline.setEnabled(false);
+                listChatrooms.setEnabled(false);
                 textArea1.setEnabled(false);
+
                 connectionText.setEnabled(true);
                 connectButton.setEnabled(true);
 
@@ -187,8 +214,12 @@ public class ClientGUI extends JFrame {
                         chatUserLabel.setText(listOnline.getSelectedValue().toString());
                         List<String> messages = client.readMessages(loginText.getText());
                         for (String msg:messages) {
-                            if (msg.contains(loginText.getText()+"="+listOnline.getSelectedValue().toString().split(" ")[0]))
-                                textArea1.append(msg);
+                            if (msg.contains(loginText.getText()+"="+listOnline.getSelectedValue().toString().split(" ")[0])) {
+                                if (msg.substring(0, 1).equals("S"))
+                                    textArea1.append("Me:" + msg.split(":")[1]);
+                                else
+                                    textArea1.append(msg.split("=")[1]);
+                            }
                         }
                     } catch (Exception e) {
                         System.out.println("No user selected");

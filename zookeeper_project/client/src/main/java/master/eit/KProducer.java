@@ -31,14 +31,14 @@ public class KProducer {
 
         try {
             for (Long index = time; index < time + sendMessageCount; index++) {
-                ProducerRecord<Long, String> record = new ProducerRecord<>(topic, index,   direction +"="+ topic + "=" + sender + " : " + msg);
+                ProducerRecord<Long, String> record = new ProducerRecord<>(topic, index,   direction +"-"+ topic + "=" + sender + ":" + msg);
 
                 RecordMetadata metadata = (RecordMetadata) producer.send(record).get();
 
                 Long elapsedTime = System.currentTimeMillis() - time;
                 System.out.printf("sent record(key=%s value=%s) " +  "meta(partition=%d, offset=%d) time=%d\n",
                                   record.key(), record.value(), metadata.partition(), metadata.offset(), elapsedTime);
-                message = direction +"="+ topic + "=" + sender + " : " + msg;
+                message = "Me: " + msg + ", T_"  + record.key() + ", P_" + metadata.partition() + ", O_" + metadata.offset();
             }
         } finally {
             producer.flush();

@@ -44,7 +44,7 @@ public class KConsumer {
             }
 
             for (ConsumerRecord record: consumerRecords) {
-                messages.add(record.value()+", T:"+record.key()+", P:"+record.partition()+", O:"+record.offset()+"\n");
+                messages.add(record.value()+", T_"+record.key()+", P_"+record.partition()+", O_"+record.offset()+"\n");
             }
         }
 
