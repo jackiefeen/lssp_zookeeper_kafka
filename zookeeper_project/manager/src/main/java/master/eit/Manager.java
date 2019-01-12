@@ -9,8 +9,10 @@ import org.apache.zookeeper.*;
 import org.apache.zookeeper.data.Stat;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
+
 
 
 public class Manager implements Runnable {
@@ -240,7 +242,9 @@ public class Manager implements Runnable {
                                 logger.info("The user " + child + " is removed.");
 
 
-                                //TODO: delete Kafka topic associated with the user
+                                deleteKafkaTopic(child);
+                                registeredUsers = getRegisteredUsers();
+                                logger.info("System State update: registered users: " + registeredUsers);
 
 
                             } else {
@@ -306,9 +310,9 @@ public class Manager implements Runnable {
                             KafkaProducer<String, String> prod = new KafkaProducer<String, String>(props);
                             String topic = user;
                             int partition = 0;
-                            //TODO: testkey and testvalue is not elegant
-                            String key = "testKey";
-                            String value = "testValue";
+
+                            String key = "newuserKey";
+                            String value = "Welcome to the chat" + user + "!";
                             prod.send(new ProducerRecord<String, String>(topic, partition, key, value));
                             prod.close();
 
@@ -326,8 +330,49 @@ public class Manager implements Runnable {
         }
     }
 
-    public void deleteKafkaTopic() {
-        //Todo: implement deleteKafkaTopic
+    public void deleteKafkaTopic(String user) {
+        //check if the user is registered in the registry
+        try {
+            Stat registered = zkeeper.exists(registrypath + "/" + user, null);
+
+
+
+                Stat knownuser = zkeeper.exists("/brokers/topics/" + user, null);
+
+                if (knownuser != null) {
+                    //delete KAFKA topic
+
+                    try {
+                        //delete the topic and its subfolders
+                        int version = zkeeper.exists("/brokers/topics/" + user + "/partitions/0/state", null).getVersion();
+                        zkeeper.delete("/brokers/topics/" + user + "/partitions/0/state", version);
+
+                        version = zkeeper.exists("/brokers/topics/" + user + "/partitions/0", null).getVersion();
+                        zkeeper.delete("/brokers/topics/" + user + "/partitions/0", version);
+
+                        version = zkeeper.exists("/brokers/topics/" + user + "/partitions", null).getVersion();
+                        zkeeper.delete("/brokers/topics/" + user + "/partitions", version);
+
+                        version = zkeeper.exists("/brokers/topics/" + user, null).getVersion();
+                        zkeeper.delete("/brokers/topics/" + user, version);
+
+
+                        //if there is a problem deleting the topic
+                    } catch (KeeperException | InterruptedException e) {
+                        e.printStackTrace();
+                        logger.warn("An error occurred. The topic " + user + " could not be deleted.");
+                    }
+
+                    logger.info("Kafka topic for " + user + " deleted.");
+                }
+                else{
+                    logger.info("There is no Kafka topic for " + user);
+                }
+
+
+        } catch (KeeperException | InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
 

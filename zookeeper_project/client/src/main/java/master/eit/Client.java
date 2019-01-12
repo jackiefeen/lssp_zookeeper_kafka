@@ -86,7 +86,7 @@ public class Client {
         }
     }
 
-    private void quit() {
+    public void quit() {
         if (zkeeper != null) {
             createRequestNode(quitpath + "/" + username, "-1".getBytes(),
                     ZooDefs.Ids.OPEN_ACL_UNSAFE, CreateMode.EPHEMERAL);

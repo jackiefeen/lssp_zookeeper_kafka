@@ -9,7 +9,7 @@ import java.util.*;
 
 public class KConsumer {
 
-    private Consumer<Long, String> consumer;
+    private Consumer<String, String> consumer;
     private Properties props;
     private TopicPartition topicPartition;
 
@@ -17,7 +17,7 @@ public class KConsumer {
         props = new Properties();
         props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:9092");
         props.put(ConsumerConfig.GROUP_ID_CONFIG, "KafkaConsumer");
-        props.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, LongDeserializer.class.getName());
+        props.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class.getName());
         props.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class.getName());
         props.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "latest");
         props.put(ConsumerConfig.ENABLE_AUTO_COMMIT_CONFIG, "false");
@@ -27,6 +27,7 @@ public class KConsumer {
     }
 
     public List<String> readMessage() {
+        System.out.println("Reading");
         int giveUp = 100;
         int noRecordsCount = 0;
 
@@ -35,15 +36,17 @@ public class KConsumer {
         consumer.seekToBeginning(partitions);
         List<String> messages = new ArrayList<>();
         while (true) {
-            ConsumerRecords<Long, String> consumerRecords = consumer.poll(0);
+            ConsumerRecords<String, String> consumerRecords = consumer.poll(0);
 
             if (consumerRecords.count()==0) {
+                System.out.println(consumerRecords.records("aha" + topicPartition));
                 noRecordsCount++;
                 if (noRecordsCount > giveUp) break;
                 else continue;
             }
 
             for (ConsumerRecord record: consumerRecords) {
+                System.out.println("I have got something:" + record);
                 messages.add(record.value()+", T_"+record.key()+", P_"+record.partition()+", O_"+record.offset()+"\n");
             }
         }

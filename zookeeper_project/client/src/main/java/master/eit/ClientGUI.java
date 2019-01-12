@@ -44,6 +44,7 @@ public class ClientGUI extends JFrame {
     private JLabel createChatroomLabel;
     private JList listChatrooms;
     private JLabel chatroomsLabel;
+    private JButton quitButton;
 
     public ClientGUI() {
         add(panelMain);
@@ -222,6 +223,7 @@ public class ClientGUI extends JFrame {
                             }
                         }
                     } catch (Exception e) {
+                        e.printStackTrace();
                         System.out.println("No user selected");
                     }
                 }
@@ -238,13 +240,22 @@ public class ClientGUI extends JFrame {
                 textArea1.append(msgsent+"\n");
             }
         });
+
+        quitButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                client.quit();
+            }
+        });
+
+
     }
 
     private void updateOnlineUsers () {
         listModel.clear();
         for (String user:client.getOnlineusers()) {
             if (client.username.equals(user))
-                listModel.addElement(user+" (Me)");
+                listModel.addElement("Me (" + user + ")");
             else
                 listModel.addElement(user);
         }
