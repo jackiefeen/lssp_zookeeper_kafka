@@ -39,7 +39,6 @@ public class KConsumer {
             ConsumerRecords<String, String> consumerRecords = consumer.poll(0);
 
             if (consumerRecords.count()==0) {
-                System.out.println(consumerRecords.records("aha" + topicPartition));
                 noRecordsCount++;
                 if (noRecordsCount > giveUp) break;
                 else continue;

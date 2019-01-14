@@ -218,7 +218,6 @@ public class Manager implements Runnable {
 
                         if (nodedata.equals("-1")) {
 
-
                             //check if there is a node in the registry for the user who wants to quit
                             Stat exists = zkeeper.exists(registrypath + "/" + child, null);
                             if (exists != null) {
@@ -227,11 +226,19 @@ public class Manager implements Runnable {
                                     int version = zkeeper.exists(registrypath + "/" + child, null).getVersion();
                                     zkeeper.delete(registrypath + "/" + child, version);
 
+                                    //check if there is a node in the registry for the user who wants to quit
+                                    Stat online = zkeeper.exists(onlinepath + "/" + child, null);
+                                    if (exists != null) {
+                                        //get the version and delete the user from the registry
+                                        int onlineversion = zkeeper.exists(onlinepath + "/" + child, null).getVersion();
+                                        zkeeper.delete(onlinepath + "/" + child, onlineversion);
+                                    }
+
                                     //if there is a problem deleting the node
                                 } catch (KeeperException | InterruptedException e) {
                                     e.printStackTrace();
                                     logger.warn("An error occurred. The user " + child + " could not be deleted.");
-                                    //set the enrollment request to 0 --> delete failed
+                                    //set the quit request to 0 --> delete failed
                                     int version = zkeeper.exists(quitpath + "/" + child, null).getVersion();
                                     zkeeper.setData(quitpath + "/" + child, "0".getBytes(), version);
                                 }
@@ -336,8 +343,6 @@ public class Manager implements Runnable {
         //check if the user is registered in the registry
         try {
             Stat registered = zkeeper.exists(registrypath + "/" + user, null);
-
-
 
                 Stat knownuser = zkeeper.exists("/brokers/topics/" + user, null);
 
