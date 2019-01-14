@@ -94,7 +94,6 @@ public class ClientGUI extends JFrame {
                     signinButton.setEnabled(true);
                     loginBtn.setEnabled(true);
                     functionText.setEnabled(true);
-                    quitButton.setEnabled(true);
 
                     registerLabel.setEnabled(true);
                     functionLabel.setText("Please, register your username first or just Login if you are already registered!");
@@ -127,6 +126,7 @@ public class ClientGUI extends JFrame {
                         functionLabel.setText("You are now Online!");
 
                         logoutButton.setEnabled(true);
+                        quitButton.setEnabled(true);
                         onlineUsersLabel.setEnabled(true);
                         chatUserLabel.setEnabled(true);
                         listOnline.setEnabled(true);
@@ -229,13 +229,13 @@ public class ClientGUI extends JFrame {
                     client.quit();
 
                     listModel.clear();
+                    functionLabel.setText("User "+functionText.getText()+" Deleted! Register your username or login if you are already registered");
                     functionText.setText("");
-                    functionLabel.setText("User "+functionText.getText()+" Deleted! Register your username first or just Login if you are already registered!");
 
                     sendBtn.setEnabled(false);
                     logoutButton.setEnabled(false);
                     createChatroomBtn.setEnabled(false);
-                    quitButton.setEnabled(true);
+                    quitButton.setEnabled(false);
                     msgText.setEnabled(false);
                     onlineUsersLabel.setEnabled(false);
                     chatUserLabel.setEnabled(false);
