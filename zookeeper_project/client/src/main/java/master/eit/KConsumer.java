@@ -46,7 +46,8 @@ public class KConsumer {
 
             for (ConsumerRecord record: consumerRecords) {
                 System.out.println("I have got something:" + record);
-                messages.add(record.value()+", T_"+record.key()+", P_"+record.partition()+", O_"+record.offset()+"\n");
+                //messages.add(record.value()+", T_"+record.key()+", P_"+record.partition()+", O_"+record.offset()+"\n");
+                messages.add(record.value()+"\n");
             }
         }
 

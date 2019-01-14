@@ -31,8 +31,9 @@ public class KProducer {
 
         try {
             for (Long index = time; index < time + sendMessageCount; index++) {
-                String key = Long.toString(index);
-                ProducerRecord<String, String> record = new ProducerRecord<String,String>(topic, key,   direction +"-"+ topic + "=" + sender + ":" + msg);
+                //String key = Long.toString(index);
+                String key = sender;
+                ProducerRecord<String, String> record = new ProducerRecord<String,String>(topic, key,   direction +"-"+ topic + "=" + sender + ": " + msg);
 
                 RecordMetadata metadata = (RecordMetadata) producer.send(record).get();
 
@@ -40,7 +41,8 @@ public class KProducer {
                 System.out.printf("sent record(key=%s value=%s) " +  "meta(partition=%d, offset=%d) time=%d\n",
                                   record.key(), record.value(), metadata.partition(), metadata.offset(), elapsedTime);
                 System.out.println("I have sent to: " + record.topic() + "...."+ record.value());
-                message = "Me: " + msg + ", T_"  + record.key() + ", P_" + metadata.partition() + ", O_" + metadata.offset();
+                //message = "You says: " + msg + ", T_"  + record.key() + ", P_" + metadata.partition() + ", O_" + metadata.offset();
+                message = "You says: " + msg;
             }
         } finally {
             producer.flush();
