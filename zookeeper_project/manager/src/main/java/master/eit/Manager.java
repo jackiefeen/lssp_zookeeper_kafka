@@ -285,7 +285,7 @@ public class Manager implements Runnable {
     }
 
     void createKafkaTopic() {
-
+        logger.info("createKafkaTopic");
         List<String> onlineusers = null;
         try {
             onlineusers = zkeeper.getChildren(onlinepath, onlinebranchWatcher, null);
@@ -322,7 +322,7 @@ public class Manager implements Runnable {
                             int partition = 0;
 
                             String key = "newuserKey";
-                            String value = "Welcome to the chat" + user + "!";
+                            String value = "Welcome to the chat " + user + "!";
                             prod.send(new ProducerRecord<String, String>(topic, partition, key, value));
                             prod.close();
 
