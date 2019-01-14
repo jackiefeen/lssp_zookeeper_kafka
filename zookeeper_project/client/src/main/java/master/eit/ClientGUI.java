@@ -198,9 +198,12 @@ public class ClientGUI extends JFrame {
                         for (String msg:messages) {
                             if (msg.contains(functionText.getText()+"="+listOnline.getSelectedValue().toString().split(" ")[0])) {
                                 if (msg.substring(0, 1).equals("S"))
-                                    textArea1.append("You says: " + msg.split(":")[1]);
-                                else
-                                    textArea1.append(msg.split("=")[1]);
+                                    textArea1.append("You say: " + msg.split(":")[1]);
+                                else {
+                                    String sender = msg.split("=")[1].split(":")[0];
+                                    String message = msg.split("=")[1].split(":")[1];
+                                    textArea1.append(sender+" says: "+message);
+                                }
                             }
                         }
                     } catch (Exception e) {
