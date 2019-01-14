@@ -18,9 +18,10 @@ public class ClientGUI extends JFrame {
     private Boolean flagOnline;
 
     // GUI Attributes
+    private JLabel serverLabel;
     private JPanel panelMain;
     private JButton loginBtn;
-    private JTextField registerText;
+    private JTextField functionText;
     private JList listOnline;
     private JTextField msgText;
     private JButton sendBtn;
@@ -28,16 +29,12 @@ public class ClientGUI extends JFrame {
     private JButton signinButton;
     private JTextField connectionText;
     private JButton connectButton;
-    private JTextField loginText;
     private JLabel connectedLabel;
-    private JLabel registeredLabel;
-    private JLabel onlineLabel;
+    private JLabel functionLabel;
     private JButton logoutButton;
     private JLabel onlineUsersLabel;
     private JLabel chatUserLabel;
     private JLabel registerLabel;
-    private JLabel loginLabel;
-    private JLabel serverLabel;
     private JButton createChatroomBtn;
     private JTextField chatroomTextField;
     private JLabel createChatroomLabel;
@@ -59,9 +56,9 @@ public class ClientGUI extends JFrame {
         logoutButton.setEnabled(false);
         createChatroomBtn.setEnabled(false);
         chatroomsLabel.setEnabled(false);
+        quitButton.setEnabled(false);
 
-        registerText.setEnabled(false);
-        loginText.setEnabled(false);
+        functionText.setEnabled(false);
         msgText.setEnabled(false);
         onlineUsersLabel.setEnabled(false);
         chatUserLabel.setEnabled(false);
@@ -76,7 +73,6 @@ public class ClientGUI extends JFrame {
         textArea1.setWrapStyleWord(true);
 
         registerLabel.setEnabled(false);
-        loginLabel.setEnabled(false);
 
         connectButton.addActionListener(new ActionListener() {
             @Override
@@ -97,13 +93,11 @@ public class ClientGUI extends JFrame {
 
                     signinButton.setEnabled(true);
                     loginBtn.setEnabled(true);
-                    registerText.setEnabled(true);
-                    loginText.setEnabled(true);
+                    functionText.setEnabled(true);
+                    quitButton.setEnabled(true);
 
                     registerLabel.setEnabled(true);
-                    loginLabel.setEnabled(true);
-                    registeredLabel.setText("Please, register your username first");
-                    onlineLabel.setText("Or just Login if you are already registered!");
+                    functionLabel.setText("Please, register your username first or just Login if you are already registered!");
                 }
             }
         });
@@ -111,27 +105,26 @@ public class ClientGUI extends JFrame {
         signinButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                client.username = registerText.getText();
+                client.username = functionText.getText();
                 client.register();
                 flagRegistered = true;
 
                 if (flagRegistered)
-                    registeredLabel.setText("You are registered!");
+                    functionLabel.setText("You are registered!");
             }
         });
 
         loginBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                client.username = loginText.getText();
+                client.username = functionText.getText();
                 if (client.goOnline() == 0) {
                     flagOnline = true;
                     updateOnlineUsers(client.getOnlineusers());
                     listOnline.setModel(listModel);
 
                     if (flagOnline) {
-                        registeredLabel.setText("You are registered!");
-                        onlineLabel.setText("You are now Online!");
+                        functionLabel.setText("You are now Online!");
 
                         logoutButton.setEnabled(true);
                         onlineUsersLabel.setEnabled(true);
@@ -146,11 +139,11 @@ public class ClientGUI extends JFrame {
                         signinButton.setEnabled(false);
                         loginBtn.setEnabled(false);
 
-                        registerText.setEnabled(false);
-                        loginText.setEnabled(false);
+                        functionText.setEnabled(false);
+                        functionText.setEnabled(false);
                     }
                 } else {
-                    onlineLabel.setText("You need to be registered first!");
+                    functionLabel.setText("You need to be registered first!");
                 }
             }
         });
@@ -166,11 +159,12 @@ public class ClientGUI extends JFrame {
                 }
 
                 listModel.clear();
-                loginText.setText("");
+                functionText.setText("");
 
                 sendBtn.setEnabled(false);
                 logoutButton.setEnabled(false);
                 createChatroomBtn.setEnabled(false);
+                quitButton.setEnabled(false);
                 msgText.setEnabled(false);
                 onlineUsersLabel.setEnabled(false);
                 chatUserLabel.setEnabled(false);
@@ -200,9 +194,9 @@ public class ClientGUI extends JFrame {
                     try {
                         textArea1.setText("");
                         chatUserLabel.setText(listOnline.getSelectedValue().toString());
-                        List<String> messages = client.readMessages(loginText.getText());
+                        List<String> messages = client.readMessages(functionText.getText());
                         for (String msg:messages) {
-                            if (msg.contains(loginText.getText()+"="+listOnline.getSelectedValue().toString().split(" ")[0])) {
+                            if (msg.contains(functionText.getText()+"="+listOnline.getSelectedValue().toString().split(" ")[0])) {
                                 if (msg.substring(0, 1).equals("S"))
                                     textArea1.append("Me:" + msg.split(":")[1]);
                                 else
@@ -221,8 +215,8 @@ public class ClientGUI extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 String msgsent = "";
-                msgsent = client.sendMessage("S", chatUserLabel.getText().split(" ")[0], loginText.getText(), msgText.getText());
-                client.sendMessage("R", loginText.getText(), chatUserLabel.getText().split(" ")[0], msgText.getText());
+                msgsent = client.sendMessage("S", chatUserLabel.getText().split(" ")[0], functionText.getText(), msgText.getText());
+                client.sendMessage("R", functionText.getText(), chatUserLabel.getText().split(" ")[0], msgText.getText());
                 msgText.setText("");
                 textArea1.append(msgsent+"\n");
             }
@@ -231,7 +225,37 @@ public class ClientGUI extends JFrame {
         quitButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                client.quit();
+                try {
+                    client.quit();
+
+                    listModel.clear();
+                    functionText.setText("");
+                    functionLabel.setText("User "+functionText.getText()+" Deleted! Register your username first or just Login if you are already registered!");
+
+                    sendBtn.setEnabled(false);
+                    logoutButton.setEnabled(false);
+                    createChatroomBtn.setEnabled(false);
+                    quitButton.setEnabled(true);
+                    msgText.setEnabled(false);
+                    onlineUsersLabel.setEnabled(false);
+                    chatUserLabel.setEnabled(false);
+                    chatroomsLabel.setEnabled(false);
+                    chatroomTextField.setText("");
+                    chatroomTextField.setEnabled(false);
+                    createChatroomLabel.setEnabled(false);
+                    listOnline.setEnabled(false);
+                    listChatrooms.setEnabled(false);
+                    textArea1.setEnabled(false);
+
+                    loginBtn.setEnabled(true);
+                    signinButton.setEnabled(true);
+                    registerLabel.setEnabled(true);
+                    functionText.setEnabled(true);
+
+                    chatUserLabel.setText("Chat User");
+                } catch (Exception ex) {
+                    System.out.println("Nothing to Quit!!"+ex);
+                }
             }
         });
 
