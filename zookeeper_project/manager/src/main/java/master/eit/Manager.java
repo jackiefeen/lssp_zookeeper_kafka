@@ -330,6 +330,8 @@ public class Manager implements Runnable {
         }
     }
 
+
+
     public void deleteKafkaTopic(String user) {
         //check if the user is registered in the registry
         try {
@@ -341,7 +343,6 @@ public class Manager implements Runnable {
 
                 if (knownuser != null) {
                     //delete KAFKA topic
-
                     try {
                         //delete the topic and its subfolders
                         int version = zkeeper.exists("/brokers/topics/" + user + "/partitions/0/state", null).getVersion();

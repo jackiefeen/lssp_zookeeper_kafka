@@ -37,6 +37,7 @@ public class ChildWatcher implements Runnable, Watcher {
             }
             else if(event.getPath().contains("/online")){
                 currentmanager.createKafkaTopic();
+
             }
             else {
                 logger.info("No action defined for this path: " + event.getPath());

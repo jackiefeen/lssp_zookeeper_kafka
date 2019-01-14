@@ -33,7 +33,6 @@ public class ClientGUI extends JFrame {
     private JLabel registeredLabel;
     private JLabel onlineLabel;
     private JButton logoutButton;
-    private JButton refreshButton;
     private JLabel onlineUsersLabel;
     private JLabel chatUserLabel;
     private JLabel registerLabel;
@@ -57,7 +56,6 @@ public class ClientGUI extends JFrame {
         signinButton.setEnabled(false);
         sendBtn.setEnabled(false);
         loginBtn.setEnabled(false);
-        refreshButton.setEnabled(false);
         logoutButton.setEnabled(false);
         createChatroomBtn.setEnabled(false);
         chatroomsLabel.setEnabled(false);
@@ -128,14 +126,13 @@ public class ClientGUI extends JFrame {
                 client.username = loginText.getText();
                 if (client.goOnline() == 0) {
                     flagOnline = true;
-                    updateOnlineUsers();
+                    updateOnlineUsers(client.getOnlineusers());
                     listOnline.setModel(listModel);
 
                     if (flagOnline) {
                         registeredLabel.setText("You are registered!");
                         onlineLabel.setText("You are now Online!");
 
-                        refreshButton.setEnabled(true);
                         logoutButton.setEnabled(true);
                         onlineUsersLabel.setEnabled(true);
                         chatUserLabel.setEnabled(true);
@@ -158,15 +155,6 @@ public class ClientGUI extends JFrame {
             }
         });
 
-        refreshButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                updateOnlineUsers();
-                textArea1.setText("");
-                chatUserLabel.setText("Chat User");
-                textArea1.setEnabled(false);
-            }
-        });
 
         logoutButton.addActionListener(new ActionListener() {
             @Override
@@ -181,7 +169,6 @@ public class ClientGUI extends JFrame {
                 loginText.setText("");
 
                 sendBtn.setEnabled(false);
-                refreshButton.setEnabled(false);
                 logoutButton.setEnabled(false);
                 createChatroomBtn.setEnabled(false);
                 msgText.setEnabled(false);
@@ -251,9 +238,9 @@ public class ClientGUI extends JFrame {
 
     }
 
-    private void updateOnlineUsers () {
+    public void updateOnlineUsers (List<String> onlineusers) {
         listModel.clear();
-        for (String user:client.getOnlineusers()) {
+        for (String user:onlineusers) {
             if (client.username.equals(user))
                 listModel.addElement("Me (" + user + ")");
             else

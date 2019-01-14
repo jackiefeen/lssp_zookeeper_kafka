@@ -40,6 +40,15 @@ public class DataWatcher implements Runnable, Watcher {
             logger.info(watchedEvent.getPath() + " changed");
         } else if (watchedEvent.getType() == Event.EventType.NodeChildrenChanged) {
             logger.info(watchedEvent.getPath() + " children created or deleted.");
+
+            //check where the event was triggered and call a Client method accordingly
+            if (watchedEvent.getPath().contains("/online")) {
+                currentclient.getOnlineusers();
+            }
+            else {
+                logger.info("No action defined for this path: " + watchedEvent.getPath());
+            }
+
         }
 
     }

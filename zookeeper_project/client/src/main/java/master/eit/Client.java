@@ -20,6 +20,9 @@ public class Client {
     private String onlinepath = "/online";
     private String registrypath = "/registry";
     private static boolean alive = true;
+    private static ClientGUI form = null;
+    private Watcher onlineWatcher;
+
 
 
     //client constructor
@@ -128,6 +131,15 @@ public class Client {
                     if (exists == null) {
                         zkeeper.create(onlinepath + "/" + username, null, ZooDefs.Ids.OPEN_ACL_UNSAFE, CreateMode.EPHEMERAL);
                         logger.info("You are online now.");
+
+                        //initialize the Watcher of the /online path to get alerted if new clients join
+                        DataWatcher onlineWatcher = new DataWatcher(this);
+                        Thread onlineWatcherthread = new Thread();
+                        onlineWatcherthread.start();
+                        this.onlineWatcher = onlineWatcher;
+                        zkeeper.getChildren(onlinepath, this.onlineWatcher, null);
+
+
                     } else {
                         logger.warn("You are already online - no need to go online again.");
                     }
@@ -146,10 +158,16 @@ public class Client {
         return -1;
     }
 
+    public void refreshGUI(List<String> onlineusers){
+        form.updateOnlineUsers(onlineusers);
+
+    }
+
     public List<String> getOnlineusers(){
         List<String> onlineusers = null;
         try {
-            onlineusers = zkeeper.getChildren(onlinepath, null, null);
+            onlineusers = zkeeper.getChildren(onlinepath, this.onlineWatcher, null);
+            refreshGUI(onlineusers);
 
         } catch (KeeperException | InterruptedException e) {
             e.printStackTrace();
@@ -188,7 +206,7 @@ public class Client {
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
-                ClientGUI form = new ClientGUI();
+                form = new ClientGUI();
                 form.setVisible(true);
             }
         });
