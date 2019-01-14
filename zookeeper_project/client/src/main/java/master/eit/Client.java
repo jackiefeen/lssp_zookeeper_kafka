@@ -24,7 +24,6 @@ public class Client {
     private Watcher onlineWatcher;
 
 
-
     //client constructor
     public Client(String hostPort, String username) throws IOException, InterruptedException {
         this.username = username;

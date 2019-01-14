@@ -22,11 +22,14 @@ public class Manager implements Runnable {
     private static String quitpath = "/request/quit";
     private static String onlinepath = "/online";
     private static String registrypath = "/registry";
+    private static String kafkatopicspath = "/brokers/topics";
     private static final String[] TreeStructure = {"/request", "/request/enroll", "/request/quit", "/registry", "/online"};
+    private static final String[] ChatRooms = {"EITDigital", "LargeScaleSystemsProject", "Sports"};
     public boolean alive = true;
     private Watcher enrollbranchWatcher;
     private Watcher quitbranchWatcher;
     private Watcher onlinebranchWatcher;
+    private Watcher chatroomsWatcher;
     private List<String> registeredUsers;
 
 
@@ -38,7 +41,7 @@ public class Manager implements Runnable {
         logger.info("State: " + zkeeper.getState());
 
         if (zkeeper != null) {
-            //ensure that the enrollpath actually exists before monitoring it, if not, create the tree structure
+            //ensure that the tree exists, if not, create the tree structure
             try {
                 if ((zkeeper.exists(enrollpath, false) == null) ||
                         (zkeeper.exists(quitpath, false) == null) ||
@@ -72,7 +75,6 @@ public class Manager implements Runnable {
             registerUser();
         }
 
-
         //initialize the ChildWatcher for quit
         ChildWatcher quitbranchWatcher = new ChildWatcher(this);
         Thread quitbranchWatcherthread = new Thread();
@@ -95,6 +97,9 @@ public class Manager implements Runnable {
             logger.info("Current online users: " + onlinechildren);
             createKafkaTopic();
         }
+
+        //create the predefined chatrooms in Kafka
+        createKafkaChatRooms();
     }
 
 
@@ -120,15 +125,13 @@ public class Manager implements Runnable {
                     logger.warn(node + " already exists.");
                 }
             }
-        } catch (InterruptedException e) {
+        } catch (InterruptedException | KeeperException e) {
             e.printStackTrace();
             logger.error(e);
-
-        } catch (KeeperException e) {
-            e.printStackTrace();
-            logger.error(e.code());
         }
     }
+
+
 
     /*
     The method is synchronized, because the manager and the branchwatcher can call it.
@@ -298,7 +301,7 @@ public class Manager implements Runnable {
 
                     if (registered != null) {
 
-                        Stat knownuser = zkeeper.exists("/brokers/topics/" + user, null);
+                        Stat knownuser = zkeeper.exists(kafkatopicspath + "/" + user, null);
 
                         if (knownuser == null) {
                             //KAFKA
@@ -338,29 +341,28 @@ public class Manager implements Runnable {
     }
 
 
-
     public void deleteKafkaTopic(String user) {
         //check if the user is registered in the registry
         try {
             Stat registered = zkeeper.exists(registrypath + "/" + user, null);
 
-                Stat knownuser = zkeeper.exists("/brokers/topics/" + user, null);
+                Stat knownuser = zkeeper.exists(kafkatopicspath + "/" + user, null);
 
                 if (knownuser != null) {
                     //delete KAFKA topic
                     try {
                         //delete the topic and its subfolders
-                        int version = zkeeper.exists("/brokers/topics/" + user + "/partitions/0/state", null).getVersion();
-                        zkeeper.delete("/brokers/topics/" + user + "/partitions/0/state", version);
+                        int version = zkeeper.exists(kafkatopicspath + "/" + user + "/partitions/0/state", null).getVersion();
+                        zkeeper.delete(kafkatopicspath + "/" + user + "/partitions/0/state", version);
 
-                        version = zkeeper.exists("/brokers/topics/" + user + "/partitions/0", null).getVersion();
-                        zkeeper.delete("/brokers/topics/" + user + "/partitions/0", version);
+                        version = zkeeper.exists(kafkatopicspath + "/" + user + "/partitions/0", null).getVersion();
+                        zkeeper.delete(kafkatopicspath + "/" + user + "/partitions/0", version);
 
-                        version = zkeeper.exists("/brokers/topics/" + user + "/partitions", null).getVersion();
-                        zkeeper.delete("/brokers/topics/" + user + "/partitions", version);
+                        version = zkeeper.exists(kafkatopicspath + "/" + user + "/partitions", null).getVersion();
+                        zkeeper.delete(kafkatopicspath + "/" + user + "/partitions", version);
 
-                        version = zkeeper.exists("/brokers/topics/" + user, null).getVersion();
-                        zkeeper.delete("/brokers/topics/" + user, version);
+                        version = zkeeper.exists(kafkatopicspath + "/" + user, null).getVersion();
+                        zkeeper.delete(kafkatopicspath + "/" + user, version);
 
 
                         //if there is a problem deleting the topic
@@ -380,6 +382,50 @@ public class Manager implements Runnable {
             e.printStackTrace();
         }
     }
+
+    private void createKafkaChatRooms(){
+        try {
+            //iterate over the ChatRooms and create the nodes
+            for (String node : ChatRooms) {
+                Stat chatroomexists = null;
+
+                chatroomexists = zkeeper.exists(kafkatopicspath + "/" + node, null);
+
+                if (chatroomexists == null) {
+
+                    logger.info("Create KAFKA topic for chatroom " + node);
+
+                    Properties props = new Properties();
+                    props.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG,
+                            "localhost:9092");
+                    props.put("acks", "all");
+                    props.put("retries", 0);
+                    props.put("batch.size", 16384);
+                    props.put("buffer.memory", 33554432);
+                    props.put("key.serializer", "org.apache.kafka.common.serialization.StringSerializer");
+                    props.put("value.serializer",
+                            "org.apache.kafka.common.serialization.StringSerializer");
+                    KafkaProducer<String, String> prod = new KafkaProducer<String, String>(props);
+                    String topic = node;
+                    int partition = 0;
+
+                    String key = "newuserKey";
+                    String value = "Welcome to the chat" + node + "!";
+                    prod.send(new ProducerRecord<String, String>(topic, partition, key, value));
+                    prod.close();
+
+                    logger.info("New Kafka topic for chatroom " + node + " created.");
+
+                } else {
+                    logger.warn("Chatroom " + node + " already exists.");
+                }
+            }
+        } catch (InterruptedException | KeeperException e) {
+            e.printStackTrace();
+            logger.error(e);
+        }
+    }
+
 
 
     public void run() {
