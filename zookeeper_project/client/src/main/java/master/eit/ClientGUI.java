@@ -21,11 +21,11 @@ public class ClientGUI extends JFrame {
     private JLabel serverLabel;
     private JPanel panelMain;
     private JButton loginBtn;
-    private JTextField functionText;
-    private JList listOnline;
+    public JTextField functionText;
+    public JList listOnline;
     private JTextField msgText;
     private JButton sendBtn;
-    private JTextArea textArea1;
+    public JTextArea textArea1;
     private JButton signinButton;
     private JTextField connectionText;
     private JButton connectButton;
@@ -41,6 +41,8 @@ public class ClientGUI extends JFrame {
     private JList listChatrooms;
     private JLabel chatroomsLabel;
     private JButton quitButton;
+
+    private Thread refresh = null;
 
     public ClientGUI() {
         add(panelMain);
@@ -192,22 +194,28 @@ public class ClientGUI extends JFrame {
                     sendBtn.setEnabled(true);
 
                     try {
-                        textArea1.setText("");
+                        if (refresh != null)
+                            while (refresh.isAlive())
+                                refresh.interrupt();
                         chatUserLabel.setText(listOnline.getSelectedValue().toString());
-                        List<String> messages = client.readMessages(functionText.getText());
-                        for (String msg:messages) {
-                            if (msg.contains(functionText.getText()+"="+listOnline.getSelectedValue().toString().split(" ")[0])) {
-                                if (msg.substring(0, 1).equals("S"))
-                                    textArea1.append("You say: " + msg.split(":")[1]);
-                                else {
-                                    String sender = msg.split("=")[1].split(":")[0];
-                                    String message = msg.split("=")[1].split(":")[1];
-                                    textArea1.append(sender+" says: "+message);
-                                }
-                            }
-                        }
+                        refresh = client.readMessages(functionText.getText());
+                        refresh.start();
+                        //while (!KConsumer.receive) {
+                        //    // wait
+                        //}
+                        //for (String msg:KConsumer.messages) {
+                        //    if (msg.contains(functionText.getText()+"="+listOnline.getSelectedValue().toString().split(" ")[0])) {
+                        //        if (msg.substring(0, 1).equals("S"))
+                        //            textArea1.append("You say: " + msg.split(":")[1]);
+                        //        else {
+                        //            String sender = msg.split("=")[1].split(":")[0];
+                        //            String message = msg.split("=")[1].split(":")[1];
+                        //            textArea1.append(sender+" says: "+message);
+                        //        }
+                        //    }
+                        //}
                     } catch (Exception e) {
-                        e.printStackTrace();
+                        //e.printStackTrace();
                         System.out.println("No user selected");
                     }
                 }
@@ -242,6 +250,7 @@ public class ClientGUI extends JFrame {
                     msgText.setEnabled(false);
                     onlineUsersLabel.setEnabled(false);
                     chatUserLabel.setEnabled(false);
+                    textArea1.setText("");
                     chatroomsLabel.setEnabled(false);
                     chatroomTextField.setText("");
                     chatroomTextField.setEnabled(false);
@@ -267,11 +276,12 @@ public class ClientGUI extends JFrame {
 
     public void updateOnlineUsers (List<String> onlineusers) {
         listModel.clear();
-        for (String user:onlineusers) {
+        for (String user:onlineusers)
             if (client.username.equals(user))
                 listModel.addElement("Me (" + user + ")");
-            else
+
+        for (String user:onlineusers)
+            if (!client.username.equals(user))
                 listModel.addElement(user);
-        }
     }
 }

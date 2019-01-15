@@ -20,7 +20,7 @@ public class Client {
     private String onlinepath = "/online";
     private String registrypath = "/registry";
     private static boolean alive = true;
-    private static ClientGUI form = null;
+    public static ClientGUI form = null;
     private Watcher onlineWatcher;
 
 
@@ -188,11 +188,9 @@ public class Client {
         return msgsent;
     }
 
-    public List<String> readMessages(String topic){
-        KConsumer KConsumer = new KConsumer(topic);
-        return KConsumer.readMessage();
+    public Thread readMessages(String topic){
+        return new Thread(new KConsumer(topic));
     }
-
 
     public void goOffline() throws InterruptedException {
         zkeeper.close();
