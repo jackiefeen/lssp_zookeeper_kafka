@@ -34,7 +34,7 @@ public class ClientGUI extends JFrame {
     private JLabel functionLabel;
     private JButton logoutButton;
     private JLabel onlineUsersLabel;
-    private JLabel chatUserLabel;
+    public JLabel chatUserLabel;
     private JLabel registerLabel;
     public JList listChatrooms;
     private JLabel chatroomsLabel;

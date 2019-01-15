@@ -71,7 +71,7 @@ public class KConsumer implements Runnable{
                     }
                 }
             } catch (NullPointerException e) {
-                if (msg.contains("-chatroom-")) {
+                if (msg.contains("-chatroom-"+Client.form.chatUserLabel.getText())) {
                     if (msg.substring(0, 1).equals("S"))
                         Client.form.textArea1.append("You say: " + msg.split(":")[1]);
                     else {
