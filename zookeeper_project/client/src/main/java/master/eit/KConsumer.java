@@ -60,13 +60,28 @@ public class KConsumer implements Runnable{
 
         Client.form.textArea1.setText("");
         for (String msg:KConsumer.messages) {
-            if (msg.contains(Client.form.functionText.getText()+"="+Client.form.listOnline.getSelectedValue().toString().split(" ")[0])) {
-                if (msg.substring(0, 1).equals("S"))
-                    Client.form.textArea1.append("You say: " + msg.split(":")[1]);
-                else {
-                    String sender = msg.split("=")[1].split(":")[0];
-                    String message = msg.split("=")[1].split(":")[1];
-                    Client.form.textArea1.append(sender+" says: "+message);
+            try {
+                if (msg.contains(Client.form.functionText.getText()+"="+Client.form.listOnline.getSelectedValue().toString().split(" ")[0])) {
+                    if (msg.substring(0, 1).equals("S"))
+                        Client.form.textArea1.append("You say: " + msg.split(":")[1]);
+                    else {
+                        String sender = msg.split("=")[1].split(":")[0];
+                        String message = msg.split("=")[1].split(":")[1];
+                        Client.form.textArea1.append(sender+" says: "+message);
+                    }
+                }
+            } catch (NullPointerException e) {
+                if (msg.contains("-chatroom-")) {
+                    if (msg.substring(0, 1).equals("S"))
+                        Client.form.textArea1.append("You say: " + msg.split(":")[1]);
+                    else {
+                        String sender = msg.split("=")[1].split(":")[0];
+                        String message = msg.split("=")[1].split(":")[1];
+                        if (sender.equals(Client.form.functionText.getText()))
+                            Client.form.textArea1.append("You says: "+message);
+                        else
+                            Client.form.textArea1.append(sender+" says: "+message);
+                    }
                 }
             }
         }

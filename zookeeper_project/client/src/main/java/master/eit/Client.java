@@ -163,7 +163,6 @@ public class Client {
     }
 
     public void refreshGUI2(List<String> chatrooms){
-        System.out.println("CHATROOMS:"+chatrooms);
         form.updateChatrooms(chatrooms);
     }
 

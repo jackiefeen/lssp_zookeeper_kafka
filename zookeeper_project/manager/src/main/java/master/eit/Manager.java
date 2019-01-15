@@ -24,7 +24,7 @@ public class Manager implements Runnable {
     private static String registrypath = "/registry";
     private static String kafkatopicspath = "/brokers/topics";
     private static final String[] TreeStructure = {"/request", "/request/enroll", "/request/quit", "/registry", "/online"};
-    private static final String[] ChatRooms = {"EITDigital", "LargeScaleSystemsProject", "Sports"};
+    private static final String[] ChatRooms = {"chatroom-EITDigital", "chatroom-LargeScaleSystemsProject", "chatroom-Sports"};
     public boolean alive = true;
     private Watcher enrollbranchWatcher;
     private Watcher quitbranchWatcher;
