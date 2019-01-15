@@ -12,7 +12,8 @@ public class ClientGUI extends JFrame {
 
     // Variables
     private Client client;
-    private DefaultListModel listModel = new DefaultListModel<String>();
+    private DefaultListModel listModelUsers = new DefaultListModel<String>();
+    private DefaultListModel listModelChatrooms = new DefaultListModel<String>();
     private Boolean flagConnected;
     private Boolean flagRegistered;
     private Boolean flagOnline;
@@ -122,7 +123,9 @@ public class ClientGUI extends JFrame {
                 if (client.goOnline() == 0) {
                     flagOnline = true;
                     updateOnlineUsers(client.getOnlineusers());
-                    listOnline.setModel(listModel);
+                    updateChatrooms(client.getOnlinechatrooms());
+                    listOnline.setModel(listModelUsers);
+                    listChatrooms.setModel(listModelChatrooms);
 
                     if (flagOnline) {
                         functionLabel.setText("You are now Online!");
@@ -160,7 +163,7 @@ public class ClientGUI extends JFrame {
                     e1.printStackTrace();
                 }
 
-                listModel.clear();
+                listModelUsers.clear();
                 functionText.setText("");
 
                 sendBtn.setEnabled(false);
@@ -189,6 +192,7 @@ public class ClientGUI extends JFrame {
             @Override
             public void valueChanged(ListSelectionEvent arg0) {
                 if (!arg0.getValueIsAdjusting()) {
+                    listChatrooms.clearSelection();
                     textArea1.setEnabled(true);
                     msgText.setEnabled(true);
                     sendBtn.setEnabled(true);
@@ -222,6 +226,29 @@ public class ClientGUI extends JFrame {
             }
         });
 
+        listChatrooms.addListSelectionListener(new ListSelectionListener() {
+            @Override
+            public void valueChanged(ListSelectionEvent arg0) {
+                listOnline.clearSelection();
+                textArea1.setEnabled(true);
+                msgText.setEnabled(true);
+                sendBtn.setEnabled(true);
+
+                // TODO: This goes in null pointer exception when using the consumer
+                try {
+                    if (refresh != null)
+                    while (refresh.isAlive())
+                        refresh.interrupt();
+                    chatUserLabel.setText(listChatrooms.getSelectedValue().toString());
+                    textArea1.setText("");
+                //    refresh = client.readMessages(functionText.getText());
+                //    refresh.start();
+                } catch (Exception e) {
+                    System.out.println("No chatroom selected");
+                }
+            }
+        });
+
         sendBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -239,7 +266,7 @@ public class ClientGUI extends JFrame {
                 try {
                     client.quit();
 
-                    listModel.clear();
+                    listModelUsers.clear();
                     functionLabel.setText("User "+functionText.getText()+" Deleted! Register your username or login if you are already registered");
                     functionText.setText("");
 
@@ -275,13 +302,19 @@ public class ClientGUI extends JFrame {
     }
 
     public void updateOnlineUsers (List<String> onlineusers) {
-        listModel.clear();
+        listModelUsers.clear();
         for (String user:onlineusers)
             if (client.username.equals(user))
-                listModel.addElement("Me (" + user + ")");
+                listModelUsers.addElement("Me (" + user + ")");
 
         for (String user:onlineusers)
             if (!client.username.equals(user))
-                listModel.addElement(user);
+                listModelUsers.addElement(user);
+    }
+
+    public void updateChatrooms (List<String> chatrooms) {
+        listModelChatrooms.clear();
+        for (String room:chatrooms)
+            listModelChatrooms.addElement(room);
     }
 }

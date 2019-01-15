@@ -19,6 +19,7 @@ public class Client {
     private String quitpath = "/request/quit";
     private String onlinepath = "/online";
     private String registrypath = "/registry";
+    private String chatroomspath = "/brokers/topics";
     private static boolean alive = true;
     public static ClientGUI form = null;
     private Watcher onlineWatcher;
@@ -159,13 +160,19 @@ public class Client {
 
     public void refreshGUI(List<String> onlineusers){
         form.updateOnlineUsers(onlineusers);
+    }
 
+    public void refreshGUI2(List<String> chatrooms){
+        System.out.println("CHATROOMS:"+chatrooms);
+        form.updateChatrooms(chatrooms);
     }
 
     public List<String> getOnlineusers(){
         List<String> onlineusers = null;
+        List<String> chatrooms = null;
         try {
             onlineusers = zkeeper.getChildren(onlinepath, this.onlineWatcher, null);
+            chatrooms = zkeeper.getChildren(chatroomspath, null, null);
             refreshGUI(onlineusers);
 
         } catch (KeeperException | InterruptedException e) {
@@ -173,6 +180,19 @@ public class Client {
         }
         logger.info("Online users: " + onlineusers);
         return onlineusers;
+    }
+
+    public List<String> getOnlinechatrooms(){
+        List<String> chatrooms = null;
+        try {
+            chatrooms = zkeeper.getChildren(chatroomspath, null, null);
+            refreshGUI2(chatrooms);
+
+        } catch (KeeperException | InterruptedException e) {
+            e.printStackTrace();
+        }
+        logger.info("Online chatrooms: " + chatrooms);
+        return chatrooms;
     }
 
     public String sendMessage(String direction, String sender, String topic, String msg){
