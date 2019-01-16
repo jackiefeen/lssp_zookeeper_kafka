@@ -164,7 +164,7 @@
         <properties/>
         <border type="none"/>
         <children>
-          <component id="13cc4" class="javax.swing.JTextArea" binding="textArea1" default-binding="true">
+          <component id="13cc4" class="javax.swing.JTextArea" binding="textAreaMsg" default-binding="true">
             <constraints/>
             <properties/>
           </component>

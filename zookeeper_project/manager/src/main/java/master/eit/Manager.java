@@ -317,14 +317,6 @@ public class Manager implements Runnable {
                             props.put("key.serializer", "org.apache.kafka.common.serialization.StringSerializer");
                             props.put("value.serializer",
                                     "org.apache.kafka.common.serialization.StringSerializer");
-                            KafkaProducer<String, String> prod = new KafkaProducer<String, String>(props);
-                            String topic = user;
-                            int partition = 0;
-
-                            String key = "newuserKey";
-                            String value = "Welcome to the chat " + user + "!";
-                            prod.send(new ProducerRecord<String, String>(topic, partition, key, value));
-                            prod.close();
 
                             logger.info("New Kafka topic for " + user + " created.");
                         }
@@ -363,7 +355,6 @@ public class Manager implements Runnable {
 
                         version = zkeeper.exists(kafkatopicspath + "/" + user, null).getVersion();
                         zkeeper.delete(kafkatopicspath + "/" + user, version);
-
 
                         //if there is a problem deleting the topic
                     } catch (KeeperException | InterruptedException e) {
@@ -405,12 +396,13 @@ public class Manager implements Runnable {
                     props.put("key.serializer", "org.apache.kafka.common.serialization.StringSerializer");
                     props.put("value.serializer",
                             "org.apache.kafka.common.serialization.StringSerializer");
+
                     KafkaProducer<String, String> prod = new KafkaProducer<String, String>(props);
                     String topic = node;
                     int partition = 0;
 
-                    String key = "newuserKey";
-                    String value = "Welcome to the chat" + node + "!";
+                    String key = "S-0000000000000=Admin";
+                    String value = ": Welcome to the chat " + node + "!";
                     prod.send(new ProducerRecord<String, String>(topic, partition, key, value));
                     prod.close();
 

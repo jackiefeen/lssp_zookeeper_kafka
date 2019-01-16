@@ -12,26 +12,28 @@ public class KConsumer implements Runnable{
     private Consumer<String, String> consumer;
     private Properties props;
     private TopicPartition topicPartition;
-    public static List<String> messages = new ArrayList<>();
+    private ConsumerRecords<String, String> messages;
 
-    public KConsumer(String topic) {
+    public KConsumer(String topic, Integer partition) {
         props = new Properties();
         props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:9092");
-        props.put(ConsumerConfig.GROUP_ID_CONFIG, "KafkaConsumer");
+        props.put(ConsumerConfig.GROUP_ID_CONFIG, "KafkaConsumer"+partition);
         props.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class.getName());
         props.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class.getName());
         props.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "latest");
         props.put(ConsumerConfig.ENABLE_AUTO_COMMIT_CONFIG, "false");
 
-        this.topicPartition = new TopicPartition(topic, 0);
+        this.messages = ConsumerRecords.empty();
+        this.topicPartition = new TopicPartition(topic, partition);
         this.consumer = new KafkaConsumer<>(props);
     }
 
-    public void setTopic (String topic) {
-        this.topicPartition = new TopicPartition(topic, 0);
+    @Override
+    public void run() {
+        takeHistory();
     }
 
-    public void takeHistory() {
+    private void takeHistory() {
         System.out.println("Reading");
         int giveUp = 100;
         int noRecordsCount = 0;
@@ -39,63 +41,35 @@ public class KConsumer implements Runnable{
         List<TopicPartition> partitions = Arrays.asList(topicPartition);
         consumer.assign(partitions);
         consumer.seekToBeginning(partitions);
-        messages.clear();
-        do {
-            while (true) {
-                ConsumerRecords<String, String> consumerRecords = consumer.poll(0);
+        this.messages = ConsumerRecords.empty();
 
-                if (consumerRecords.count() == 0) {
-                    noRecordsCount++;
-                    if (noRecordsCount > giveUp) break;
-                    else continue;
-                }
+        while (true) {
+            ConsumerRecords<String, String> consumerRecords = consumer.poll(5);
 
+            if (consumerRecords.count() == 0) {
+                noRecordsCount++;
+                if (noRecordsCount > giveUp) break;
+                else continue;
+            } else {
                 for (ConsumerRecord record : consumerRecords) {
-                    System.out.println("I have got something:" + record);
-                    //messages.add(record.value()+", T_"+record.key()+", P_"+record.partition()+", O_"+record.offset()+"\n");
-                    messages.add(record.value() + "\n");
+                    System.out.println("Message: [T=" + record.topic() + "] " +
+                                                "[P=" + record.partition() + "] " +
+                                                "[O=" + record.offset() + "] " +
+                                                "[Timestamp=" + record.timestamp() + "] " +
+                                                "[K=" + record.key() + "] " +
+                                                "[V=" + record.value() + "]");
+                    //this.messages.add(record.key().toString()+record.value() + "\n");
                 }
-            }
-        } while (messages.isEmpty());
 
-        Client.form.textArea1.setText("");
-        for (String msg:KConsumer.messages) {
-            try {
-                if (msg.contains(Client.form.functionText.getText()+"="+Client.form.listOnline.getSelectedValue().toString().split(" ")[0])) {
-                    if (msg.substring(0, 1).equals("S"))
-                        Client.form.textArea1.append("You say: " + msg.split(":")[1]);
-                    else {
-                        String sender = msg.split("=")[1].split(":")[0];
-                        String message = msg.split("=")[1].split(":")[1];
-                        Client.form.textArea1.append(sender+" says: "+message);
-                    }
-                }
-            } catch (NullPointerException e) {
-                if (msg.contains("-chatroom-"+Client.form.chatUserLabel.getText())) {
-                    if (msg.substring(0, 1).equals("S"))
-                        Client.form.textArea1.append("You say: " + msg.split(":")[1]);
-                    else {
-                        String sender = msg.split("=")[1].split(":")[0];
-                        String message = msg.split("=")[1].split(":")[1];
-                        if (sender.equals(Client.form.functionText.getText()))
-                            Client.form.textArea1.append("You say: "+message);
-                        else
-                            Client.form.textArea1.append(sender+" says: "+message);
-                    }
-                }
+                this.messages = consumerRecords;
+                break;
             }
         }
+
+        consumer.close();
     }
 
-    @Override
-    public void run() {
-        try {
-            while (true) {
-                takeHistory();
-                Thread.sleep(5000);
-            }
-        } catch (InterruptedException e) {
-            System.out.println("Thread Interrupted");
-        }
+    public ConsumerRecords<String, String> getMessages() {
+        return this.messages;
     }
 }

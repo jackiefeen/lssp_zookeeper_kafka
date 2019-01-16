@@ -24,7 +24,6 @@ public class Client {
     public static ClientGUI form = null;
     private Watcher onlineWatcher;
 
-
     //client constructor
     public Client(String hostPort, String username) throws IOException, InterruptedException {
         this.username = username;
@@ -212,12 +211,17 @@ public class Client {
         return msgsent;
     }
 
-    public Thread readMessages(String topic){
-        return new Thread(new KConsumer(topic));
+    public Thread readMessages(String topic, Integer parallelism){
+        return new Thread(new Refresher(topic, parallelism));
     }
 
-    public void goOffline() throws InterruptedException {
-        zkeeper.close();
+    public void goOffline() {
+        try {
+            zkeeper.close();
+            logger.info("DISCONNECTED");
+        } catch (InterruptedException e) {
+            logger.error("Error when Disconnecting");
+        }
     }
 
     public static void main(String[] args) throws InterruptedException, IOException, ClassNotFoundException, UnsupportedLookAndFeelException, InstantiationException, IllegalAccessException {
@@ -232,44 +236,7 @@ public class Client {
             }
         });
 
-
-        /*
-        Scanner read = new Scanner(System.in);
-        System.out.println("Insert the IMS IP in this format: Host:Port");
-        String hostPort = read.nextLine();
-        System.out.println("What is your username?");
-        String username = read.nextLine();
-
-        Client client = new Client(hostPort, username);
-        */
-
-
         while (alive) {
-           /*
-            System.out.println("What would you like to do?");
-            String todo = read.nextLine();
-
-            switch (todo) {
-                case "register":
-                    client.register();
-                    break;
-                case "quit":
-                    client.quit();
-                    break;
-                case "goonline":
-                    client.goOnline();
-                    break;
-                case "getonlineusers":
-                    client.getOnlineusers();
-                    break;
-                case "gooffline":
-                    client.goOffline();
-                    break;
-                default:
-                    System.out.println("Please choose to either register, quit, goonline, getonlineusers or gooffline");
-                    break;
-            }
-            */
            try{
                if (zkeeper.getState() == ZooKeeper.States.CLOSED) {
                    alive = false;

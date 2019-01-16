@@ -26,7 +26,7 @@ public class ClientGUI extends JFrame {
     public JList listOnline;
     private JTextField msgText;
     private JButton sendBtn;
-    public JTextArea textArea1;
+    public JTextArea textAreaMsg;
     private JButton signinButton;
     private JTextField connectionText;
     private JButton connectButton;
@@ -64,10 +64,10 @@ public class ClientGUI extends JFrame {
 
         listOnline.setEnabled(false);
         listChatrooms.setEnabled(false);
-        textArea1.setEnabled(false);
-        textArea1.setEditable(false);
-        textArea1.setLineWrap(true);
-        textArea1.setWrapStyleWord(true);
+        textAreaMsg.setEnabled(false);
+        textAreaMsg.setEditable(false);
+        textAreaMsg.setLineWrap(true);
+        textAreaMsg.setWrapStyleWord(true);
 
         registerLabel.setEnabled(false);
 
@@ -146,11 +146,11 @@ public class ClientGUI extends JFrame {
         logoutButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                try {
-                    client.goOffline();
-                } catch (InterruptedException e1) {
-                    e1.printStackTrace();
-                }
+                if (refresh != null)
+                    while (refresh.isAlive())
+                        refresh.interrupt();
+
+                client.goOffline();
 
                 listModelUsers.clear();
                 functionText.setText("");
@@ -164,7 +164,7 @@ public class ClientGUI extends JFrame {
                 chatroomsLabel.setEnabled(false);
                 listOnline.setEnabled(false);
                 listChatrooms.setEnabled(false);
-                textArea1.setEnabled(false);
+                textAreaMsg.setEnabled(false);
 
                 connectionText.setEnabled(true);
                 connectButton.setEnabled(true);
@@ -178,20 +178,22 @@ public class ClientGUI extends JFrame {
             public void valueChanged(ListSelectionEvent arg0) {
                 if (!arg0.getValueIsAdjusting()) {
                     listChatrooms.clearSelection();
-                    textArea1.setEnabled(true);
+                    textAreaMsg.setEnabled(true);
                     msgText.setEnabled(true);
                     sendBtn.setEnabled(true);
+                    textAreaMsg.setText("Admin: Welcome to the chat " + functionText.getText() + "!\n");
 
                     try {
                         if (refresh != null)
                             while (refresh.isAlive())
                                 refresh.interrupt();
                         chatUserLabel.setText(listOnline.getSelectedValue().toString());
-                        refresh = client.readMessages(functionText.getText());
+                        refresh = client.readMessages(functionText.getText(), 2);
                         refresh.start();
                     } catch (Exception e) {
-                        //e.printStackTrace();
-                        System.out.println("No user selected");
+                        textAreaMsg.setText("");
+                        textAreaMsg.setEnabled(false);
+                        chatUserLabel.setText("Chat User");
                     }
                 }
             }
@@ -201,20 +203,22 @@ public class ClientGUI extends JFrame {
             @Override
             public void valueChanged(ListSelectionEvent arg0) {
                 listOnline.clearSelection();
-                textArea1.setEnabled(true);
+                textAreaMsg.setEnabled(true);
                 msgText.setEnabled(true);
                 sendBtn.setEnabled(true);
+                textAreaMsg.setText("Admin: Welcome to the chat " + functionText.getText() + "!\n");
 
-                // TODO: This goes in null pointer exception when using the consumer
                 try {
                     if (refresh != null)
                         while (refresh.isAlive())
                             refresh.interrupt();
                     chatUserLabel.setText(listChatrooms.getSelectedValue().toString());
-                    refresh = client.readMessages("chatroom-"+chatUserLabel.getText());
+                    refresh = client.readMessages("chatroom-"+chatUserLabel.getText(), 2);
                     refresh.start();
                 } catch (Exception e) {
-                    System.out.println("No chatroom selected");
+                    textAreaMsg.setText("");
+                    textAreaMsg.setEnabled(false);
+                    chatUserLabel.setText("Chat User");
                 }
             }
         });
@@ -222,18 +226,19 @@ public class ClientGUI extends JFrame {
         sendBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                String label = null;
+                String label = "";
                 if (!listOnline.isSelectionEmpty()) {
-                    System.out.println();
                     label = chatUserLabel.getText().split(" ")[0];
-                } else
-                    label = "chatroom-"+chatUserLabel.getText().split(" ")[0];
-
-                String msgsent = "";
-                msgsent = client.sendMessage("S", label, functionText.getText(), msgText.getText());
-                client.sendMessage("R", functionText.getText(), label, msgText.getText());
-                msgText.setText("");
-                textArea1.append(msgsent+"\n");
+                    String msgsent = client.sendMessage("S", label, functionText.getText(), msgText.getText());
+                    client.sendMessage("R", functionText.getText(), label, msgText.getText());
+                    msgText.setText("");
+                    textAreaMsg.append(msgsent+"\n");
+                } else {
+                    String topic = "chatroom-" + chatUserLabel.getText().split(" ")[0];
+                    String msgsent = client.sendMessage("R", functionText.getText(), topic, msgText.getText());
+                    msgText.setText("");
+                    textAreaMsg.append(msgsent + "\n");
+                }
             }
         });
 
@@ -241,9 +246,13 @@ public class ClientGUI extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 try {
+                    if (refresh != null)
+                        while (refresh.isAlive())
+                            refresh.interrupt();
                     client.quit();
 
                     listModelUsers.clear();
+                    listModelChatrooms.clear();
                     functionLabel.setText("User "+functionText.getText()+" Deleted! Register your username or login if you are already registered");
                     functionText.setText("");
 
@@ -253,11 +262,11 @@ public class ClientGUI extends JFrame {
                     msgText.setEnabled(false);
                     onlineUsersLabel.setEnabled(false);
                     chatUserLabel.setEnabled(false);
-                    textArea1.setText("");
+                    textAreaMsg.setText("");
                     chatroomsLabel.setEnabled(false);
                     listOnline.setEnabled(false);
                     listChatrooms.setEnabled(false);
-                    textArea1.setEnabled(false);
+                    textAreaMsg.setEnabled(false);
 
                     loginBtn.setEnabled(true);
                     signinButton.setEnabled(true);
@@ -278,7 +287,7 @@ public class ClientGUI extends JFrame {
         listModelUsers.clear();
         for (String user:onlineusers)
             if (client.username.equals(user))
-                listModelUsers.addElement("Me (" + user + ")");
+                listModelUsers.addElement(user + " (Me)");
 
         for (String user:onlineusers)
             if (!client.username.equals(user))
