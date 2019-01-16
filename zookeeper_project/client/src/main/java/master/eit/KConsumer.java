@@ -78,7 +78,7 @@ public class KConsumer implements Runnable{
                         String sender = msg.split("=")[1].split(":")[0];
                         String message = msg.split("=")[1].split(":")[1];
                         if (sender.equals(Client.form.functionText.getText()))
-                            Client.form.textArea1.append("You says: "+message);
+                            Client.form.textArea1.append("You say: "+message);
                         else
                             Client.form.textArea1.append(sender+" says: "+message);
                     }

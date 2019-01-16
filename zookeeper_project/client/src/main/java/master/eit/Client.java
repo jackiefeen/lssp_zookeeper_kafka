@@ -8,18 +8,18 @@ import org.apache.zookeeper.data.Stat;
 
 import javax.swing.*;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
 
 public class Client {
-    private final Logger logger = LogManager.getLogger("Client Class");
+    private static final Logger logger = LogManager.getLogger("Client Class");
     private static ZooKeeper zkeeper;
     public String username;
     private String enrollpath = "/request/enroll";
     private String quitpath = "/request/quit";
     private String onlinepath = "/online";
     private String registrypath = "/registry";
-    private String chatroomspath = "/brokers/topics";
+    private String topics = "/brokers/topics";
     private static boolean alive = true;
     public static ClientGUI form = null;
     private Watcher onlineWatcher;
@@ -168,10 +168,8 @@ public class Client {
 
     public List<String> getOnlineusers(){
         List<String> onlineusers = null;
-        List<String> chatrooms = null;
         try {
             onlineusers = zkeeper.getChildren(onlinepath, this.onlineWatcher, null);
-            chatrooms = zkeeper.getChildren(chatroomspath, null, null);
             refreshGUI(onlineusers);
 
         } catch (KeeperException | InterruptedException e) {
@@ -182,9 +180,16 @@ public class Client {
     }
 
     public List<String> getOnlinechatrooms(){
-        List<String> chatrooms = null;
+        List<String> chatrooms = new ArrayList<String>();
         try {
-            chatrooms = zkeeper.getChildren(chatroomspath, null, null);
+            List<String> children = zkeeper.getChildren(topics, null, null);
+            if (!children.isEmpty()) {
+                for (String child : children) {
+                    if (child.contains("chatroom-")) {
+                        chatrooms.add(child);
+                    }
+                }
+            }
             refreshGUI2(chatrooms);
 
         } catch (KeeperException | InterruptedException e) {
@@ -227,15 +232,20 @@ public class Client {
             }
         });
 
-        Scanner read = new Scanner(System.in);
 
+        /*
+        Scanner read = new Scanner(System.in);
         System.out.println("Insert the IMS IP in this format: Host:Port");
         String hostPort = read.nextLine();
         System.out.println("What is your username?");
         String username = read.nextLine();
+
         Client client = new Client(hostPort, username);
+        */
+
 
         while (alive) {
+           /*
             System.out.println("What would you like to do?");
             String todo = read.nextLine();
 
@@ -259,8 +269,13 @@ public class Client {
                     System.out.println("Please choose to either register, quit, goonline, getonlineusers or gooffline");
                     break;
             }
-            if (zkeeper.getState() == ZooKeeper.States.CLOSED) {
-                alive = false;
+            */
+           try{
+               if (zkeeper.getState() == ZooKeeper.States.CLOSED) {
+                   alive = false;
+               }
+           } catch (Exception e){
+               logger.info("Wating for connection to ZooKeeper...");
             }
             Thread.sleep(5000);
         }

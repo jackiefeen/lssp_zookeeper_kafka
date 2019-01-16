@@ -42,7 +42,7 @@ public class KProducer {
                                   record.key(), record.value(), metadata.partition(), metadata.offset(), elapsedTime);
                 System.out.println("I have sent to: " + record.topic() + "...."+ record.value());
                 //message = "You says: " + msg + ", T_"  + record.key() + ", P_" + metadata.partition() + ", O_" + metadata.offset();
-                message = "You say: " + msg;
+                message = "You say:  " + msg;
             }
         } finally {
             producer.flush();

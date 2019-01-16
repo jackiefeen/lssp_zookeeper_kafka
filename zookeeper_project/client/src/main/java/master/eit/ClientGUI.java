@@ -77,9 +77,7 @@ public class ClientGUI extends JFrame {
                 try {
                     client = new Client(connectionText.getText().split(":")[0], connectionText.getText().split(":")[1]);
                     flagConnected = true;
-                } catch (IOException e1) {
-                    e1.printStackTrace();
-                } catch (InterruptedException e1) {
+                } catch (IOException | InterruptedException e1) {
                     e1.printStackTrace();
                 }
 
