@@ -213,7 +213,10 @@ public class ClientGUI extends JFrame {
 
                 // Update the GUI
                 listModelUsers.clear();
+                listModelChatrooms.clear();
                 functionText.setText("");
+                msgText.setText("");
+                textAreaMsg.setText("");
 
                 sendBtn.setEnabled(false);
                 logoutButton.setEnabled(false);
@@ -338,6 +341,7 @@ public class ClientGUI extends JFrame {
                     listModelChatrooms.clear();
                     functionLabel.setText("User "+functionText.getText()+" Deleted! Register or Go Online if you are already registered");
                     functionText.setText("");
+                    msgText.setText("");
 
                     sendBtn.setEnabled(false);
                     logoutButton.setEnabled(false);
