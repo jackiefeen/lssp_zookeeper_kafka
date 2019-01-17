@@ -88,28 +88,33 @@ public class ClientGUI extends JFrame {
         connectButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                // ATTEMPT TO CONNECT TO THE SERVER
-                try {
-                    client = new Client(connectionText.getText().split(":")[0], connectionText.getText().split(":")[1]);
-                    flagConnected = true;
-                } catch (IOException | InterruptedException e1) {
-                    e1.printStackTrace();
-                }
+                connectedLabel.setText("Please, introduce ZooKeeper Server:Port");
+                if (!connectionText.getText().equals("")) {
+                    flagConnected = false;
+                    // ATTEMPT TO CONNECT TO THE SERVER
+                    try {
+                        client = new Client(connectionText.getText());
+                        if (!(client.zkeeper == null))
+                            flagConnected = true;
+                    } catch (IOException | InterruptedException e1) {
+                        flagConnected = false;
+                    }
 
-                // IF CONNECTED permit to Users to register or go online
-                if (flagConnected) {
-                    connectedLabel.setText("You are connected to the server");
-                    connectButton.setEnabled(false);
-                    connectionText.setEnabled(false);
+                    // IF CONNECTED permit to Users to register or go online
+                    if (flagConnected) {
+                        connectedLabel.setText("You are connected to the server");
+                        connectButton.setEnabled(false);
+                        connectionText.setEnabled(false);
 
-                    signinButton.setEnabled(true);
-                    loginBtn.setEnabled(true);
-                    functionText.setEnabled(true);
+                        signinButton.setEnabled(true);
+                        loginBtn.setEnabled(true);
+                        functionText.setEnabled(true);
 
-                    registerLabel.setEnabled(true);
-                    functionLabel.setText("Please, register your username first or just Login if you are already registered!");
+                        registerLabel.setEnabled(true);
+                        functionLabel.setText("Please, register your username first or just Login if you are already registered!");
+                    }
                 } else {
-                    connectedLabel.setText("Unable to connect! Try again!");
+                    functionLabel.setText("The Server:Port field is empty!");
                 }
             }
         });

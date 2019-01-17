@@ -13,7 +13,7 @@ import java.util.List;
 
 public class Client {
     private static final Logger logger = LogManager.getLogger("Client Class");
-    private static ZooKeeper zkeeper;
+    public static ZooKeeper zkeeper;
     public String username;
     private String enrollpath = "/request/enroll";
     private String quitpath = "/request/quit";
@@ -25,9 +25,7 @@ public class Client {
     private Watcher onlineWatcher;
 
     //client constructor
-    Client(String hostPort, String username) throws IOException, InterruptedException {
-        this.username = username;
-
+    Client(String hostPort) throws IOException, InterruptedException {
         //connect to ZooKeeper
         this.zkeeper = new ZKConnection().connect(hostPort);
         logger.info("State of the connection: " + zkeeper.getState());
