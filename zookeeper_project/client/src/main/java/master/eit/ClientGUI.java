@@ -225,6 +225,8 @@ public class ClientGUI extends JFrame {
                 connectButton.setEnabled(true);
 
                 chatUserLabel.setText("Chat User");
+                connectedLabel.setText("Please, connect to the server first :D");
+                functionLabel.setText("");
             }
         });
 
