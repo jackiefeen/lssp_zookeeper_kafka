@@ -9,11 +9,10 @@
     <list default="true" id="6b9df702-a5a8-499e-9097-60c092b33df5" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/client/src/main/java/master/eit/Client.java" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/main/java/master/eit/Client.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/main/java/master/eit/ClientGUI.java" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/main/java/master/eit/ClientGUI.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/main/java/master/eit/KConsumer.java" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/main/java/master/eit/KConsumer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/main/java/master/eit/KProducer.java" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/main/java/master/eit/KProducer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/main/java/master/eit/iClient.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/manager/src/main/java/master/eit/iManager.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/manager/src/main/java/master/eit/ChildWatcher.java" beforeDir="false" afterPath="$PROJECT_DIR$/manager/src/main/java/master/eit/ChildWatcher.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/manager/src/main/java/master/eit/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/manager/src/main/java/master/eit/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/manager/src/main/java/master/eit/Manager.java" beforeDir="false" afterPath="$PROJECT_DIR$/manager/src/main/java/master/eit/Manager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/manager/src/main/java/master/eit/ZKConnection.java" beforeDir="false" afterPath="$PROJECT_DIR$/manager/src/main/java/master/eit/ZKConnection.java" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/target/" />
     <ignored path="$PROJECT_DIR$/client/target/" />
@@ -155,24 +154,24 @@
       <usages-collector id="statistics.file.extensions.open">
         <counts>
           <entry key="form" value="4" />
-          <entry key="java" value="12" />
+          <entry key="java" value="16" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.open">
         <counts>
           <entry key="GUI_DESIGNER_FORM" value="4" />
-          <entry key="JAVA" value="12" />
+          <entry key="JAVA" value="16" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
-          <entry key="java" value="2940" />
+          <entry key="java" value="5051" />
           <entry key="txt" value="38" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
-          <entry key="JAVA" value="2940" />
+          <entry key="JAVA" value="5051" />
           <entry key="PLAIN_TEXT" value="38" />
         </counts>
       </usages-collector>
@@ -183,12 +182,14 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/client/src/main/java/master/eit/Client.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="195">
-              <caret line="39" column="33" selection-start-line="39" selection-start-column="33" selection-end-line="39" selection-end-column="33" />
+            <state relative-caret-position="463">
+              <caret line="154" selection-start-line="154" selection-end-line="154" />
               <folding>
-                <element signature="e#6858#6866#0" expanded="true" />
-                <element signature="e#7982#7983#0" expanded="true" />
-                <element signature="e#8037#8038#0" expanded="true" />
+                <element signature="e#6477#6478#0" expanded="true" />
+                <element signature="e#6528#6529#0" expanded="true" />
+                <element signature="e#6582#6583#0" expanded="true" />
+                <element signature="e#6629#6630#0" expanded="true" />
+                <element signature="e#7136#7144#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -197,8 +198,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/client/src/main/java/master/eit/ClientGUI.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="149">
-              <caret line="190" column="31" selection-start-line="190" selection-start-column="24" selection-end-line="190" selection-end-column="31" />
+            <state relative-caret-position="74">
+              <caret line="192" column="43" lean-forward="true" selection-start-line="192" selection-start-column="43" selection-end-line="192" selection-end-column="43" />
             </state>
           </provider>
         </entry>
@@ -206,20 +207,26 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/client/src/main/java/master/eit/DataWatcher.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="35">
-              <caret line="25" column="55" lean-forward="true" selection-start-line="25" selection-start-column="34" selection-end-line="25" selection-end-column="55" />
+            <state relative-caret-position="-122">
+              <caret line="25" column="55" lean-forward="true" selection-start-line="25" selection-start-column="55" selection-end-line="25" selection-end-column="55" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/manager/src/main/java/master/eit/Manager.java">
+        <entry file="file://$PROJECT_DIR$/manager/src/main/java/master/eit/ZKConnection.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="203">
-              <caret line="73" column="27" lean-forward="true" selection-start-line="73" selection-start-column="27" selection-end-line="73" selection-end-column="37" />
-              <folding>
-                <element signature="imports" expanded="true" />
-              </folding>
+            <state relative-caret-position="570">
+              <caret line="46" column="28" selection-start-line="46" selection-start-column="28" selection-end-line="46" selection-end-column="28" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/manager/src/main/java/master/eit/Main.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="450">
+              <caret line="36" column="9" selection-start-line="36" selection-start-column="9" selection-end-line="36" selection-end-column="9" />
             </state>
           </provider>
         </entry>
@@ -227,8 +234,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/client/src/main/java/master/eit/KProducer.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="269">
-              <caret line="44" column="37" selection-start-line="44" selection-start-column="37" selection-end-line="44" selection-end-column="37" />
+            <state relative-caret-position="306">
+              <caret line="35" selection-start-line="35" selection-end-line="35" />
             </state>
           </provider>
         </entry>
@@ -236,8 +243,14 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/client/src/main/java/master/eit/KConsumer.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="352">
-              <caret line="80" column="67" selection-start-line="80" selection-start-column="67" selection-end-line="80" selection-end-column="67" />
+            <state relative-caret-position="300">
+              <caret line="25" column="48" lean-forward="true" selection-start-line="25" selection-start-column="48" selection-end-line="25" selection-end-column="48" />
+              <folding>
+                <element signature="e#1285#1286#0" expanded="true" />
+                <element signature="e#1314#1315#0" expanded="true" />
+                <element signature="e#2796#2797#0" expanded="true" />
+                <element signature="e#2832#2833#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -253,9 +266,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>enrolldata</find>
-      <find>semaphore</find>
-      <find>enrollpath</find>
       <find>hostport</find>
       <find>simple</find>
       <find>SimpleWatcher</find>
@@ -278,9 +288,14 @@
       <find>says</find>
       <find>connect</find>
       <find>chatroom</find>
-      <find>refresh</find>
       <find>getChil</find>
       <find>getChildre</find>
+      <find>refresh</find>
+      <find>consumer</find>
+      <find>KConsumer</find>
+      <find>KCons</find>
+      <find>welcome</find>
+      <find>createRequestNode</find>
     </findStrings>
     <dirStrings>
       <dir>$PROJECT_DIR$</dir>
@@ -308,18 +323,19 @@
         <option value="$PROJECT_DIR$/src/main/java/master/eit/manager/Manager.java" />
         <option value="$PROJECT_DIR$/pom.xml" />
         <option value="$PROJECT_DIR$/manager/src/main/java/master/eit/iManager.java" />
-        <option value="$PROJECT_DIR$/manager/src/main/java/master/eit/Main.java" />
         <option value="$PROJECT_DIR$/manager/pom.xml" />
         <option value="$PROJECT_DIR$/client/src/main/java/master/eit/iClient.java" />
         <option value="$PROJECT_DIR$/client/pom.xml" />
         <option value="$PROJECT_DIR$/manager/src/main/resources/log4j.properties" />
-        <option value="$PROJECT_DIR$/manager/src/main/java/master/eit/ChildWatcher.java" />
         <option value="$PROJECT_DIR$/client/src/main/java/master/eit/DataWatcher.java" />
         <option value="$PROJECT_DIR$/client/src/main/java/master/eit/ClientGUI.form" />
-        <option value="$PROJECT_DIR$/manager/src/main/java/master/eit/Manager.java" />
+        <option value="$PROJECT_DIR$/client/src/main/java/master/eit/ClientGUI.java" />
         <option value="$PROJECT_DIR$/client/src/main/java/master/eit/KConsumer.java" />
         <option value="$PROJECT_DIR$/client/src/main/java/master/eit/KProducer.java" />
-        <option value="$PROJECT_DIR$/client/src/main/java/master/eit/ClientGUI.java" />
+        <option value="$PROJECT_DIR$/manager/src/main/java/master/eit/Manager.java" />
+        <option value="$PROJECT_DIR$/manager/src/main/java/master/eit/ZKConnection.java" />
+        <option value="$PROJECT_DIR$/manager/src/main/java/master/eit/Main.java" />
+        <option value="$PROJECT_DIR$/manager/src/main/java/master/eit/ChildWatcher.java" />
         <option value="$PROJECT_DIR$/client/src/main/java/master/eit/Client.java" />
       </list>
     </option>
@@ -456,7 +472,7 @@
     <property name="UI_DESIGNER_EDITOR_MODE.UIDesignerToolWindowManager.WIDTH" value="280" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1547638274984" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1547719356716" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
@@ -595,8 +611,9 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="67" y="25" width="1373" height="875" extended-state="6" />
+    <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.2245667" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.2245667" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Image Layers" order="2" />
       <window_info id="Designer" order="3" />
@@ -614,7 +631,7 @@
       <window_info anchor="bottom" id="Terminal" order="8" weight="0.32797858" />
       <window_info anchor="bottom" id="Event Log" order="9" side_tool="true" />
       <window_info anchor="bottom" id="Messages" order="10" weight="0.40268457" />
-      <window_info active="true" anchor="bottom" x="67" y="644" width="1607" height="295" id="Run" order="11" visible="true" weight="0.45369127" />
+      <window_info anchor="bottom" x="67" y="644" width="1607" height="295" id="Run" order="11" visible="true" weight="0.22416107" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
@@ -675,20 +692,6 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/master/eit/manager/META-INF/MANIFEST.MF" />
-    <entry file="file://$PROJECT_DIR$/manager/src/main/java/master/eit/Main.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="240">
-          <caret line="16" column="41" selection-start-line="16" selection-start-column="41" selection-end-line="16" selection-end-column="41" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/manager/src/main/java/master/eit/ZKConnection.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="210">
-          <caret line="22" column="21" selection-start-line="22" selection-start-column="21" selection-end-line="22" selection-end-column="21" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/manager/src/main/java/master/eit/iManager.java">
       <provider selected="true" editor-type-id="text-editor">
         <state>
@@ -734,13 +737,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/manager/src/main/java/master/eit/ChildWatcher.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="303">
-          <caret line="38" column="50" lean-forward="true" selection-start-line="37" selection-start-column="12" selection-end-line="38" selection-end-column="50" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/client/src/main/java/master/eit/ClientGUI.form">
       <provider selected="true" editor-type-id="ui-designer" />
     </entry>
@@ -753,50 +749,87 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/client/src/main/java/master/eit/KProducer.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="269">
-          <caret line="44" column="37" selection-start-line="44" selection-start-column="37" selection-end-line="44" selection-end-column="37" />
+        <state relative-caret-position="306">
+          <caret line="35" selection-start-line="35" selection-end-line="35" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/manager/src/main/java/master/eit/ZKConnection.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="570">
+          <caret line="46" column="28" selection-start-line="46" selection-start-column="28" selection-end-line="46" selection-end-column="28" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/manager/src/main/java/master/eit/Main.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="450">
+          <caret line="36" column="9" selection-start-line="36" selection-start-column="9" selection-end-line="36" selection-end-column="9" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/client/src/main/java/master/eit/KConsumer.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="352">
-          <caret line="80" column="67" selection-start-line="80" selection-start-column="67" selection-end-line="80" selection-end-column="67" />
+        <state relative-caret-position="300">
+          <caret line="25" column="48" lean-forward="true" selection-start-line="25" selection-start-column="48" selection-end-line="25" selection-end-column="48" />
+          <folding>
+            <element signature="e#1285#1286#0" expanded="true" />
+            <element signature="e#1314#1315#0" expanded="true" />
+            <element signature="e#2796#2797#0" expanded="true" />
+            <element signature="e#2832#2833#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/client/src/main/java/master/eit/ClientGUI.java">
+    <entry file="file://$PROJECT_DIR$/manager/src/main/java/master/eit/ChildWatcher.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="149">
-          <caret line="190" column="31" selection-start-line="190" selection-start-column="24" selection-end-line="190" selection-end-column="31" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/client/src/main/java/master/eit/DataWatcher.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="35">
-          <caret line="25" column="55" lean-forward="true" selection-start-line="25" selection-start-column="34" selection-end-line="25" selection-end-column="55" />
+        <state relative-caret-position="315">
+          <caret line="26" column="41" selection-start-line="26" selection-start-column="41" selection-end-line="26" selection-end-column="41" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/manager/src/main/java/master/eit/Manager.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="203">
-          <caret line="73" column="27" lean-forward="true" selection-start-line="73" selection-start-column="27" selection-end-line="73" selection-end-column="37" />
+        <state relative-caret-position="-2926">
+          <caret line="25" column="32" selection-start-line="25" selection-start-column="32" selection-end-line="25" selection-end-column="32" />
           <folding>
             <element signature="imports" expanded="true" />
+            <element signature="e#18220#18236#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/client/src/main/java/master/eit/DataWatcher.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-122">
+          <caret line="25" column="55" lean-forward="true" selection-start-line="25" selection-start-column="55" selection-end-line="25" selection-end-column="55" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/client/src/main/java/master/eit/Refresher.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-1183">
+          <caret line="10" column="13" selection-start-line="10" selection-start-column="13" selection-end-line="10" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/client/src/main/java/master/eit/ClientGUI.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="74">
+          <caret line="192" column="43" lean-forward="true" selection-start-line="192" selection-start-column="43" selection-end-line="192" selection-end-column="43" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/client/src/main/java/master/eit/Client.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="195">
-          <caret line="39" column="33" selection-start-line="39" selection-start-column="33" selection-end-line="39" selection-end-column="33" />
+        <state relative-caret-position="463">
+          <caret line="154" selection-start-line="154" selection-end-line="154" />
           <folding>
-            <element signature="e#6858#6866#0" expanded="true" />
-            <element signature="e#7982#7983#0" expanded="true" />
-            <element signature="e#8037#8038#0" expanded="true" />
+            <element signature="e#6477#6478#0" expanded="true" />
+            <element signature="e#6528#6529#0" expanded="true" />
+            <element signature="e#6582#6583#0" expanded="true" />
+            <element signature="e#6629#6630#0" expanded="true" />
+            <element signature="e#7136#7144#0" expanded="true" />
           </folding>
         </state>
       </provider>

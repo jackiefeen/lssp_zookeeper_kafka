@@ -20,7 +20,7 @@ public class ZKConnection {
     }
 
     /*
-    Create connection to ZooKeeper server
+    Create connection to the ZooKeeper server
      */
     public ZooKeeper connect(String hostport) throws IOException, InterruptedException {
 
@@ -44,7 +44,7 @@ public class ZKConnection {
     }
 
     /*
-    Close connection to ZooKeeper server
+    Close connection to the ZooKeeper server
      */
     public void close() throws InterruptedException {
         zoo.close();

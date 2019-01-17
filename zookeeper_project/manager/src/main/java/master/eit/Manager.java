@@ -9,10 +9,8 @@ import org.apache.zookeeper.*;
 import org.apache.zookeeper.data.Stat;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
-
 
 
 public class Manager implements Runnable {
@@ -29,7 +27,6 @@ public class Manager implements Runnable {
     private Watcher enrollbranchWatcher;
     private Watcher quitbranchWatcher;
     private Watcher onlinebranchWatcher;
-    private Watcher chatroomsWatcher;
     private List<String> registeredUsers;
 
 
@@ -41,7 +38,7 @@ public class Manager implements Runnable {
         logger.info("State: " + zkeeper.getState());
 
         if (zkeeper != null) {
-            //ensure that the tree exists, if not, create the tree structure
+            //ensure that the tree structure in ZooKeeper exists, if not, create it
             try {
                 if ((zkeeper.exists(enrollpath, false) == null) ||
                         (zkeeper.exists(quitpath, false) == null) ||
@@ -59,9 +56,15 @@ public class Manager implements Runnable {
             logger.warn("There is an issue with the ZooKeeper connection");
         }
 
+
         //get the status of registered users from /registry
         registeredUsers = getRegisteredUsers();
         logger.info("System State: registered users: " + registeredUsers);
+
+        /*
+        The following initializes watchers and gets the current status of the system
+        This is especially important if the manager starts up after the clients
+         */
 
         //initialize the ChildWatcher for enroll
         ChildWatcher enrollbranchWatcher = new ChildWatcher(this);
@@ -130,7 +133,6 @@ public class Manager implements Runnable {
             logger.error(e);
         }
     }
-
 
 
     /*
@@ -252,6 +254,7 @@ public class Manager implements Runnable {
                                 logger.info("The user " + child + " is removed.");
 
 
+                                //delete the Kafka topic of the user who has quit
                                 deleteKafkaTopic(child);
                                 registeredUsers = getRegisteredUsers();
                                 logger.info("System State update: registered users: " + registeredUsers);
@@ -272,8 +275,8 @@ public class Manager implements Runnable {
         }
     }
 
+    //get all users that are currently registered in the system
     public List<String> getRegisteredUsers() {
-
         List<String> registeredusers = null;
         try {
             registeredusers = zkeeper.getChildren(registrypath, null, null);
@@ -284,9 +287,11 @@ public class Manager implements Runnable {
         return registeredusers;
     }
 
+    //create a new topic in the ZooKeeper Tree for Kafka
     void createKafkaTopic() {
         logger.info("createKafkaTopic");
         List<String> onlineusers = null;
+        //get all online users
         try {
             onlineusers = zkeeper.getChildren(onlinepath, onlinebranchWatcher, null);
         } catch (KeeperException | InterruptedException e) {
@@ -294,17 +299,20 @@ public class Manager implements Runnable {
         }
         if (onlineusers != null) {
             logger.info("Current online users: " + onlineusers);
+
+            //check for every user that is online if he is registered
             for (String user : onlineusers) {
-                //check if the user is registered in the registry
+
                 try {
                     Stat registered = zkeeper.exists(registrypath + "/" + user, null);
 
                     if (registered != null) {
 
+                        //check if there is already a kafka topic for the user
                         Stat knownuser = zkeeper.exists(kafkatopicspath + "/" + user, null);
 
                         if (knownuser == null) {
-                            //KAFKA
+                            //create a new Kafka topic
                             logger.info("Create KAFKA Topic");
 
                             Properties props = new Properties();
@@ -334,39 +342,36 @@ public class Manager implements Runnable {
 
 
     public void deleteKafkaTopic(String user) {
-        //check if the user is registered in the registry
+        //check if there exists a Kafka topic for the user
         try {
-            Stat registered = zkeeper.exists(registrypath + "/" + user, null);
+            Stat knownuser = zkeeper.exists(kafkatopicspath + "/" + user, null);
 
-                Stat knownuser = zkeeper.exists(kafkatopicspath + "/" + user, null);
+            if (knownuser != null) {
+                //if the Kafka topic exists, delete it
+                try {
+                    //delete the topic and its subfolders
+                    int version = zkeeper.exists(kafkatopicspath + "/" + user + "/partitions/0/state", null).getVersion();
+                    zkeeper.delete(kafkatopicspath + "/" + user + "/partitions/0/state", version);
 
-                if (knownuser != null) {
-                    //delete KAFKA topic
-                    try {
-                        //delete the topic and its subfolders
-                        int version = zkeeper.exists(kafkatopicspath + "/" + user + "/partitions/0/state", null).getVersion();
-                        zkeeper.delete(kafkatopicspath + "/" + user + "/partitions/0/state", version);
+                    version = zkeeper.exists(kafkatopicspath + "/" + user + "/partitions/0", null).getVersion();
+                    zkeeper.delete(kafkatopicspath + "/" + user + "/partitions/0", version);
 
-                        version = zkeeper.exists(kafkatopicspath + "/" + user + "/partitions/0", null).getVersion();
-                        zkeeper.delete(kafkatopicspath + "/" + user + "/partitions/0", version);
+                    version = zkeeper.exists(kafkatopicspath + "/" + user + "/partitions", null).getVersion();
+                    zkeeper.delete(kafkatopicspath + "/" + user + "/partitions", version);
 
-                        version = zkeeper.exists(kafkatopicspath + "/" + user + "/partitions", null).getVersion();
-                        zkeeper.delete(kafkatopicspath + "/" + user + "/partitions", version);
+                    version = zkeeper.exists(kafkatopicspath + "/" + user, null).getVersion();
+                    zkeeper.delete(kafkatopicspath + "/" + user, version);
 
-                        version = zkeeper.exists(kafkatopicspath + "/" + user, null).getVersion();
-                        zkeeper.delete(kafkatopicspath + "/" + user, version);
-
-                        //if there is a problem deleting the topic
-                    } catch (KeeperException | InterruptedException e) {
-                        e.printStackTrace();
-                        logger.warn("An error occurred. The topic " + user + " could not be deleted.");
-                    }
-
-                    logger.info("Kafka topic for " + user + " deleted.");
+                    //if there is a problem deleting the topic
+                } catch (KeeperException | InterruptedException e) {
+                    e.printStackTrace();
+                    logger.warn("An error occurred. The topic " + user + " could not be deleted.");
                 }
-                else{
-                    logger.info("There is no Kafka topic for " + user);
-                }
+
+                logger.info("Kafka topic for " + user + " deleted.");
+            } else {
+                logger.info("There is no Kafka topic for " + user);
+            }
 
 
         } catch (KeeperException | InterruptedException e) {
@@ -374,9 +379,9 @@ public class Manager implements Runnable {
         }
     }
 
-    private void createKafkaChatRooms(){
+    private void createKafkaChatRooms() {
         try {
-            //iterate over the ChatRooms and create the nodes
+            //iterate over the predefined ChatRooms and create the nodes if they do not exist yet
             for (String node : ChatRooms) {
                 Stat chatroomexists = null;
 
@@ -419,9 +424,9 @@ public class Manager implements Runnable {
     }
 
 
-
     public void run() {
         try {
+            //let the manager run and only terminate it due to an exception
             synchronized (this) {
                 while (alive) {
                     wait();

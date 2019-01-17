@@ -14,7 +14,7 @@ public class Main {
 
         Runtime.getRuntime().addShutdownHook(new Thread() {
             public void run() {
-                System.out.println("\nYou killed me :'(");
+                System.out.println("\n The manager was terminated.");
             }
         });
 
@@ -28,16 +28,12 @@ public class Main {
         logger.info("The Manager has caught up with requests and started up.");
 
         while (true) {
-
             try {
                 System.out.println("Ctrl-C to shutdown the Manager");
                 Thread.sleep(60000);
             } catch(InterruptedException e) {
                 System.out.println("I cannot sleep, something woke me up");
             }
-
         }
-
-
     }
 }
