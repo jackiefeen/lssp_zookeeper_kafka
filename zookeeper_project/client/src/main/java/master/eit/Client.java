@@ -23,6 +23,7 @@ public class Client {
     private static boolean alive = true;
     public static ClientGUI form = null;
     private Watcher onlineWatcher;
+    public String registrationstatus = "-1";
 
     //client constructor
     Client(String hostPort, String username) throws IOException, InterruptedException {
@@ -72,7 +73,7 @@ public class Client {
     the nodedatawatcher was triggered
     and the client now needs to act upon the new data and handle the registration
      */
-    void handleRegistration() throws KeeperException, InterruptedException {
+    String handleRegistration() throws KeeperException, InterruptedException {
         byte[] edata = zkeeper.getData(enrollpath + "/" + username, true, null);
         if (edata != null) {
             String enrolldata = new String(edata);
@@ -80,12 +81,15 @@ public class Client {
             //check the data of the node and display the result of the request
             if (enrolldata.equals("1")) {
                 logger.info(username + ": the registration was successful.");
+                registrationstatus = enrolldata;
 
             } else if (enrolldata.equals("2")) {
                 logger.info(username + ": the client was already registered.");
+                registrationstatus = enrolldata;
 
             } else {
                 logger.info(username + ": the registration failed.");
+                registrationstatus = enrolldata;
             }
             // delete the enrollment request from the ZooKeeper tree
             Stat exist = zkeeper.exists(enrollpath + "/" + username, null);
@@ -94,6 +98,7 @@ public class Client {
                 zkeeper.delete(enrollpath + "/" + username, version);
             }
         }
+        return registrationstatus;
     }
 
     //create an ephemeral node for the quit request and set a datawatcher on it

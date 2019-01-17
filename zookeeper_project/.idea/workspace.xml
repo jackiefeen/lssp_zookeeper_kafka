@@ -9,10 +9,6 @@
     <list default="true" id="6b9df702-a5a8-499e-9097-60c092b33df5" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/client/src/main/java/master/eit/Client.java" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/main/java/master/eit/Client.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/manager/src/main/java/master/eit/ChildWatcher.java" beforeDir="false" afterPath="$PROJECT_DIR$/manager/src/main/java/master/eit/ChildWatcher.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/manager/src/main/java/master/eit/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/manager/src/main/java/master/eit/Main.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/manager/src/main/java/master/eit/Manager.java" beforeDir="false" afterPath="$PROJECT_DIR$/manager/src/main/java/master/eit/Manager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/manager/src/main/java/master/eit/ZKConnection.java" beforeDir="false" afterPath="$PROJECT_DIR$/manager/src/main/java/master/eit/ZKConnection.java" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/target/" />
     <ignored path="$PROJECT_DIR$/client/target/" />
@@ -154,24 +150,24 @@
       <usages-collector id="statistics.file.extensions.open">
         <counts>
           <entry key="form" value="4" />
-          <entry key="java" value="16" />
+          <entry key="java" value="18" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.open">
         <counts>
           <entry key="GUI_DESIGNER_FORM" value="4" />
-          <entry key="JAVA" value="16" />
+          <entry key="JAVA" value="18" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
-          <entry key="java" value="5051" />
+          <entry key="java" value="5142" />
           <entry key="txt" value="38" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
-          <entry key="JAVA" value="5051" />
+          <entry key="JAVA" value="5142" />
           <entry key="PLAIN_TEXT" value="38" />
         </counts>
       </usages-collector>
@@ -182,8 +178,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/client/src/main/java/master/eit/Client.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="463">
-              <caret line="154" selection-start-line="154" selection-end-line="154" />
+            <state relative-caret-position="1365">
+              <caret line="100" column="34" selection-start-line="100" selection-start-column="34" selection-end-line="100" selection-end-column="34" />
               <folding>
                 <element signature="e#6477#6478#0" expanded="true" />
                 <element signature="e#6528#6529#0" expanded="true" />
@@ -196,10 +192,31 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/client/src/main/java/master/eit/Refresher.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="-660">
+              <caret line="10" column="13" selection-start-line="10" selection-start-column="13" selection-end-line="10" selection-end-column="13" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/client/src/main/java/master/eit/ClientGUI.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="74">
-              <caret line="192" column="43" lean-forward="true" selection-start-line="192" selection-start-column="43" selection-end-line="192" selection-end-column="43" />
+            <state relative-caret-position="225">
+              <caret line="121" column="26" selection-start-line="121" selection-start-column="26" selection-end-line="121" selection-end-column="26" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/manager/src/main/java/master/eit/Manager.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="15">
+              <caret line="36" column="55" selection-start-line="36" selection-start-column="55" selection-end-line="36" selection-end-column="55" />
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -207,7 +224,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/client/src/main/java/master/eit/DataWatcher.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-122">
+            <state relative-caret-position="148">
               <caret line="25" column="55" lean-forward="true" selection-start-line="25" selection-start-column="55" selection-end-line="25" selection-end-column="55" />
             </state>
           </provider>
@@ -266,13 +283,8 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>hostport</find>
-      <find>simple</find>
-      <find>SimpleWatcher</find>
-      <find>current</find>
       <find>registration</find>
       <find>createKaf</find>
-      <find>readMess</find>
       <find>offline</find>
       <find>topic</find>
       <find>createKafka</find>
@@ -281,8 +293,6 @@
       <find>online</find>
       <find>quitButton</find>
       <find>System</find>
-      <find>quit</find>
-      <find>register</find>
       <find>broker</find>
       <find>kafkatopicspath</find>
       <find>says</find>
@@ -296,6 +306,13 @@
       <find>KCons</find>
       <find>welcome</find>
       <find>createRequestNode</find>
+      <find>remove</find>
+      <find>getRegis</find>
+      <find>quit</find>
+      <find>readMess</find>
+      <find>register</find>
+      <find>sign</find>
+      <find>signin</find>
     </findStrings>
     <dirStrings>
       <dir>$PROJECT_DIR$</dir>
@@ -472,7 +489,7 @@
     <property name="UI_DESIGNER_EDITOR_MODE.UIDesignerToolWindowManager.WIDTH" value="280" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1547719356716" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1547724810660" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
@@ -631,7 +648,7 @@
       <window_info anchor="bottom" id="Terminal" order="8" weight="0.32797858" />
       <window_info anchor="bottom" id="Event Log" order="9" side_tool="true" />
       <window_info anchor="bottom" id="Messages" order="10" weight="0.40268457" />
-      <window_info anchor="bottom" x="67" y="644" width="1607" height="295" id="Run" order="11" visible="true" weight="0.22416107" />
+      <window_info anchor="bottom" x="67" y="644" width="1607" height="295" id="Run" order="11" visible="true" weight="0.23355705" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
@@ -790,40 +807,39 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/manager/src/main/java/master/eit/Manager.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-2926">
-          <caret line="25" column="32" selection-start-line="25" selection-start-column="32" selection-end-line="25" selection-end-column="32" />
+        <state relative-caret-position="15">
+          <caret line="36" column="55" selection-start-line="36" selection-start-column="55" selection-end-line="36" selection-end-column="55" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#18220#18236#0" expanded="true" />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/client/src/main/java/master/eit/DataWatcher.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-122">
-          <caret line="25" column="55" lean-forward="true" selection-start-line="25" selection-start-column="55" selection-end-line="25" selection-end-column="55" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/client/src/main/java/master/eit/Refresher.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1183">
+        <state relative-caret-position="-660">
           <caret line="10" column="13" selection-start-line="10" selection-start-column="13" selection-end-line="10" selection-end-column="13" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/client/src/main/java/master/eit/ClientGUI.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="74">
-          <caret line="192" column="43" lean-forward="true" selection-start-line="192" selection-start-column="43" selection-end-line="192" selection-end-column="43" />
+        <state relative-caret-position="225">
+          <caret line="121" column="26" selection-start-line="121" selection-start-column="26" selection-end-line="121" selection-end-column="26" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/client/src/main/java/master/eit/DataWatcher.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="148">
+          <caret line="25" column="55" lean-forward="true" selection-start-line="25" selection-start-column="55" selection-end-line="25" selection-end-column="55" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/client/src/main/java/master/eit/Client.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="463">
-          <caret line="154" selection-start-line="154" selection-end-line="154" />
+        <state relative-caret-position="1365">
+          <caret line="100" column="34" selection-start-line="100" selection-start-column="34" selection-end-line="100" selection-end-column="34" />
           <folding>
             <element signature="e#6477#6478#0" expanded="true" />
             <element signature="e#6528#6529#0" expanded="true" />
