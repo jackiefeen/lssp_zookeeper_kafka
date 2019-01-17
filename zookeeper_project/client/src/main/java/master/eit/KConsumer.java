@@ -7,6 +7,8 @@ import org.apache.kafka.common.serialization.StringDeserializer;
 
 import java.util.*;
 
+import static org.apache.kafka.clients.consumer.ConsumerConfig.GROUP_ID_CONFIG;
+
 /**
  * KAFKA CONSUMER CLASS
  */
@@ -28,7 +30,7 @@ public class KConsumer implements Runnable{
         // Setting the properties for the consumer
         props = new Properties();
         props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:9092");
-        props.put(ConsumerConfig.GROUP_ID_CONFIG, "KafkaConsumer"+partition);
+        props.put(GROUP_ID_CONFIG, topic+"-Consumer Group");
         props.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class.getName());
         props.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class.getName());
         // This settings allow to get all the history
@@ -52,7 +54,7 @@ public class KConsumer implements Runnable{
      * Retrieve all the messages from Kafka (the History of a given user)
      */
     private void takeHistory() {
-        System.out.println("Reading");
+        System.out.println("Consumer within " + props.getProperty(GROUP_ID_CONFIG) + " is reading");
 
         // Set the limits for the maximum number of requests made to Kafka
         int giveUp = 100;
