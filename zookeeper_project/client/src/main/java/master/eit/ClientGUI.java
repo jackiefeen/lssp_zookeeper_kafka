@@ -82,6 +82,7 @@ public class ClientGUI extends JFrame {
         textAreaMsg.setWrapStyleWord(true);
 
         registerLabel.setEnabled(false);
+        connectionText.setText("localhost:2181");
 
         // CONNECT BUTTON LISTENER
         connectButton.addActionListener(new ActionListener() {
@@ -119,33 +120,37 @@ public class ClientGUI extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 // Try to register
                 client.username = functionText.getText();
-                client.register();
-                flagRegistered = true;
+                if (!client.username.equals("")) {
+                    client.register();
+                    flagRegistered = true;
 
-                // Try to register the user
-                long initTime = System.currentTimeMillis();
-                boolean timeElapsed = true;
-                while (timeElapsed){
-                    signinButton.setEnabled(false);
-                    if(System.currentTimeMillis() - initTime > 1000 || !registrationstatus.equals("-1")){
-                        timeElapsed = false;
+                    // Try to register the user
+                    long initTime = System.currentTimeMillis();
+                    boolean timeElapsed = true;
+                    while (timeElapsed) {
+                        signinButton.setEnabled(false);
+                        if (System.currentTimeMillis() - initTime > 1000 || !registrationstatus.equals("-1")) {
+                            timeElapsed = false;
+                        }
                     }
+
+                    if (registrationstatus.equals("-1"))
+                        functionLabel.setText("Unfortunately the server is not answering...Try again!");
+                    if (registrationstatus.equals("0"))
+                        functionLabel.setText("Registration failed! Try again");
+                    if (registrationstatus.equals("1"))
+                        functionLabel.setText("You are now registered in our system!");
+                    if (registrationstatus.equals("2"))
+                        functionLabel.setText("You are registered already! Just Go Online");
+                    if (registrationstatus.equals("3"))
+                        functionLabel.setText("You have tried to register multiple times. Please just Go Online.");
+
+                    // Initialize Registration feedback to Initial value
+                    registrationstatus = "-1";
+                    signinButton.setEnabled(true);
+                } else {
+                    functionLabel.setText("The username field is empty!");
                 }
-
-                if (registrationstatus.equals("-1"))
-                    functionLabel.setText("Unfortunately the server is not answering...Try again!");
-                if (registrationstatus.equals("0"))
-                    functionLabel.setText("Registration failed! Try again");
-                if (registrationstatus.equals("1"))
-                    functionLabel.setText("You are now registered in our system!");
-                if (registrationstatus.equals("2"))
-                    functionLabel.setText("You are registered already! Just Go Online");
-                if (registrationstatus.equals("3"))
-                    functionLabel.setText("You have tried to register multiple times. Please just Go Online.");
-
-                // Initialize Registration feedback to Initial value
-                registrationstatus = "-1";
-                signinButton.setEnabled(true);
             }
         });
 
@@ -157,30 +162,34 @@ public class ClientGUI extends JFrame {
                 client.username = functionText.getText();
 
                 // If the user can go online this means that he is registered
-                if (client.goOnline() == 0) {
-                    // Update the GUI providing new functionalities for messaging
-                    updateOnlineUsers(client.getOnlineusers());
-                    updateChatrooms(client.getOnlinechatrooms());
-                    listOnline.setModel(listModelUsers);
-                    listChatrooms.setModel(listModelChatrooms);
+                if (!client.username.equals("")) {
+                    if (client.goOnline() == 0) {
+                        // Update the GUI providing new functionalities for messaging
+                        updateOnlineUsers(client.getOnlineusers());
+                        updateChatrooms(client.getOnlinechatrooms());
+                        listOnline.setModel(listModelUsers);
+                        listChatrooms.setModel(listModelChatrooms);
 
-                    functionLabel.setText("You are now Online!");
+                        functionLabel.setText("You are now Online!");
 
-                    logoutButton.setEnabled(true);
-                    quitButton.setEnabled(true);
-                    onlineUsersLabel.setEnabled(true);
-                    chatUserLabel.setEnabled(true);
-                    listOnline.setEnabled(true);
-                    listChatrooms.setEnabled(true);
-                    chatroomsLabel.setEnabled(true);
+                        logoutButton.setEnabled(true);
+                        quitButton.setEnabled(true);
+                        onlineUsersLabel.setEnabled(true);
+                        chatUserLabel.setEnabled(true);
+                        listOnline.setEnabled(true);
+                        listChatrooms.setEnabled(true);
+                        chatroomsLabel.setEnabled(true);
 
-                    signinButton.setEnabled(false);
-                    loginBtn.setEnabled(false);
+                        signinButton.setEnabled(false);
+                        loginBtn.setEnabled(false);
 
-                    functionText.setEnabled(false);
-                    functionText.setEnabled(false);
+                        functionText.setEnabled(false);
+                        functionText.setEnabled(false);
+                    } else {
+                        functionLabel.setText("You need to be registered first!");
+                    }
                 } else {
-                    functionLabel.setText("You need to be registered first!");
+                    functionLabel.setText("The username field is empty!");
                 }
             }
         });
@@ -320,7 +329,7 @@ public class ClientGUI extends JFrame {
                     // Update the GUI
                     listModelUsers.clear();
                     listModelChatrooms.clear();
-                    functionLabel.setText("User "+functionText.getText()+" Deleted! Register your username or login if you are already registered");
+                    functionLabel.setText("User "+functionText.getText()+" Deleted! Register or Go Online if you are already registered");
                     functionText.setText("");
 
                     sendBtn.setEnabled(false);
