@@ -8,6 +8,19 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+/**
+ * REFRESH CLASS
+ *
+ * This class implements Runnable and can be used as a Thread.
+ * When started, It acts as a Main Thread able to manage a given
+ * of Children (the KConsumers).
+ *
+ * When the Consumers (children) terminate with results, this class
+ * ensures that all of them are terminated before refreshing the GUI.
+ *
+ * Unless It is interrupted, this Thread works infinitely running the
+ * job above every 5 seconds.
+ */
 public class Refresher implements Runnable {
 
     private String topic;
@@ -104,6 +117,7 @@ public class Refresher implements Runnable {
                 Thread.sleep(5000);
             }
         } catch (InterruptedException e) {
+            // Ensure that all the children are dead before proceeding
             while (dead.contains(false)) {
                 for (int i = 0; i < parallelism; i++) {
                     if (!threadsList.get(i).isAlive() && !dead.get(i)) {
