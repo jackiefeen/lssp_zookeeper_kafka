@@ -335,6 +335,7 @@ public class ClientGUI extends JFrame {
                             refresh.interrupt();
                     // Quit
                     client.quit();
+                    Thread.sleep(500);
 
                     // Update the GUI
                     listModelUsers.clear();
