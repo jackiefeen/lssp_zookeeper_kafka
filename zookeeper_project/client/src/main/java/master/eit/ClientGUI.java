@@ -56,7 +56,7 @@ public class ClientGUI extends JFrame {
     public ClientGUI() {
         // Initialization
         add(panelMain);
-        setTitle("NiceApp - Large Scale Systems Project 2018/2019");
+        setTitle("NiceCHAT - Large Scale Systems Project 2018/2019");
         setSize(700, 500);
         setLocationRelativeTo(null);
         setResizable(false);
