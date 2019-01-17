@@ -30,8 +30,8 @@ auto.create.topics.enable = false
 Build and run the application:
 In the lssp_zookeeper_kafka folder run:
 - mvn clean install
-- run the jar of the manager in a terminal
-- run the jar of one or multiple clients in a terminal
+- run the jar of the manager in a terminal [java -jar client/target/client-1.0-SNAPSHOT.jar]
+- run the jar of one or multiple clients in one/multiple terminals [java -jar manager/target/manager-1.0-SNAPSHOT.jar]
 
 By default, the chat application connects to localhost:2181 (default ZooKeeper hostport), but can also be used in a distributed manner with IP:port.
 
