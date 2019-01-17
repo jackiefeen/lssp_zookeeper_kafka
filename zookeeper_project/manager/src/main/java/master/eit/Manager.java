@@ -1,16 +1,24 @@
 package master.eit;
 
-import org.apache.kafka.clients.producer.KafkaProducer;
-import org.apache.kafka.clients.producer.ProducerConfig;
-import org.apache.kafka.clients.producer.ProducerRecord;
+import org.apache.kafka.clients.admin.*;
+import org.apache.kafka.clients.producer.*;
+import org.apache.kafka.common.TopicPartitionReplica;
+import org.apache.kafka.common.acl.AclBinding;
+import org.apache.kafka.common.acl.AclBindingFilter;
+import org.apache.kafka.common.config.ConfigResource;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.apache.zookeeper.*;
 import org.apache.zookeeper.data.Stat;
 
+import java.util.*;
+
+
 import java.io.IOException;
-import java.util.List;
-import java.util.Properties;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeUnit;
+
+import static org.apache.kafka.clients.admin.AdminClientConfig.BOOTSTRAP_SERVERS_CONFIG;
 
 
 public class Manager implements Runnable {
@@ -233,11 +241,21 @@ public class Manager implements Runnable {
 
                                     //check if there is a node in the registry for the user who wants to quit
                                     Stat online = zkeeper.exists(onlinepath + "/" + child, null);
-                                    if (exists != null) {
+                                    if (online != null) {
                                         //get the version and delete the user from the registry
                                         int onlineversion = zkeeper.exists(onlinepath + "/" + child, null).getVersion();
                                         zkeeper.delete(onlinepath + "/" + child, onlineversion);
                                     }
+
+                                    //get the version and set the quit request to 1 --> success
+                                    int quitversion = zkeeper.exists(quitpath + "/" + child, null).getVersion();
+                                    zkeeper.setData(quitpath + "/" + child, "1".getBytes(), version);
+                                    logger.info("The user " + child + " is removed.");
+
+                                    //delete the Kafka topic of the user who has quit
+                                    deleteKafkaTopic(child);
+                                    registeredUsers = getRegisteredUsers();
+                                    logger.info("System State update: registered users: " + registeredUsers);
 
                                     //if there is a problem deleting the node
                                 } catch (KeeperException | InterruptedException e) {
@@ -247,17 +265,6 @@ public class Manager implements Runnable {
                                     int version = zkeeper.exists(quitpath + "/" + child, null).getVersion();
                                     zkeeper.setData(quitpath + "/" + child, "0".getBytes(), version);
                                 }
-
-                                //get the version and set the quit request to 1 --> success
-                                int version = zkeeper.exists(quitpath + "/" + child, null).getVersion();
-                                zkeeper.setData(quitpath + "/" + child, "1".getBytes(), version);
-                                logger.info("The user " + child + " is removed.");
-
-
-                                //delete the Kafka topic of the user who has quit
-                                deleteKafkaTopic(child);
-                                registeredUsers = getRegisteredUsers();
-                                logger.info("System State update: registered users: " + registeredUsers);
 
 
                             } else {
@@ -289,7 +296,6 @@ public class Manager implements Runnable {
 
     //create a new topic in the ZooKeeper Tree for Kafka
     void createKafkaTopic() {
-        logger.info("createKafkaTopic");
         List<String> onlineusers = null;
         //get all online users
         try {
@@ -313,27 +319,35 @@ public class Manager implements Runnable {
 
                         if (knownuser == null) {
                             //create a new Kafka topic
-                            logger.info("Create KAFKA Topic");
+                            logger.info("Create KAFKA topic for " + user);
 
-                            Properties props = new Properties();
-                            props.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG,
-                                    "localhost:9092");
-                            props.put("acks", "all");
-                            props.put("retries", 0);
-                            props.put("batch.size", 16384);
-                            props.put("buffer.memory", 33554432);
-                            props.put("key.serializer", "org.apache.kafka.common.serialization.StringSerializer");
-                            props.put("value.serializer",
-                                    "org.apache.kafka.common.serialization.StringSerializer");
+                            Properties properties = new Properties();
+                            properties.put(BOOTSTRAP_SERVERS_CONFIG, "localhost:9092");
+
+                            //create a new Kafka Admin client to create the topic
+                            AdminClient adminClient = AdminClient.create(properties);
+                            ArrayList<NewTopic> topics = new ArrayList<>();
+                            NewTopic newtopic = new NewTopic(user, 2, (short) 1);
+                            topics.add(newtopic);
+                            adminClient.createTopics(topics);
+                            CreateTopicsResult result = adminClient.createTopics(topics);
+
+                            /*
+                            get the create topics result future back from creating the topic
+                            and wait for the deletion to be complete (get())
+                            before printing the success log and closing the adminClient
+                             */
+                            result.all().get();
 
                             logger.info("New Kafka topic for " + user + " created.");
+                            adminClient.close();
                         }
 
                     } else {
                         logger.warn("The user " + user + " is not registered yet. Therefore the topic cannot be created");
                     }
 
-                } catch (KeeperException | InterruptedException e) {
+                } catch (KeeperException | InterruptedException | ExecutionException e) {
                     e.printStackTrace();
                 }
             }
@@ -348,35 +362,34 @@ public class Manager implements Runnable {
 
             if (knownuser != null) {
                 //if the Kafka topic exists, delete it
-                try {
-                    //delete the topic and its subfolders
-                    int version = zkeeper.exists(kafkatopicspath + "/" + user + "/partitions/0/state", null).getVersion();
-                    zkeeper.delete(kafkatopicspath + "/" + user + "/partitions/0/state", version);
+                logger.info("Delete KAFKA topic for user " + user);
 
-                    version = zkeeper.exists(kafkatopicspath + "/" + user + "/partitions/0", null).getVersion();
-                    zkeeper.delete(kafkatopicspath + "/" + user + "/partitions/0", version);
+                Properties properties = new Properties();
+                properties.put(BOOTSTRAP_SERVERS_CONFIG, "localhost:9092");
 
-                    version = zkeeper.exists(kafkatopicspath + "/" + user + "/partitions", null).getVersion();
-                    zkeeper.delete(kafkatopicspath + "/" + user + "/partitions", version);
+                //create a new Kafka Admin client to delete the topic
+                AdminClient adminClient = AdminClient.create(properties);
+                ArrayList<String> topics = new ArrayList<>();
+                topics.add(user);
+                DeleteTopicsResult result = adminClient.deleteTopics(topics);
 
-                    version = zkeeper.exists(kafkatopicspath + "/" + user, null).getVersion();
-                    zkeeper.delete(kafkatopicspath + "/" + user, version);
+                /*get the create topics result future back from creating the topic
+                and wait for the deletion to be complete (get())
+                before printing the success log and closing the adminClient
+                */
+                result.all().get();
+                logger.info("Kafka topic for user " + user + " deleted.");
+                adminClient.close();
 
-                    //if there is a problem deleting the topic
-                } catch (KeeperException | InterruptedException e) {
-                    e.printStackTrace();
-                    logger.warn("An error occurred. The topic " + user + " could not be deleted.");
-                }
-
-                logger.info("Kafka topic for " + user + " deleted.");
             } else {
                 logger.info("There is no Kafka topic for " + user);
             }
 
+            //if there is a problem deleting the topic
+        } catch (KeeperException | InterruptedException | ExecutionException e) {
+            logger.info("There was a problem deleting the Kafka topic for " + user);
 
-        } catch (KeeperException | InterruptedException e) {
-            e.printStackTrace();
-        }
+    }
     }
 
     private void createKafkaChatRooms() {
@@ -391,33 +404,29 @@ public class Manager implements Runnable {
 
                     logger.info("Create KAFKA topic for chatroom " + node);
 
-                    Properties props = new Properties();
-                    props.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG,
-                            "localhost:9092");
-                    props.put("acks", "all");
-                    props.put("retries", 0);
-                    props.put("batch.size", 16384);
-                    props.put("buffer.memory", 33554432);
-                    props.put("key.serializer", "org.apache.kafka.common.serialization.StringSerializer");
-                    props.put("value.serializer",
-                            "org.apache.kafka.common.serialization.StringSerializer");
+                    Properties properties = new Properties();
+                    properties.put(BOOTSTRAP_SERVERS_CONFIG, "localhost:9092");
 
-                    KafkaProducer<String, String> prod = new KafkaProducer<String, String>(props);
-                    String topic = node;
-                    int partition = 0;
+                    //create a new Kafka Admin client to create the topic
+                    AdminClient adminClient = AdminClient.create(properties);
+                    ArrayList<NewTopic> topics = new ArrayList<>();
+                    NewTopic newtopic = new NewTopic(node, 2, (short) 1);
+                    topics.add(newtopic);
+                    CreateTopicsResult result = adminClient.createTopics(topics);
 
-                    String key = "S-0000000000000=Admin";
-                    String value = ": Welcome to the chat " + node + "!";
-                    prod.send(new ProducerRecord<String, String>(topic, partition, key, value));
-                    prod.close();
-
+                    /*
+                    get the future back from creating the topic and wait for the deletion to be complete (get())
+                    before printing the success log and closing the adminClient
+                     */
+                    result.all().get();
                     logger.info("New Kafka topic for chatroom " + node + " created.");
+                    adminClient.close();
 
                 } else {
                     logger.warn("Chatroom " + node + " already exists.");
                 }
             }
-        } catch (InterruptedException | KeeperException e) {
+        } catch (InterruptedException | KeeperException | ExecutionException e) {
             e.printStackTrace();
             logger.error(e);
         }
