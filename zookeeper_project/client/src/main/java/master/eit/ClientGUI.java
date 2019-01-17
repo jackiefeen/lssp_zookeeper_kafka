@@ -8,6 +8,13 @@ import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.util.List;
 
+/**
+ * GUI CLASS
+ *
+ * This class build the graphical interface of the Client.
+ * It connects the graphical components with the functionalities
+ * needed for the project.
+ */
 public class ClientGUI extends JFrame {
 
     // Variables
@@ -40,11 +47,16 @@ public class ClientGUI extends JFrame {
     private JLabel chatroomsLabel;
     private JButton quitButton;
 
+    // Pointer to the Thread that Refresh the GUI
     private Thread refresh = null;
 
+    /**
+     * CONSTRUCTOR
+     */
     public ClientGUI() {
+        // Initialization
         add(panelMain);
-        setTitle("NiceApp - Built from GERITAs with Passion ");
+        setTitle("NiceApp - Large Scale Systems Project 2018/2019");
         setSize(700, 500);
         setLocationRelativeTo(null);
         setResizable(false);
@@ -71,9 +83,11 @@ public class ClientGUI extends JFrame {
 
         registerLabel.setEnabled(false);
 
+        // CONNECT BUTTON LISTENER
         connectButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                // ATTEMPT TO CONNECT TO THE SERVER
                 try {
                     client = new Client(connectionText.getText().split(":")[0], connectionText.getText().split(":")[1]);
                     flagConnected = true;
@@ -81,6 +95,7 @@ public class ClientGUI extends JFrame {
                     e1.printStackTrace();
                 }
 
+                // IF CONNECTED permit to Users to register or go online
                 if (flagConnected) {
                     connectedLabel.setText("You are connected to the server");
                     connectButton.setEnabled(false);
@@ -92,32 +107,41 @@ public class ClientGUI extends JFrame {
 
                     registerLabel.setEnabled(true);
                     functionLabel.setText("Please, register your username first or just Login if you are already registered!");
+                } else {
+                    connectedLabel.setText("Unable to connect! Try again!");
                 }
             }
         });
 
+        // REGISTER BUTTON LISTENER
         signinButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                // Try to register
                 client.username = functionText.getText();
                 client.register();
                 flagRegistered = true;
 
+                // TODO: Return values
                 if (flagRegistered)
                     functionLabel.setText("You are registered!");
             }
         });
 
+        // GO ONLINE BUTTON LISTENER
         loginBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                // Try to GO ONLINE
                 client.username = functionText.getText();
+                // If the user can go online this means that He is registered
                 if (client.goOnline() == 0) {
                     flagOnline = true;
                     updateOnlineUsers(client.getOnlineusers());
                     updateChatrooms(client.getOnlinechatrooms());
                     listOnline.setModel(listModelUsers);
                     listChatrooms.setModel(listModelChatrooms);
+
 
                     if (flagOnline) {
                         functionLabel.setText("You are now Online!");
@@ -142,7 +166,7 @@ public class ClientGUI extends JFrame {
             }
         });
 
-
+        // GO OFFLINE BUTTON LISTENER
         logoutButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -173,6 +197,7 @@ public class ClientGUI extends JFrame {
             }
         });
 
+        // ONLINE USERS LIST LISTENER
         listOnline.addListSelectionListener(new ListSelectionListener() {
             @Override
             public void valueChanged(ListSelectionEvent arg0) {
@@ -199,6 +224,7 @@ public class ClientGUI extends JFrame {
             }
         });
 
+        // ONLINE CHATROOMS LISTENER
         listChatrooms.addListSelectionListener(new ListSelectionListener() {
             @Override
             public void valueChanged(ListSelectionEvent arg0) {
@@ -223,6 +249,7 @@ public class ClientGUI extends JFrame {
             }
         });
 
+        // SEND MESSAGE BUTTON LISTENER
         sendBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -242,6 +269,7 @@ public class ClientGUI extends JFrame {
             }
         });
 
+        // QUIT BUTTON LISTENER
         quitButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -279,10 +307,9 @@ public class ClientGUI extends JFrame {
                 }
             }
         });
-
-
     }
 
+    // ONLINE USERS LIST UPDATER
     public void updateOnlineUsers (List<String> onlineusers) {
         listModelUsers.clear();
         for (String user:onlineusers)
@@ -294,6 +321,7 @@ public class ClientGUI extends JFrame {
                 listModelUsers.addElement(user);
     }
 
+    // ONLINE CHATROOMS LIST UPDATER
     public void updateChatrooms (List<String> chatrooms) {
         listModelChatrooms.clear();
         for (String room:chatrooms)
