@@ -23,7 +23,6 @@ public class ClientGUI extends JFrame {
     private DefaultListModel listModelChatrooms = new DefaultListModel<String>();
     private Boolean flagConnected;
     private Boolean flagRegistered;
-    private Boolean flagOnline;
 
     // GUI Attributes
     private JLabel serverLabel;
@@ -38,7 +37,7 @@ public class ClientGUI extends JFrame {
     private JTextField connectionText;
     private JButton connectButton;
     private JLabel connectedLabel;
-    private JLabel functionLabel;
+    public JLabel functionLabel;
     private JButton logoutButton;
     private JLabel onlineUsersLabel;
     public JLabel chatUserLabel;
@@ -49,6 +48,7 @@ public class ClientGUI extends JFrame {
 
     // Pointer to the Thread that Refresh the GUI
     private Thread refresh = null;
+    public static String registrationstatus = "-1";
 
     /**
      * CONSTRUCTOR
@@ -122,9 +122,30 @@ public class ClientGUI extends JFrame {
                 client.register();
                 flagRegistered = true;
 
-                // TODO: Return values
-                if (flagRegistered)
-                    functionLabel.setText("You are registered!");
+                // Try to register the user
+                long initTime = System.currentTimeMillis();
+                boolean timeElapsed = true;
+                while (timeElapsed){
+                    signinButton.setEnabled(false);
+                    if(System.currentTimeMillis() - initTime > 1000 || !registrationstatus.equals("-1")){
+                        timeElapsed = false;
+                    }
+                }
+
+                if (registrationstatus.equals("-1"))
+                    functionLabel.setText("Unfortunately the server is not answering...Try again!");
+                if (registrationstatus.equals("0"))
+                    functionLabel.setText("Registration failed! Try again");
+                if (registrationstatus.equals("1"))
+                    functionLabel.setText("You are now registered in our system!");
+                if (registrationstatus.equals("2"))
+                    functionLabel.setText("You are registered already! Just Go Online");
+                if (registrationstatus.equals("3"))
+                    functionLabel.setText("You have tried to register multiple times. Please just Go Online.");
+
+                // Initialize Registration feedback to Initial value
+                registrationstatus = "-1";
+                signinButton.setEnabled(true);
             }
         });
 
@@ -134,32 +155,30 @@ public class ClientGUI extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 // Try to GO ONLINE
                 client.username = functionText.getText();
-                // If the user can go online this means that He is registered
+
+                // If the user can go online this means that he is registered
                 if (client.goOnline() == 0) {
-                    flagOnline = true;
+                    // Update the GUI providing new functionalities for messaging
                     updateOnlineUsers(client.getOnlineusers());
                     updateChatrooms(client.getOnlinechatrooms());
                     listOnline.setModel(listModelUsers);
                     listChatrooms.setModel(listModelChatrooms);
 
+                    functionLabel.setText("You are now Online!");
 
-                    if (flagOnline) {
-                        functionLabel.setText("You are now Online!");
+                    logoutButton.setEnabled(true);
+                    quitButton.setEnabled(true);
+                    onlineUsersLabel.setEnabled(true);
+                    chatUserLabel.setEnabled(true);
+                    listOnline.setEnabled(true);
+                    listChatrooms.setEnabled(true);
+                    chatroomsLabel.setEnabled(true);
 
-                        logoutButton.setEnabled(true);
-                        quitButton.setEnabled(true);
-                        onlineUsersLabel.setEnabled(true);
-                        chatUserLabel.setEnabled(true);
-                        listOnline.setEnabled(true);
-                        listChatrooms.setEnabled(true);
-                        chatroomsLabel.setEnabled(true);
+                    signinButton.setEnabled(false);
+                    loginBtn.setEnabled(false);
 
-                        signinButton.setEnabled(false);
-                        loginBtn.setEnabled(false);
-
-                        functionText.setEnabled(false);
-                        functionText.setEnabled(false);
-                    }
+                    functionText.setEnabled(false);
+                    functionText.setEnabled(false);
                 } else {
                     functionLabel.setText("You need to be registered first!");
                 }
@@ -170,12 +189,15 @@ public class ClientGUI extends JFrame {
         logoutButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                // Kill the Main Thread used for Refresh (if active)
                 if (refresh != null)
                     while (refresh.isAlive())
                         refresh.interrupt();
 
+                // Go Offline
                 client.goOffline();
 
+                // Update the GUI
                 listModelUsers.clear();
                 functionText.setText("");
 
@@ -198,6 +220,7 @@ public class ClientGUI extends JFrame {
         });
 
         // ONLINE USERS LIST LISTENER
+        // When a user is selected update the GUI
         listOnline.addListSelectionListener(new ListSelectionListener() {
             @Override
             public void valueChanged(ListSelectionEvent arg0) {
@@ -209,9 +232,12 @@ public class ClientGUI extends JFrame {
                     textAreaMsg.setText("Admin: Welcome to the chat " + functionText.getText() + "!\n");
 
                     try {
+                        // If there is a Thread refreshing some chat, kill it before starting a new one
                         if (refresh != null)
                             while (refresh.isAlive())
                                 refresh.interrupt();
+
+                        // Start a new Thread for Refresh the chat selected
                         chatUserLabel.setText(listOnline.getSelectedValue().toString());
                         refresh = client.readMessages(functionText.getText(), 2);
                         refresh.start();
@@ -235,9 +261,12 @@ public class ClientGUI extends JFrame {
                 textAreaMsg.setText("Admin: Welcome to the chat " + functionText.getText() + "!\n");
 
                 try {
+                    // If there is a Thread refreshing some chat, kill it before starting a new one
                     if (refresh != null)
                         while (refresh.isAlive())
                             refresh.interrupt();
+
+                    // Start a new Thread for Refresh the chat selected
                     chatUserLabel.setText(listChatrooms.getSelectedValue().toString());
                     refresh = client.readMessages("chatroom-"+chatUserLabel.getText(), 2);
                     refresh.start();
@@ -253,14 +282,17 @@ public class ClientGUI extends JFrame {
         sendBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                String label = "";
+                // Send messages based on the selection (if you are a user or a chatroom
                 if (!listOnline.isSelectionEmpty()) {
-                    label = chatUserLabel.getText().split(" ")[0];
+                    String label = chatUserLabel.getText().split(" ")[0];
+                    // Send a copy of the message to sender topic
                     String msgsent = client.sendMessage("S", label, functionText.getText(), msgText.getText());
+                    // Send the message to the final user
                     client.sendMessage("R", functionText.getText(), label, msgText.getText());
                     msgText.setText("");
                     textAreaMsg.append(msgsent+"\n");
                 } else {
+                    // Send the message to the chatroom topic
                     String topic = "chatroom-" + chatUserLabel.getText().split(" ")[0];
                     String msgsent = client.sendMessage("R", functionText.getText(), topic, msgText.getText());
                     msgText.setText("");
@@ -274,11 +306,14 @@ public class ClientGUI extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 try {
+                    // Kill all Threads
                     if (refresh != null)
                         while (refresh.isAlive())
                             refresh.interrupt();
+                    // Quit
                     client.quit();
 
+                    // Update the GUI
                     listModelUsers.clear();
                     listModelChatrooms.clear();
                     functionLabel.setText("User "+functionText.getText()+" Deleted! Register your username or login if you are already registered");

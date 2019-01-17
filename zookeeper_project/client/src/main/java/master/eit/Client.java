@@ -23,7 +23,6 @@ public class Client {
     private static boolean alive = true;
     public static ClientGUI form = null;
     private Watcher onlineWatcher;
-    public String registrationstatus = "-1";
 
     //client constructor
     Client(String hostPort, String username) throws IOException, InterruptedException {
@@ -50,6 +49,8 @@ public class Client {
                 logger.info("Created an ephemeral node on " + path + " for the request");
             } else {
                 logger.warn("You have already created an enrollment request. Please wait until it is approved.");
+                // Set status to tried multiple times
+                ClientGUI.registrationstatus = "3";
             }
         } catch (KeeperException e) {
             logger.error(e.code());
@@ -77,19 +78,20 @@ public class Client {
         byte[] edata = zkeeper.getData(enrollpath + "/" + username, true, null);
         if (edata != null) {
             String enrolldata = new String(edata);
+            logger.info(enrolldata);
 
             //check the data of the node and display the result of the request
             if (enrolldata.equals("1")) {
                 logger.info(username + ": the registration was successful.");
-                registrationstatus = enrolldata;
+                ClientGUI.registrationstatus = enrolldata;
 
             } else if (enrolldata.equals("2")) {
                 logger.info(username + ": the client was already registered.");
-                registrationstatus = enrolldata;
+                ClientGUI.registrationstatus = enrolldata;
 
             } else {
                 logger.info(username + ": the registration failed.");
-                registrationstatus = enrolldata;
+                ClientGUI.registrationstatus = enrolldata;
             }
             // delete the enrollment request from the ZooKeeper tree
             Stat exist = zkeeper.exists(enrollpath + "/" + username, null);
@@ -98,7 +100,7 @@ public class Client {
                 zkeeper.delete(enrollpath + "/" + username, version);
             }
         }
-        return registrationstatus;
+        return ClientGUI.registrationstatus;
     }
 
     //create an ephemeral node for the quit request and set a datawatcher on it
