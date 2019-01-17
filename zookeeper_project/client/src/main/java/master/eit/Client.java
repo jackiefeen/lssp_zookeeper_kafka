@@ -52,11 +52,8 @@ public class Client {
                 // Set status to tried multiple times
                 ClientGUI.registrationstatus = "3";
             }
-        } catch (KeeperException e) {
-            logger.error(e.code());
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-            logger.error(e);
+        } catch (KeeperException | InterruptedException e) {
+            logger.error("An error occurred.");
         }
     }
 
@@ -193,7 +190,7 @@ public class Client {
             refreshGUI(onlineusers);
 
         } catch (KeeperException | InterruptedException e) {
-            e.printStackTrace();
+            logger.error("The online users could not be retrieved");
         }
         logger.info("Online users: " + onlineusers);
         return onlineusers;

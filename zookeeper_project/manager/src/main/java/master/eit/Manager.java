@@ -19,6 +19,7 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 
 import static org.apache.kafka.clients.admin.AdminClientConfig.BOOTSTRAP_SERVERS_CONFIG;
+import static org.apache.kafka.clients.admin.AdminClientConfig.CLIENT_ID_CONFIG;
 
 
 public class Manager implements Runnable {
@@ -323,6 +324,7 @@ public class Manager implements Runnable {
 
                             Properties properties = new Properties();
                             properties.put(BOOTSTRAP_SERVERS_CONFIG, "localhost:9092");
+                            properties.put(CLIENT_ID_CONFIG, "TopicCreator");
 
                             //create a new Kafka Admin client to create the topic
                             AdminClient adminClient = AdminClient.create(properties);
@@ -366,6 +368,7 @@ public class Manager implements Runnable {
 
                 Properties properties = new Properties();
                 properties.put(BOOTSTRAP_SERVERS_CONFIG, "localhost:9092");
+                properties.put(CLIENT_ID_CONFIG, "TopicDeletor");
 
                 //create a new Kafka Admin client to delete the topic
                 AdminClient adminClient = AdminClient.create(properties);
@@ -395,40 +398,41 @@ public class Manager implements Runnable {
     private void createKafkaChatRooms() {
         try {
             //iterate over the predefined ChatRooms and create the nodes if they do not exist yet
+            ArrayList<NewTopic> topics = new ArrayList<>();
             for (String node : ChatRooms) {
                 Stat chatroomexists = null;
 
                 chatroomexists = zkeeper.exists(kafkatopicspath + "/" + node, null);
 
                 if (chatroomexists == null) {
-
-                    logger.info("Create KAFKA topic for chatroom " + node);
-
-                    Properties properties = new Properties();
-                    properties.put(BOOTSTRAP_SERVERS_CONFIG, "localhost:9092");
-
-                    //create a new Kafka Admin client to create the topic
-                    AdminClient adminClient = AdminClient.create(properties);
-                    ArrayList<NewTopic> topics = new ArrayList<>();
                     NewTopic newtopic = new NewTopic(node, 2, (short) 1);
                     topics.add(newtopic);
-                    CreateTopicsResult result = adminClient.createTopics(topics);
-
-                    /*
-                    get the future back from creating the topic and wait for the deletion to be complete (get())
-                    before printing the success log and closing the adminClient
-                     */
-                    result.all().get();
-                    logger.info("New Kafka topic for chatroom " + node + " created.");
-                    adminClient.close();
 
                 } else {
                     logger.warn("Chatroom " + node + " already exists.");
                 }
             }
+
+            logger.info("Create KAFKA topic for chatrooms.");
+
+            Properties properties = new Properties();
+            properties.put(BOOTSTRAP_SERVERS_CONFIG, "localhost:9092");
+            properties.put(CLIENT_ID_CONFIG, "ChatRoomTopicCreator");
+
+            //create a new Kafka Admin client to create the topic
+            AdminClient adminClient = AdminClient.create(properties);
+            CreateTopicsResult result = adminClient.createTopics(topics);
+
+            /*
+            get the future back from creating the topic and wait for the deletion to be complete (get())
+            before printing the success log and closing the adminClient
+             */
+            result.all().get();
+            logger.info("New Kafka topics for chatrooms created.");
+            adminClient.close();
+
         } catch (InterruptedException | KeeperException | ExecutionException e) {
-            e.printStackTrace();
-            logger.error(e);
+            logger.error("An error occurred creating the Kafka topics for the chatrooms.");
         }
     }
 
