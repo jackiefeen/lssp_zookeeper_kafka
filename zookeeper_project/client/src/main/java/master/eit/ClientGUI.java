@@ -245,6 +245,8 @@ public class ClientGUI extends JFrame {
                         textAreaMsg.setText("");
                         textAreaMsg.setEnabled(false);
                         chatUserLabel.setText("Chat User");
+                        sendBtn.setEnabled(false);
+                        msgText.setEnabled(false);
                     }
                 }
             }
@@ -273,6 +275,8 @@ public class ClientGUI extends JFrame {
                 } catch (Exception e) {
                     textAreaMsg.setText("");
                     textAreaMsg.setEnabled(false);
+                    sendBtn.setEnabled(false);
+                    msgText.setEnabled(false);
                     chatUserLabel.setText("Chat User");
                 }
             }
