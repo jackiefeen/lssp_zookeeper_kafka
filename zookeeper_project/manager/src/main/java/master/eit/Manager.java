@@ -55,7 +55,7 @@ public class Manager implements Runnable {
                         (zkeeper.exists(registrypath, false) == null)) {
                     createZkTreeStructure();
                 } else {
-                    logger.info("The Tree Structure exists already.");
+                    logger.info("The Tree Structure already exists.");
                 }
             } catch (KeeperException e) {
                 e.printStackTrace();
@@ -350,7 +350,7 @@ public class Manager implements Runnable {
                     }
 
                 } catch (KeeperException | InterruptedException | ExecutionException e) {
-                    e.printStackTrace();
+                    logger.error("The topic for " + user + "already exists.");
                 }
             }
         }
@@ -396,6 +396,7 @@ public class Manager implements Runnable {
     }
 
     private void createKafkaChatRooms() {
+        logger.info("Create KAFKA topics for chatrooms.");
         try {
             //iterate over the predefined ChatRooms and create the nodes if they do not exist yet
             ArrayList<NewTopic> topics = new ArrayList<>();
@@ -413,8 +414,6 @@ public class Manager implements Runnable {
                 }
             }
 
-            logger.info("Create KAFKA topic for chatrooms.");
-
             Properties properties = new Properties();
             properties.put(BOOTSTRAP_SERVERS_CONFIG, "localhost:9092");
             properties.put(CLIENT_ID_CONFIG, "ChatRoomTopicCreator");
@@ -428,7 +427,10 @@ public class Manager implements Runnable {
             before printing the success log and closing the adminClient
              */
             result.all().get();
-            logger.info("New Kafka topics for chatrooms created.");
+            for (NewTopic newtopic : topics){
+                logger.info("New Kafka topics for chatrooms" + newtopic.name() + "created.");
+            }
+
             adminClient.close();
 
         } catch (InterruptedException | KeeperException | ExecutionException e) {
