@@ -27,7 +27,7 @@ public class Client {
     //client constructor
     Client(String hostPort) throws IOException, InterruptedException {
         //connect to ZooKeeper
-        this.zkeeper = new ZKConnection().connect(hostPort);
+        zkeeper = new ZKConnection().connect(hostPort);
         logger.info("State of the connection: " + zkeeper.getState());
     }
 
@@ -137,12 +137,18 @@ public class Client {
         }
     }
 
+    /*
+    enables the client to go online in the chatroom
+     */
     public int goOnline() {
+        //check if there is an existing zookeeper connection
         if (zkeeper != null) {
             try {
+                //before the user can go online, he needs to be registered --> check if the user exists in the registry
                 Stat registered = zkeeper.exists(registrypath + "/" + username, null);
                 if (registered != null) {
 
+                    //check if the user is already only
                     Stat exists = zkeeper.exists(onlinepath + "/" + username, null);
                     if (exists == null) {
                         zkeeper.create(onlinepath + "/" + username, null, ZooDefs.Ids.OPEN_ACL_UNSAFE, CreateMode.EPHEMERAL);
@@ -165,7 +171,7 @@ public class Client {
                     return -1;
                 }
             } catch (KeeperException | InterruptedException e) {
-                e.printStackTrace();
+                logger.error("Something went wrong - going online is not possible right now.");
             }
         } else {
             logger.warn("There is an issue with the ZooKeeper connection.");
@@ -173,18 +179,23 @@ public class Client {
         return -1;
     }
 
+    //refresh the list of onlineusers in the GUI
     public void refreshGUI(List<String> onlineusers){
         form.updateOnlineUsers(onlineusers);
     }
 
+    //refresh the list of chatrooms in the GUI
     public void refreshGUI2(List<String> chatrooms){
         form.updateChatrooms(chatrooms);
     }
 
+    //retrieve all current online users
     public List<String> getOnlineusers(){
         List<String> onlineusers = null;
         try {
+            //get the children of the online branch in zookeeper and keep a watcher on the branch
             onlineusers = zkeeper.getChildren(onlinepath, this.onlineWatcher, null);
+            //refresh the GUI with the new list of online users
             refreshGUI(onlineusers);
 
         } catch (KeeperException | InterruptedException e) {
@@ -194,28 +205,37 @@ public class Client {
         return onlineusers;
     }
 
+    //retrieve all chatrooms
     public List<String> getOnlinechatrooms(){
         List<String> chatrooms = new ArrayList<String>();
         try {
+            //get the children of the kafka topics branch in zookeeper
             List<String> children = zkeeper.getChildren(topics, null, null);
             if (!children.isEmpty()) {
+
+                /*check for every node under the topics branch if it is a chatroom,
+                 if yes, add it to the list of online chatrooms
+                 */
                 for (String child : children) {
                     if (child.contains("chatroom-")) {
                         chatrooms.add(child);
                     }
                 }
             }
+            //refresh the GUI with the new list of chatrooms
             refreshGUI2(chatrooms);
 
         } catch (KeeperException | InterruptedException e) {
-            e.printStackTrace();
+            logger.error("The chatrooms could not be retrieved");
         }
         logger.info("Online chatrooms: " + chatrooms);
         return chatrooms;
     }
 
+    //enables the client to send a message to another user or to a chatroom
     public String sendMessage(String direction, String sender, String topic, String msg){
         String msgsent = "";
+        //instantiate a new Kafka Producer and use the producer to send the message
         KProducer producer = new KProducer();
         try {
             msgsent = producer.sendMessage(1, direction, sender, topic, msg);
@@ -227,10 +247,12 @@ public class Client {
         return msgsent;
     }
 
+    //enables the client to read the messages in their 1:1 chats with other users or in a chatroom
     public Thread readMessages(String topic, Integer parallelism){
         return new Thread(new Refresher(topic, parallelism));
     }
 
+    //close the ZooKeeper connection of the client
     public void goOffline() {
         try {
             zkeeper.close();
@@ -240,8 +262,9 @@ public class Client {
         }
     }
 
-    public static void main(String[] args) throws InterruptedException, IOException, ClassNotFoundException, UnsupportedLookAndFeelException, InstantiationException, IllegalAccessException {
+    public static void main(String[] args) throws InterruptedException, ClassNotFoundException, UnsupportedLookAndFeelException, InstantiationException, IllegalAccessException {
 
+        //initialize the GUI
         UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 
         SwingUtilities.invokeLater(new Runnable() {
@@ -252,6 +275,7 @@ public class Client {
             }
         });
 
+        //keep the GUI running until it is terminated
         while (alive) {
            try{
                if (zkeeper.getState() == ZooKeeper.States.CLOSED) {

@@ -12,12 +12,14 @@ public class Main {
     public static void main(String[] args) {
         Manager manager = null;
 
+        //capture the ctrl+c in the console
         Runtime.getRuntime().addShutdownHook(new Thread() {
             public void run() {
                 System.out.println("\n The manager was terminated.");
             }
         });
 
+        //instantiate the manager and spawn a manager thread
         try {
             manager = new Manager("localhost:2181");
         } catch (IOException | InterruptedException | KeeperException e) {

@@ -1,11 +1,6 @@
 package master.eit;
 
 import org.apache.kafka.clients.admin.*;
-import org.apache.kafka.clients.producer.*;
-import org.apache.kafka.common.TopicPartitionReplica;
-import org.apache.kafka.common.acl.AclBinding;
-import org.apache.kafka.common.acl.AclBindingFilter;
-import org.apache.kafka.common.config.ConfigResource;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.apache.zookeeper.*;
@@ -16,7 +11,6 @@ import java.util.*;
 
 import java.io.IOException;
 import java.util.concurrent.ExecutionException;
-import java.util.concurrent.TimeUnit;
 
 import static org.apache.kafka.clients.admin.AdminClientConfig.BOOTSTRAP_SERVERS_CONFIG;
 import static org.apache.kafka.clients.admin.AdminClientConfig.CLIENT_ID_CONFIG;
